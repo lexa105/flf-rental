@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#00531d",
+                        "tertiary": "#ffffff",
+                        "inverse-on-surface": "#313030",
+                        "surface-dim": "#131313",
+                        "secondary": "#c8c6c5",
+                        "primary-container": "#c3f400",
+                        "tertiary-fixed": "#6bff87",
+                        "outline": "#8e9379",
+                        "error": "#ffb4ab",
+                        "background": "#131313",
+                        "on-primary-fixed": "#161e00",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#283500",
+                        "error-container": "#93000a",
+                        "surface-container": "#201f1f",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#506600",
+                        "on-secondary": "#313030",
+                        "surface-tint": "#abd600",
+                        "outline-variant": "#444933",
+                        "on-surface": "#e5e2e1",
+                        "tertiary-container": "#6bff87",
+                        "primary-fixed": "#c3f400",
+                        "on-tertiary-fixed": "#002107",
+                        "on-surface-variant": "#c4c9ac",
+                        "tertiary-fixed-dim": "#4ae16d",
+                        "secondary-container": "#474746",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#131313",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-secondary-container": "#b7b5b4",
+                        "surface-bright": "#3a3939",
+                        "on-primary-container": "#556d00",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed-dim": "#abd600",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#3c4d00",
+                        "surface-variant": "#353534",
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-container": "#00752c",
+                        "primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary": "#003912"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "24px",
+                        "unit-4": "16px",
+                        "base": "4px",
+                        "unit-6": "24px",
+                        "unit-12": "48px",
+                        "gutter": "16px",
+                        "unit-2": "8px",
+                        "unit-1": "4px",
+                        "unit-8": "32px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["Space Grotesk"],
+                        "h3": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["14px", {"lineHeight": "1", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #000000; color: #e5e2e1; }
+        .material-symbols-outlined { font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24; }
+        .cinema-grid { background-image: radial-gradient(#222222 1px, transparent 1px); background-size: 24px 24px; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar from JSON -->
+<header class="bg-black text-[#CCFF00] font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold docked full-width top-0 border-b border-[#222222] flex justify-between items-center w-full px-4 h-14 z-50">
+<div class="flex items-center gap-4">
+<span class="text-[#CCFF00] font-black tracking-widest italic text-base">CINEMA_CORE</span>
+</div>
+<div class="flex items-center gap-6">
+<button class="hover:bg-[#0F0F0F] hover:text-[#CCFF00] transition-colors active:scale-95 duration-75 flex items-center gap-2">
+<span class="material-symbols-outlined text-sm">help_outline</span>
+<span>HELP</span>
+</button>
+<button class="hover:bg-[#0F0F0F] hover:text-[#CCFF00] transition-colors active:scale-95 duration-75 font-black">
+                EXIT
+            </button>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center cinema-grid pt-12 pb-24 px-4">
+<!-- Progress Stepper -->
+<div class="w-full max-w-2xl mb-12">
+<div class="flex justify-between items-center mb-4">
+<span class="font-label-caps text-label-caps text-primary-fixed">STEP 02</span>
+<span class="font-label-caps text-label-caps text-secondary-container">INITIAL_ASSET_INGEST</span>
+</div>
+<div class="h-1 w-full bg-surface-container flex gap-1">
+<div class="h-full w-1/5 bg-primary-fixed"></div>
+<div class="h-full w-1/5 bg-primary-fixed"></div>
+<div class="h-full w-1/5 bg-surface-variant"></div>
+<div class="h-full w-1/5 bg-surface-variant"></div>
+<div class="h-full w-1/5 bg-surface-variant"></div>
+</div>
+</div>
+<!-- Main Content Canvas -->
+<div class="w-full max-w-4xl grid grid-cols-1 lg:grid-cols-12 gap-gutter">
+<!-- Left Panel: Form -->
+<div class="lg:col-span-7 bg-[#0F0F0F] border border-[#222222] p-8">
+<div class="mb-8">
+<h1 class="font-h2 text-h2 text-tertiary mb-2 uppercase">GEAR_LISTING</h1>
+<p class="font-body-sm text-body-sm text-secondary">Register your primary production equipment to initialize the warehouse database.</p>
+</div>
+<div class="space-y-unit-8">
+<div class="space-y-unit-6">
+<div class="group">
+<label class="font-label-caps text-label-caps text-secondary block mb-unit-2">ASSET_NAME</label>
+<input class="w-full bg-[#0F0F0F] border-0 border-b-2 border-[#333333] focus:border-[#CCFF00] focus:ring-0 text-tertiary font-mono-data py-unit-2 placeholder:text-surface-variant transition-colors" placeholder="e.g. ARRI ALEXA 35" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="group">
+<label class="font-label-caps text-label-caps text-secondary block mb-unit-2">CATEGORY</label>
+<select class="w-full bg-[#0F0F0F] border-0 border-b-2 border-[#333333] focus:border-[#CCFF00] focus:ring-0 text-tertiary font-mono-data py-unit-2 appearance-none transition-colors">
+<option>CAMERA_BODY</option>
+<option>LENS_PRIME</option>
+<option>LENS_ZOOM</option>
+<option>LIGHTING</option>
+<option>GRIP</option>
+<option>AUDIO</option>
+</select>
+</div>
+<div class="group">
+<label class="font-label-caps text-label-caps text-secondary block mb-unit-2">SERIAL_NO</label>
+<input class="w-full bg-[#0F0F0F] border-0 border-b-2 border-[#333333] focus:border-[#CCFF00] focus:ring-0 text-tertiary font-mono-data py-unit-2 placeholder:text-surface-variant transition-colors" placeholder="SN-000000" type="text"/>
+</div>
+</div>
+</div>
+<div class="pt-unit-4 flex items-center gap-gutter">
+<button class="bg-[#CCFF00] text-black font-label-caps text-label-caps px-unit-8 h-12 hover:opacity-90 active:scale-95 transition-all">
+                            ADD_ITEM
+                        </button>
+<button class="text-[#CCFF00] font-label-caps text-label-caps px-unit-6 h-12 border border-[#CCFF00] hover:bg-[#CCFF00] hover:text-black transition-all">
+                            BULK_IMPORT
+                        </button>
+</div>
+</div>
+</div>
+<!-- Right Panel: Visual Preview/Helper -->
+<div class="lg:col-span-5 space-y-gutter">
+<div class="bg-[#1A1A1A] border border-[#333333] h-full overflow-hidden flex flex-col">
+<div class="bg-[#222222] px-4 py-2 border-b border-[#333333]">
+<span class="font-label-caps text-label-caps text-[#CCFF00]">DATABASE_PREVIEW</span>
+</div>
+<div class="flex-grow p-6 flex flex-col">
+<div class="border border-[#222222] bg-[#0F0F0F] p-4 flex items-center gap-4 mb-4">
+<div class="w-12 h-12 bg-[#222222] flex items-center justify-center">
+<span class="material-symbols-outlined text-[#333333]">videocam</span>
+</div>
+<div class="flex-grow">
+<div class="h-2 w-24 bg-[#333333] mb-2"></div>
+<div class="h-2 w-16 bg-[#222222]"></div>
+</div>
+</div>
+<div class="border border-dashed border-[#333333] flex-grow flex flex-col items-center justify-center p-8 text-center">
+<span class="material-symbols-outlined text-[#333333] text-4xl mb-4">inventory_2</span>
+<p class="font-mono-data text-xs text-surface-variant uppercase tracking-widest">Awaiting local asset entry</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="w-full max-w-4xl mt-12 flex justify-between items-center">
+<button class="font-label-caps text-label-caps text-secondary-container hover:text-tertiary transition-colors">
+                SKIP_FOR_NOW
+            </button>
+<button class="bg-[#CCFF00] text-black font-label-caps text-label-caps flex items-center gap-2 px-12 h-14 hover:scale-[1.02] active:scale-95 transition-all">
+                CONTINUE
+                <span class="material-symbols-outlined">arrow_forward</span>
+</button>
+</div>
+</main>
+<!-- BottomNavBar from JSON -->
+<nav class="fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 bg-[#0F0F0F] border-t border-[#222222]">
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">person</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">PROFILE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#CCFF00] border-t-2 border-[#CCFF00] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-weight="fill" style="font-variation-settings: 'FILL' 1;">videocam</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">GEAR</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">STORAGE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">group</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">CREW</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined">check_circle</span>
+<span class="font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase">FINISH</span>
+</a>
+</nav>
+</body></html>

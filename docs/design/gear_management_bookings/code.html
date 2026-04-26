@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CINE_CORE | BOOKINGS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {outline: "#8e9379", "outline-variant": "#444933", "secondary-fixed": "#e5e2e1", tertiary: "#ffffff", "secondary-fixed-dim": "#c8c6c5", "on-surface": "#e5e2e1", "on-primary-fixed-variant": "#3c4d00", "surface-tint": "#abd600", "primary-fixed": "#c3f400", "secondary-container": "#474746", "tertiary-fixed-dim": "#4ae16d", "surface-bright": "#3a3939", primary: "#ffffff", "on-primary-fixed": "#161e00", "primary-fixed-dim": "#abd600", "primary-container": "#c3f400", "surface-container-highest": "#353534", "on-secondary": "#313030", background: "#131313", "tertiary-fixed": "#6bff87", "on-secondary-container": "#b7b5b4", "surface-container-lowest": "#0e0e0e", "surface-dim": "#131313", "on-tertiary-container": "#00752c", "on-secondary-fixed-variant": "#474746", error: "#ffb4ab", "tertiary-container": "#6bff87", "surface-variant": "#353534", "on-primary-container": "#556d00", "error-container": "#93000a", "on-error-container": "#ffdad6", surface: "#131313", "surface-container-low": "#1c1b1b", "on-secondary-fixed": "#1c1b1b", "inverse-surface": "#e5e2e1", "surface-container-high": "#2a2a2a", "on-tertiary": "#003912", "on-surface-variant": "#c4c9ac", "on-tertiary-fixed": "#002107", "on-background": "#e5e2e1", secondary: "#c8c6c5", "inverse-primary": "#506600", "inverse-on-surface": "#313030", "surface-container": "#201f1f", "on-error": "#690005", "on-primary": "#283500", "on-tertiary-fixed-variant": "#00531d"}, fontFamily: {h1: ["Space Grotesk"], "mono-data": ["Space Grotesk"], h3: ["Space Grotesk"], h2: ["Space Grotesk"], "body-lg": ["Inter"], "label-caps": ["Space Grotesk"], "body-sm": ["Inter"]}, fontSize: {h1: ["48px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}], "mono-data": ["14px", {lineHeight: "1", letterSpacing: "0em", fontWeight: "500"}], h3: ["20px", {lineHeight: "1.4", letterSpacing: "0.02em", fontWeight: "500"}], h2: ["32px", {lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "600"}], "body-lg": ["16px", {lineHeight: "1.6", letterSpacing: "0em", fontWeight: "400"}], "label-caps": ["12px", {lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700"}], "body-sm": ["14px", {lineHeight: "1.5", letterSpacing: "0em", fontWeight: "400"}]}, spacing: {base: "4px", gutter: "16px", "unit-2": "8px", "unit-12": "48px", "unit-4": "16px", "unit-1": "4px", margin: "24px", "unit-6": "24px", "unit-8": "32px"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}}}};</script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar { width: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #000000; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #222222; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #CCFF00; }
+        
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: 200px repeat(14, 1fr);
+        }
+    </style>
+</head>
+<body class="bg-black text-on-surface font-body-sm selection:bg-primary-container selection:text-on-primary-container overflow-hidden">
+<!-- SIDEBAR NAVIGATION -->
+<nav class="fixed left-0 top-0 h-full z-40 bg-zinc-950 w-64 border-r border-zinc-800 flex flex-col font-space-grotesk tracking-tight uppercase text-xs font-bold">
+<div class="p-6">
+<span class="text-xl font-black text-[#CCFF00] tracking-tighter">CINE_CORE</span>
+<p class="text-[10px] text-zinc-500 mt-1 font-mono-data">VTR_STATION_01</p>
+</div>
+<div class="flex-1 mt-4">
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="dashboard">dashboard</span> DASHBOARD
+            </a>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span> INVENTORY
+            </a>
+<!-- Active State: Bookings -->
+<a class="text-black bg-[#CCFF00] font-bold px-4 py-3 flex items-center gap-3 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="calendar_today">calendar_today</span> BOOKINGS
+            </a>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="groups">groups</span> TEAM
+            </a>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors" href="#">
+<span class="material-symbols-outlined" data-icon="settings">settings</span> SETTINGS
+            </a>
+</div>
+<div class="p-4 mt-auto">
+<button class="w-full bg-[#CCFF00] text-black py-3 font-black text-sm tracking-widest hover:brightness-110 active:scale-95 transition-all">
+                + NEW ENTRY
+            </button>
+<div class="mt-6 pt-4 border-t border-zinc-800">
+<div class="flex items-center gap-3 text-zinc-500 px-2 py-2">
+<span class="material-symbols-outlined text-[#CCFF00]" data-icon="sensors">sensors</span>
+<span class="text-[10px]">SYSTEM STATUS: ONLINE</span>
+</div>
+</div>
+</div>
+</nav>
+<!-- TOP APP BAR -->
+<header class="flex justify-between items-center px-6 ml-64 w-[calc(100%-16rem)] h-16 bg-black border-b border-zinc-800 font-space-grotesk uppercase tracking-widest text-[10px]">
+<div class="flex items-center gap-4 flex-1">
+<div class="relative w-64">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 material-symbols-outlined text-zinc-500 text-sm">search</span>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-[#CCFF00] py-2 pl-10 pr-4 text-[10px] outline-none transition-all" placeholder="SEARCH_INVENTORY" type="text"/>
+</div>
+<span class="text-zinc-400 font-bold ml-4">INVENTORY_MANAGEMENT</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex gap-4">
+<button class="text-zinc-400 hover:text-[#CCFF00] transition-colors"><span class="material-symbols-outlined" data-icon="notifications">notifications</span></button>
+<button class="text-zinc-400 hover:text-[#CCFF00] transition-colors"><span class="material-symbols-outlined" data-icon="sync">sync</span></button>
+<button class="text-zinc-400 hover:text-[#CCFF00] transition-colors"><span class="material-symbols-outlined" data-icon="more_vert">more_vert</span></button>
+</div>
+<div class="flex items-center gap-3 border-l border-zinc-800 pl-6 h-8">
+<div class="text-right">
+<p class="text-white font-bold leading-none">OPERATOR_01</p>
+<p class="text-zinc-500 text-[8px] mt-0.5">LEVEL_03_AUTH</p>
+</div>
+<img alt="User profile" class="w-8 h-8 grayscale contrast-125 border border-zinc-700" data-alt="Close-up portrait of a male production manager in a dark studio setting with dramatic high-contrast lighting." src="https://lh3.googleusercontent.com/aida-public/AB6AXuCJw2knm6xAMZJfDHN5n38_cm6NfY04Ck2aN2MawaMU3R6JKZJXYXVLfvtQiOHmmhNUHWv1UvUbejwW1kBiFC3oe7858K9Tns5gS70cjv_cH6LIiHEUVgv_0BqWRHHFeVCWnqnKIctGxc6x5r5yesK2DGUJdwlot0d0zu-y-qroHgW0TbsBitZHn30IkdqejGX9hYVgf5C-Nqh4wXJZMrSJ3COE4D_wep3tgkCKAwk1D_cXxPJ4tECbvl4qoBAinu_L0hwsUCzzUsI"/>
+</div>
+</div>
+</header>
+<!-- MAIN CONTENT AREA -->
+<main class="ml-64 pt-0 h-[calc(100vh-4rem)] flex">
+<!-- LEFT: CALENDAR VIEW -->
+<section class="flex-1 bg-black p-6 overflow-hidden flex flex-col">
+<div class="flex justify-between items-end mb-6">
+<div>
+<h2 class="font-h2 text-h2 text-white">EQUIPMENT_SCHEDULE</h2>
+<p class="font-label-caps text-label-caps text-zinc-500 mt-2">OCTOBER 23 — NOVEMBER 05 // SYSTEM_TIME_SYNC: ACTIVE</p>
+</div>
+<div class="flex gap-2">
+<button class="p-2 border border-zinc-800 hover:border-[#CCFF00] text-zinc-400 hover:text-[#CCFF00] transition-all"><span class="material-symbols-outlined">chevron_left</span></button>
+<button class="p-2 border border-zinc-800 hover:border-[#CCFF00] text-zinc-400 hover:text-[#CCFF00] transition-all"><span class="material-symbols-outlined">chevron_right</span></button>
+<button class="ml-4 px-4 py-2 border border-[#CCFF00] text-[#CCFF00] font-label-caps hover:bg-[#CCFF00] hover:text-black transition-all">VIEW_FULL_ROSTER</button>
+</div>
+</div>
+<!-- TIMELINE GRID -->
+<div class="flex-1 border border-zinc-800 bg-[#0F0F0F] overflow-auto custom-scrollbar">
+<!-- Grid Headers -->
+<div class="calendar-grid border-b border-zinc-800 sticky top-0 bg-[#0F0F0F] z-10">
+<div class="p-4 font-label-caps text-zinc-400 border-r border-zinc-800">ASSET_ID</div>
+<!-- Day labels (14 days) -->
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">23</p><p class="font-bold">MON</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">24</p><p class="font-bold">TUE</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50 bg-zinc-900"><p class="text-[10px] text-[#CCFF00]">25</p><p class="font-bold text-[#CCFF00]">WED</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">26</p><p class="font-bold">THU</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">27</p><p class="font-bold">FRI</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50 bg-zinc-950/50 text-zinc-600"><p class="text-[10px]">28</p><p class="font-bold">SAT</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50 bg-zinc-950/50 text-zinc-600"><p class="text-[10px]">29</p><p class="font-bold">SUN</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">30</p><p class="font-bold">MON</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">31</p><p class="font-bold">TUE</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">01</p><p class="font-bold">WED</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">02</p><p class="font-bold">THU</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50"><p class="text-[10px] text-zinc-600">03</p><p class="font-bold">FRI</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50 bg-zinc-950/50 text-zinc-600"><p class="text-[10px]">04</p><p class="font-bold">SAT</p></div>
+<div class="p-4 text-center border-r border-zinc-800/50 bg-zinc-950/50 text-zinc-600"><p class="text-[10px]">05</p><p class="font-bold">SUN</p></div>
+</div>
+<!-- Asset Row 1: ARRI ALEXA -->
+<div class="calendar-grid border-b border-zinc-800/50 group hover:bg-zinc-900/30 transition-colors">
+<div class="p-4 border-r border-zinc-800 group-hover:border-[#CCFF00]/30">
+<p class="font-bold text-white text-[10px] tracking-widest">ARRI_ALEXA_LF_01</p>
+<p class="text-[8px] text-zinc-500 mt-1">MAIN_CAM / A_UNIT</p>
+</div>
+<div class="col-span-14 relative h-16">
+<!-- Booking block -->
+<div class="absolute left-0 top-3 h-10 bg-[#CCFF00] text-black px-3 flex items-center gap-2 text-[10px] font-black z-0 rounded-r-none" style="width: calc(100% / 14 * 4);">
+<span class="material-symbols-outlined scale-75">videocam</span> MURPHY_UNIT_A
+                        </div>
+<div class="absolute top-3 h-10 border-2 border-zinc-700 bg-black/50 text-zinc-400 px-3 flex items-center gap-2 text-[10px] font-bold z-0" style="left: calc(100% / 14 * 6); width: calc(100% / 14 * 3);">
+                            RESERVED_B_UNIT
+                        </div>
+</div>
+</div>
+<!-- Asset Row 2: RED V-RAPTOR -->
+<div class="calendar-grid border-b border-zinc-800/50 group hover:bg-zinc-900/30 transition-colors">
+<div class="p-4 border-r border-zinc-800 group-hover:border-[#CCFF00]/30">
+<p class="font-bold text-white text-[10px] tracking-widest">RED_RAPTOR_VV_04</p>
+<p class="text-[8px] text-zinc-500 mt-1">B_UNIT / STUNT</p>
+</div>
+<div class="col-span-14 relative h-16">
+<div class="absolute left-0 top-3 h-10 bg-[#CCFF00] text-black px-3 flex items-center gap-2 text-[10px] font-black" style="width: calc(100% / 14 * 7);">
+<span class="material-symbols-outlined scale-75">directions_run</span> FAST_SEQUENCE_ACTION
+                        </div>
+</div>
+</div>
+<!-- Asset Row 3: LENSES -->
+<div class="calendar-grid border-b border-zinc-800/50 group hover:bg-zinc-900/30 transition-colors">
+<div class="p-4 border-r border-zinc-800 group-hover:border-[#CCFF00]/30">
+<p class="font-bold text-white text-[10px] tracking-widest">COOKE_S7_PRIME_SET</p>
+<p class="text-[8px] text-zinc-500 mt-1">OPTICS / LENS_CASE_04</p>
+</div>
+<div class="col-span-14 relative h-16">
+<div class="absolute h-10 bg-[#CCFF00] text-black px-3 flex items-center gap-2 text-[10px] font-black" style="left: calc(100% / 14 * 2); width: calc(100% / 14 * 5); top: 12px;">
+<span class="material-symbols-outlined scale-75">auto_videocam</span> CAR_INTERIORS
+                        </div>
+</div>
+</div>
+<!-- Asset Row 4: TERADEK -->
+<div class="calendar-grid border-b border-zinc-800/50 group hover:bg-zinc-900/30 transition-colors">
+<div class="p-4 border-r border-zinc-800 group-hover:border-[#CCFF00]/30">
+<p class="font-bold text-white text-[10px] tracking-widest">TERADEK_BOLT_6K</p>
+<p class="text-[8px] text-zinc-500 mt-1">WIRELESS / VIDEO_VILLAGE</p>
+</div>
+<div class="col-span-14 relative h-16">
+<div class="absolute top-3 h-10 border-2 border-zinc-700 bg-black/50 text-zinc-400 px-3 flex items-center gap-2 text-[10px] font-bold z-0" style="left: calc(100% / 14 * 1); width: calc(100% / 14 * 10);">
+                            LONG_TERM_RENTAL_STAGE_04
+                        </div>
+</div>
+</div>
+<!-- Asset Row 5: RONIN -->
+<div class="calendar-grid border-b border-zinc-800/50 group hover:bg-zinc-900/30 transition-colors">
+<div class="p-4 border-r border-zinc-800 group-hover:border-[#CCFF00]/30">
+<p class="font-bold text-white text-[10px] tracking-widest">RONIN_2_GIMBAL_02</p>
+<p class="text-[8px] text-zinc-500 mt-1">GRIP / STABILIZATION</p>
+</div>
+<div class="col-span-14 relative h-16">
+<div class="absolute top-3 h-10 bg-[#CCFF00] text-black px-3 flex items-center gap-2 text-[10px] font-black" style="left: calc(100% / 14 * 0); width: calc(100% / 14 * 5);">
+<span class="material-symbols-outlined scale-75">settings_input_antenna</span> STUNT_CAR_RIG
+                        </div>
+<div class="absolute top-3 h-10 border border-[#CCFF00]/50 bg-[#CCFF00]/10 text-[#CCFF00] px-3 flex items-center gap-2 text-[10px] font-bold" style="left: calc(100% / 14 * 8); width: calc(100% / 14 * 2);">
+                             MAINTENANCE
+                        </div>
+</div>
+</div>
+</div>
+<!-- STATUS BAR -->
+<div class="mt-6 flex items-center gap-8 font-label-caps text-[10px]">
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 bg-[#CCFF00]"></div>
+<span class="text-zinc-100">CONFIRMED BOOKING</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 border border-zinc-700 bg-black/50"></div>
+<span class="text-zinc-500">PENDING / RESERVED</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-3 h-3 border border-[#CCFF00]/50 bg-[#CCFF00]/10"></div>
+<span class="text-zinc-500">INTERNAL MAINTENANCE</span>
+</div>
+<div class="ml-auto text-zinc-500 tracking-[0.2em]">
+                    STATION_SYNC: 100% // ALL_DRIVERS_UP_TO_DATE
+                </div>
+</div>
+</section>
+<!-- RIGHT: PENDING REQUESTS -->
+<aside class="w-96 bg-[#0F0F0F] border-l border-zinc-800 p-6 flex flex-col">
+<div class="flex items-center justify-between mb-6">
+<h3 class="font-h3 text-h3 text-white uppercase flex items-center gap-3">
+                    PENDING_APPROVALS
+                    <span class="bg-[#CCFF00] text-black text-[10px] px-2 py-0.5 font-black">04</span>
+</h3>
+</div>
+<div class="flex-1 space-y-4 overflow-y-auto custom-scrollbar pr-2">
+<!-- Request Card 1 -->
+<div class="bg-black border border-zinc-800 p-4 hover:border-[#CCFF00] transition-all group">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-[9px] text-[#CCFF00]">REQUEST_ID: 99201</span>
+<span class="text-zinc-600 text-[9px]">2H AGO</span>
+</div>
+<div class="mt-3">
+<h4 class="font-bold text-white text-sm">SONY VENICE 2 + ANAMORPHIC SET</h4>
+<p class="text-xs text-zinc-400 mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">person</span> 
+                            REID_JACKSON (DOp)
+                        </p>
+</div>
+<div class="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+<div class="text-[10px] text-zinc-500">
+                            OCT 30 — NOV 03
+                        </div>
+<div class="flex gap-2">
+<button class="p-1 text-zinc-500 hover:text-white transition-colors"><span class="material-symbols-outlined">close</span></button>
+<button class="bg-[#CCFF00] text-black px-3 py-1 font-black text-[10px] hover:brightness-110 active:scale-95 transition-all">APPROVE</button>
+</div>
+</div>
+</div>
+<!-- Request Card 2 -->
+<div class="bg-black border border-zinc-800 p-4 hover:border-[#CCFF00] transition-all group">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-[9px] text-[#CCFF00]">REQUEST_ID: 99188</span>
+<span class="text-zinc-600 text-[9px]">5H AGO</span>
+</div>
+<div class="mt-3">
+<h4 class="font-bold text-white text-sm">SMALLHD 13" CINE MONITOR</h4>
+<p class="text-xs text-zinc-400 mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">person</span> 
+                            ELARA_VANCE (1st AC)
+                        </p>
+</div>
+<div class="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+<div class="text-[10px] text-zinc-500">
+                            OCT 26 — OCT 28
+                        </div>
+<div class="flex gap-2">
+<button class="p-1 text-zinc-500 hover:text-white transition-colors"><span class="material-symbols-outlined">close</span></button>
+<button class="bg-[#CCFF00] text-black px-3 py-1 font-black text-[10px] hover:brightness-110 active:scale-95 transition-all">APPROVE</button>
+</div>
+</div>
+</div>
+<!-- Request Card 3 -->
+<div class="bg-black border border-zinc-800 p-4 hover:border-[#CCFF00] transition-all group">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-[9px] text-[#CCFF00]">REQUEST_ID: 99150</span>
+<span class="text-zinc-600 text-[9px]">1D AGO</span>
+</div>
+<div class="mt-3">
+<h4 class="font-bold text-white text-sm">FLOWCINE BLACK ARM</h4>
+<p class="text-xs text-zinc-400 mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">person</span> 
+                            MARCUS_CHEN (Grip)
+                        </p>
+</div>
+<div class="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+<div class="text-[10px] text-zinc-500">
+                            NOV 01 — NOV 04
+                        </div>
+<div class="flex gap-2">
+<button class="p-1 text-zinc-500 hover:text-white transition-colors"><span class="material-symbols-outlined">close</span></button>
+<button class="bg-[#CCFF00] text-black px-3 py-1 font-black text-[10px] hover:brightness-110 active:scale-95 transition-all">APPROVE</button>
+</div>
+</div>
+</div>
+<!-- Request Card 4 -->
+<div class="bg-black border border-zinc-800 p-4 hover:border-[#CCFF00] transition-all group">
+<div class="flex justify-between items-start">
+<span class="font-label-caps text-[9px] text-[#CCFF00]">REQUEST_ID: 99122</span>
+<span class="text-zinc-600 text-[9px]">1D AGO</span>
+</div>
+<div class="mt-3">
+<h4 class="font-bold text-white text-sm">ARRI ORBITER LIGHT KIT</h4>
+<p class="text-xs text-zinc-400 mt-1 flex items-center gap-2">
+<span class="material-symbols-outlined text-[14px]">person</span> 
+                            SARAH_KIM (Gaffer)
+                        </p>
+</div>
+<div class="mt-4 flex items-center justify-between border-t border-zinc-800 pt-3">
+<div class="text-[10px] text-zinc-500">
+                            OCT 27 — OCT 27
+                        </div>
+<div class="flex gap-2">
+<button class="p-1 text-zinc-500 hover:text-white transition-colors"><span class="material-symbols-outlined">close</span></button>
+<button class="bg-[#CCFF00] text-black px-3 py-1 font-black text-[10px] hover:brightness-110 active:scale-95 transition-all">APPROVE</button>
+</div>
+</div>
+</div>
+</div>
+<!-- FOOTER INFO -->
+<div class="mt-6 border-t border-zinc-800 pt-4">
+<div class="bg-black p-4 border border-zinc-800">
+<p class="font-label-caps text-[9px] text-zinc-500 mb-2">QUICK_STATS</p>
+<div class="flex justify-between">
+<div class="text-center">
+<p class="text-white font-bold text-lg">84%</p>
+<p class="text-[8px] text-zinc-600">UTILIZATION</p>
+</div>
+<div class="text-center">
+<p class="text-[#CCFF00] font-bold text-lg">12</p>
+<p class="text-[8px] text-zinc-600">ACTIVE_LENDS</p>
+</div>
+<div class="text-center">
+<p class="text-white font-bold text-lg">02</p>
+<p class="text-[8px] text-zinc-600">OVERDUE</p>
+</div>
+</div>
+</div>
+</div>
+</aside>
+</main>
+<!-- FLOATING TIME DISPLAY (ASSET STATUS BAR STYLE) -->
+<div class="fixed bottom-6 right-6 bg-black border border-[#CCFF00] px-4 py-2 z-50 flex flex-col items-end">
+<p class="font-label-caps text-[9px] text-[#CCFF00] mb-1 tracking-widest">SYSTEM_VTR_TIME</p>
+<p class="font-mono-data text-2xl text-white font-black tracking-tighter">
+            23:45:12:08
+        </p>
+<div class="w-full h-[2px] bg-zinc-900 mt-2">
+<div class="h-full bg-[#CCFF00]" style="width: 65%;"></div>
+</div>
+</div>
+</body></html>

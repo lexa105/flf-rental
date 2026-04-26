@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CINEMA_CORE - Storage Locations</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-tertiary-fixed-variant": "#00531d",
+                        "tertiary": "#ffffff",
+                        "inverse-on-surface": "#313030",
+                        "surface-dim": "#131313",
+                        "secondary": "#c8c6c5",
+                        "primary-container": "#c3f400",
+                        "tertiary-fixed": "#6bff87",
+                        "outline": "#8e9379",
+                        "error": "#ffb4ab",
+                        "background": "#131313",
+                        "on-primary-fixed": "#161e00",
+                        "on-secondary-fixed": "#1c1b1b",
+                        "surface-container-lowest": "#0e0e0e",
+                        "on-primary": "#283500",
+                        "error-container": "#93000a",
+                        "surface-container": "#201f1f",
+                        "surface-container-low": "#1c1b1b",
+                        "inverse-primary": "#506600",
+                        "on-secondary": "#313030",
+                        "surface-tint": "#abd600",
+                        "outline-variant": "#444933",
+                        "on-surface": "#e5e2e1",
+                        "tertiary-container": "#6bff87",
+                        "primary-fixed": "#c3f400",
+                        "on-tertiary-fixed": "#002107",
+                        "on-surface-variant": "#c4c9ac",
+                        "tertiary-fixed-dim": "#4ae16d",
+                        "secondary-container": "#474746",
+                        "on-error-container": "#ffdad6",
+                        "surface": "#131313",
+                        "secondary-fixed": "#e5e2e1",
+                        "on-secondary-container": "#b7b5b4",
+                        "surface-bright": "#3a3939",
+                        "on-primary-container": "#556d00",
+                        "surface-container-high": "#2a2a2a",
+                        "primary-fixed-dim": "#abd600",
+                        "secondary-fixed-dim": "#c8c6c5",
+                        "on-primary-fixed-variant": "#3c4d00",
+                        "surface-variant": "#353534",
+                        "inverse-surface": "#e5e2e1",
+                        "on-tertiary-container": "#00752c",
+                        "primary": "#ffffff",
+                        "on-secondary-fixed-variant": "#474746",
+                        "on-error": "#690005",
+                        "on-background": "#e5e2e1",
+                        "surface-container-highest": "#353534",
+                        "on-tertiary": "#003912"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "margin": "24px",
+                        "unit-4": "16px",
+                        "base": "4px",
+                        "unit-6": "24px",
+                        "unit-12": "48px",
+                        "gutter": "16px",
+                        "unit-2": "8px",
+                        "unit-1": "4px",
+                        "unit-8": "32px"
+                    },
+                    "fontFamily": {
+                        "mono-data": ["Space Grotesk"],
+                        "h3": ["Space Grotesk"],
+                        "h2": ["Space Grotesk"],
+                        "body-sm": ["Inter"],
+                        "label-caps": ["Space Grotesk"],
+                        "body-lg": ["Inter"],
+                        "h1": ["Space Grotesk"]
+                    },
+                    "fontSize": {
+                        "mono-data": ["14px", {"lineHeight": "1", "letterSpacing": "0em", "fontWeight": "500"}],
+                        "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                        "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                        "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                        "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                        "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            background-color: #000000;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #0F0F0F;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #222222;
+        }
+        .map-gradient {
+            background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%);
+        }
+    </style>
+</head>
+<body class="bg-black overflow-x-hidden">
+<!-- TopAppBar -->
+<header class="bg-black text-[#CCFF00] font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold docked full-width top-0 border-b border-[#222222] border-b border-[#222222] flat no shadows flex justify-between items-center w-full px-4 h-14 sticky top-0 z-50">
+<div class="flex items-center gap-4">
+<span class="text-[#CCFF00] font-black tracking-widest italic text-base">CINEMA_CORE</span>
+<div class="h-4 w-[1px] bg-[#222222]"></div>
+<span class="font-mono-data text-mono-data opacity-60">ST_LOC_V3.0</span>
+</div>
+<div class="flex items-center gap-6">
+<div class="hidden md:flex gap-4">
+<span class="text-[#333333] hover:bg-[#0F0F0F] hover:text-[#CCFF00] transition-colors px-2 py-1 cursor-pointer">PROFILE</span>
+<span class="text-[#333333] hover:bg-[#0F0F0F] hover:text-[#CCFF00] transition-colors px-2 py-1 cursor-pointer">GEAR</span>
+<span class="text-[#CCFF00] border-b-2 border-[#CCFF00] px-2 py-1 cursor-pointer">STORAGE</span>
+<span class="text-[#333333] hover:bg-[#0F0F0F] hover:text-[#CCFF00] transition-colors px-2 py-1 cursor-pointer">CREW</span>
+</div>
+<div class="flex items-center gap-2">
+<button class="hover:bg-[#0F0F0F] hover:text-[#CCFF00] transition-colors p-2 active:scale-95 duration-75">
+<span class="material-symbols-outlined" data-icon="help_outline">help_outline</span>
+</button>
+<button class="font-bold tracking-widest text-[10px] border border-[#222222] px-3 py-1 hover:bg-[#0F0F0F] transition-colors active:scale-95 duration-75">EXIT</button>
+</div>
+</div>
+</header>
+<main class="min-h-[calc(100vh-120px)] p-margin max-w-7xl mx-auto">
+<!-- Progress Stepper -->
+<div class="mb-unit-12">
+<div class="flex items-center justify-between mb-unit-4">
+<div class="flex items-center gap-unit-2">
+<span class="font-label-caps text-label-caps text-primary-container">STEP 03</span>
+<span class="font-label-caps text-label-caps text-[#333333]">/ 05</span>
+</div>
+<span class="font-label-caps text-label-caps text-primary-container">STORAGE LOCATIONS</span>
+</div>
+<div class="w-full h-[2px] bg-[#1A1A1A] flex">
+<div class="w-1/5 h-full bg-primary-container opacity-40"></div>
+<div class="w-1/5 h-full bg-primary-container opacity-40"></div>
+<div class="w-1/5 h-full bg-primary-container"></div>
+<div class="w-1/5 h-full bg-transparent"></div>
+<div class="w-1/5 h-full bg-transparent"></div>
+</div>
+</div>
+<!-- Main Layout: Bento Grid Style -->
+<div class="grid grid-cols-12 gap-gutter">
+<!-- Address Inputs (Left Column) -->
+<div class="col-span-12 lg:col-span-5 flex flex-col gap-gutter">
+<!-- Primary Home Address -->
+<div class="bg-[#0F0F0F] border border-[#222222] p-unit-6 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-primary-container"></div>
+<div class="flex justify-between items-start mb-unit-6">
+<div>
+<p class="font-label-caps text-label-caps text-primary-container mb-unit-1">LOCATION_01</p>
+<h2 class="font-h3 text-h3 text-white">PRIMARY HOME</h2>
+</div>
+<span class="material-symbols-outlined text-primary-container" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<div class="space-y-unit-6">
+<div class="relative">
+<label class="font-label-caps text-label-caps text-[#666666] block mb-unit-2">STREET ADDRESS</label>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary-container transition-colors text-white py-2 focus:ring-0 px-0 placeholder-[#333333]" placeholder="e.g. 124 Industrial Dr" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="relative">
+<label class="font-label-caps text-label-caps text-[#666666] block mb-unit-2">CITY</label>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary-container transition-colors text-white py-2 focus:ring-0 px-0 placeholder-[#333333]" placeholder="Los Angeles" type="text"/>
+</div>
+<div class="relative">
+<label class="font-label-caps text-label-caps text-[#666666] block mb-unit-2">POSTAL CODE</label>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary-container transition-colors text-white py-2 focus:ring-0 px-0 placeholder-[#333333]" placeholder="90001" type="text"/>
+</div>
+</div>
+</div>
+</div>
+<!-- Secondary Storage -->
+<div class="bg-[#0F0F0F] border border-[#222222] p-unit-6 relative overflow-hidden group">
+<div class="absolute top-0 left-0 w-1 h-full bg-[#333333] group-focus-within:bg-primary-container transition-colors"></div>
+<div class="flex justify-between items-start mb-unit-6">
+<div>
+<p class="font-label-caps text-label-caps text-[#666666] mb-unit-1">LOCATION_02</p>
+<h2 class="font-h3 text-h3 text-white">GEAR STORAGE</h2>
+</div>
+<span class="material-symbols-outlined text-[#333333]" data-icon="inventory_2">inventory_2</span>
+</div>
+<div class="space-y-unit-6 opacity-60 group-hover:opacity-100 transition-opacity">
+<div class="relative">
+<label class="font-label-caps text-label-caps text-[#666666] block mb-unit-2">STREET ADDRESS (OPTIONAL)</label>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary-container transition-colors text-white py-2 focus:ring-0 px-0 placeholder-[#333333]" placeholder="e.g. Unit 402, Vault Storage" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-gutter">
+<div class="relative">
+<label class="font-label-caps text-label-caps text-[#666666] block mb-unit-2">CITY</label>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary-container transition-colors text-white py-2 focus:ring-0 px-0 placeholder-[#333333]" placeholder="Burbank" type="text"/>
+</div>
+<div class="relative">
+<label class="font-label-caps text-label-caps text-[#666666] block mb-unit-2">SECURITY TYPE</label>
+<select class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary-container transition-colors text-white py-2 focus:ring-0 px-0 appearance-none">
+<option>CLIMATE CONTROLLED</option>
+<option>STANDARD VAULT</option>
+<option>OFFICE SPACE</option>
+</select>
+</div>
+</div>
+</div>
+</div>
+<!-- Action Button -->
+<button class="w-full bg-primary-container text-black font-label-caps text-label-caps py-4 tracking-[0.2em] flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-[0.98]">
+                    SAVE_AND_CONTINUE
+                    <span class="material-symbols-outlined text-sm" data-icon="arrow_forward">arrow_forward</span>
+</button>
+</div>
+<!-- Visual Map Area (Right Column) -->
+<div class="col-span-12 lg:col-span-7 flex flex-col gap-gutter">
+<div class="h-full min-h-[400px] bg-[#0F0F0F] border border-[#222222] relative overflow-hidden group">
+<div class="absolute inset-0 bg-cover bg-center grayscale opacity-50 group-hover:opacity-70 transition-opacity" data-alt="High contrast dark monochrome aerial satellite map view of an industrial urban area with grid-like streets and dark textures" data-location="Los Angeles" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDMa_u9Toq3PsONUEXDDutUmtsf_BVgBjEq8xJ-BRWz-b27FhpOXxdrmab-KpNfUNPl9TMkWwm3aP3WHF_rMJ_Bjzyfrsfml2BwUhn7EQ1gomMMi43Gq4aEG7yqFS-jERQtxYDC4WM_R4i4YGRhGoUuimQJAUmGBjMHPgYvAi-al-0XMPEllJDyNTO6iAGrqDsyNutoDFsaD_FIxF7F6q5yQdgKDbWRdtl74RPEczJj051k2j27zf32IyAuX1Jq9IVGs_3AkgdZgK0')"></div>
+<div class="absolute inset-0 map-gradient"></div>
+<!-- Marker 1: Home -->
+<div class="absolute top-1/4 left-1/3 -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+<div class="bg-primary-container text-black p-2 mb-1 shadow-lg shadow-primary-container/20 border-2 border-black">
+<span class="material-symbols-outlined" data-icon="home" data-weight="fill" style="font-variation-settings: 'FILL' 1;">home</span>
+</div>
+<div class="bg-black/80 backdrop-blur-sm border border-[#222222] px-3 py-1">
+<span class="font-mono-data text-[10px] text-primary-container tracking-tighter">LOC_01: HOME_BASE</span>
+</div>
+</div>
+<!-- Marker 2: Gear (Draft state) -->
+<div class="absolute bottom-1/3 right-1/4 translate-x-1/2 translate-y-1/2 flex flex-col items-center opacity-40 grayscale group-hover:opacity-100 group-hover:grayscale-0 transition-all">
+<div class="bg-[#1A1A1A] text-primary-container p-2 mb-1 border border-primary-container/30">
+<span class="material-symbols-outlined" data-icon="inventory_2">inventory_2</span>
+</div>
+<div class="bg-black/80 backdrop-blur-sm border border-[#222222] px-3 py-1">
+<span class="font-mono-data text-[10px] text-[#666666] tracking-tighter">LOC_02: PENDING...</span>
+</div>
+</div>
+<!-- Interface Overlays -->
+<div class="absolute top-unit-4 left-unit-4 flex flex-col gap-2">
+<div class="bg-black/90 border border-[#222222] px-4 py-2">
+<p class="font-label-caps text-[10px] text-[#666666] mb-1">LAT / LONG</p>
+<p class="font-mono-data text-xs text-primary-container tracking-widest">34.0522° N, 118.2437° W</p>
+</div>
+</div>
+<div class="absolute bottom-unit-4 left-unit-4 right-unit-4 bg-black/90 border border-[#222222] p-unit-4 flex justify-between items-center">
+<div class="flex items-center gap-unit-4">
+<div class="w-10 h-10 bg-[#0F0F0F] border border-[#222222] flex items-center justify-center">
+<span class="material-symbols-outlined text-primary-container" data-icon="verified_user">verified_user</span>
+</div>
+<div>
+<p class="font-label-caps text-label-caps text-white">PRECISION ENCRYPTION</p>
+<p class="font-body-sm text-[10px] text-[#666666]">Location data is AES-256 protected for gear safety.</p>
+</div>
+</div>
+<div class="flex gap-2">
+<button class="p-2 border border-[#333333] hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="add">add</span>
+</button>
+<button class="p-2 border border-[#333333] hover:border-primary-container transition-colors">
+<span class="material-symbols-outlined text-sm" data-icon="remove">remove</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Meta Info Strip -->
+<div class="grid grid-cols-3 gap-gutter">
+<div class="bg-[#0F0F0F] border border-[#222222] p-unit-4 flex flex-col gap-1">
+<p class="font-label-caps text-[10px] text-[#666666]">HUB_STATUS</p>
+<p class="font-mono-data text-sm text-[#CCFF00]">ACTIVE_READY</p>
+</div>
+<div class="bg-[#0F0F0F] border border-[#222222] p-unit-4 flex flex-col gap-1">
+<p class="font-label-caps text-[10px] text-[#666666]">COURIER_ZONE</p>
+<p class="font-mono-data text-sm text-white">ZONE_04 [L.A.]</p>
+</div>
+<div class="bg-[#0F0F0F] border border-[#222222] p-unit-4 flex flex-col gap-1">
+<p class="font-label-caps text-[10px] text-[#666666]">PICKUP_AVAIL</p>
+<p class="font-mono-data text-sm text-white">24/7 ACCESS</p>
+</div>
+</div>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-[#0F0F0F] text-[#CCFF00] font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2 border-t border-[#222222] flat no shadows">
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="person">person</span>
+<span>PROFILE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="videocam">videocam</span>
+<span>GEAR</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#CCFF00] border-t-2 border-[#CCFF00] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="inventory_2" data-weight="fill" style="font-variation-settings: 'FILL' 1;">inventory_2</span>
+<span>STORAGE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="group">group</span>
+<span>CREW</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] hover:bg-black transition-all active:opacity-80" href="#">
+<span class="material-symbols-outlined" data-icon="check_circle">check_circle</span>
+<span>FINISH</span>
+</a>
+</nav>
+<!-- Bottom Padding for Nav -->
+<div class="h-20"></div>
+</body></html>

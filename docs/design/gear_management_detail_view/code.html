@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>CINE_CORE - RED V-RAPTOR XL</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #000000;
+            color: #e5e2e1;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #222222;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #333333;
+        }
+    </style>
+<script id="tailwind-config">tailwind.config = {darkMode: "class", theme: {extend: {colors: {outline: "#8e9379", "outline-variant": "#444933", "secondary-fixed": "#e5e2e1", tertiary: "#ffffff", "secondary-fixed-dim": "#c8c6c5", "on-surface": "#e5e2e1", "on-primary-fixed-variant": "#3c4d00", "surface-tint": "#abd600", "primary-fixed": "#c3f400", "secondary-container": "#474746", "tertiary-fixed-dim": "#4ae16d", "surface-bright": "#3a3939", primary: "#ffffff", "on-primary-fixed": "#161e00", "primary-fixed-dim": "#abd600", "primary-container": "#c3f400", "surface-container-highest": "#353534", "on-secondary": "#313030", background: "#131313", "tertiary-fixed": "#6bff87", "on-secondary-container": "#b7b5b4", "surface-container-lowest": "#0e0e0e", "surface-dim": "#131313", "on-tertiary-container": "#00752c", "on-secondary-fixed-variant": "#474746", error: "#ffb4ab", "tertiary-container": "#6bff87", "surface-variant": "#353534", "on-primary-container": "#556d00", "error-container": "#93000a", "on-error-container": "#ffdad6", surface: "#131313", "surface-container-low": "#1c1b1b", "on-secondary-fixed": "#1c1b1b", "inverse-surface": "#e5e2e1", "surface-container-high": "#2a2a2a", "on-tertiary": "#003912", "on-surface-variant": "#c4c9ac", "on-tertiary-fixed": "#002107", "on-background": "#e5e2e1", secondary: "#c8c6c5", "inverse-primary": "#506600", "inverse-on-surface": "#313030", "surface-container": "#201f1f", "on-error": "#690005", "on-primary": "#283500", "on-tertiary-fixed-variant": "#00531d"}, fontFamily: {h1: ["Space Grotesk"], "mono-data": ["Space Grotesk"], h3: ["Space Grotesk"], h2: ["Space Grotesk"], "body-lg": ["Inter"], "label-caps": ["Space Grotesk"], "body-sm": ["Inter"]}, fontSize: {h1: ["48px", {lineHeight: "1.1", letterSpacing: "-0.02em", fontWeight: "700"}], "mono-data": ["14px", {lineHeight: "1", letterSpacing: "0em", fontWeight: "500"}], h3: ["20px", {lineHeight: "1.4", letterSpacing: "0.02em", fontWeight: "500"}], h2: ["32px", {lineHeight: "1.2", letterSpacing: "-0.01em", fontWeight: "600"}], "body-lg": ["16px", {lineHeight: "1.6", letterSpacing: "0em", fontWeight: "400"}], "label-caps": ["12px", {lineHeight: "1", letterSpacing: "0.1em", fontWeight: "700"}], "body-sm": ["14px", {lineHeight: "1.5", letterSpacing: "0em", fontWeight: "400"}]}, spacing: {base: "4px", gutter: "16px", "unit-2": "8px", "unit-12": "48px", "unit-4": "16px", "unit-1": "4px", margin: "24px", "unit-6": "24px", "unit-8": "32px"}, borderRadius: {DEFAULT: "0.25rem", lg: "0.5rem", xl: "0.75rem", full: "9999px"}}}};</script>
+</head>
+<body class="bg-black text-on-surface font-body-sm overflow-hidden">
+<!-- Sidebar Navigation -->
+<aside class="fixed left-0 top-0 h-screen w-64 border-r border-zinc-800 flex flex-col bg-zinc-950 z-40">
+<div class="p-6 border-b border-zinc-800">
+<span class="text-xl font-black text-[#CCFF00] tracking-tighter font-h2">CINE_CORE</span>
+<p class="font-space-grotesk tracking-tight uppercase text-[10px] font-bold text-zinc-500 mt-1">VTR_STATION_01</p>
+</div>
+<nav class="flex-1 py-4 overflow-y-auto">
+<div class="px-3 mb-4">
+<button class="w-full bg-[#CCFF00] text-black font-bold py-3 px-4 flex items-center justify-center gap-2 hover:opacity-90 transition-all active:scale-95">
+<span class="material-symbols-outlined text-[20px]">add</span>
+<span class="font-label-caps text-xs">NEW ENTRY</span>
+</button>
+</div>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined">dashboard</span>
+                DASHBOARD
+            </a>
+<a class="text-black bg-[#CCFF00] font-bold px-4 py-3 flex items-center gap-3 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined">inventory_2</span>
+                INVENTORY
+            </a>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined">calendar_today</span>
+                BOOKINGS
+            </a>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined">groups</span>
+                TEAM
+            </a>
+<a class="text-zinc-500 hover:text-zinc-100 hover:bg-zinc-900 px-4 py-3 flex items-center gap-3 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined">settings</span>
+                SETTINGS
+            </a>
+</nav>
+<div class="p-4 border-t border-zinc-800">
+<a class="text-zinc-500 hover:text-zinc-100 px-4 py-3 flex items-center gap-3 transition-colors font-label-caps text-xs" href="#">
+<span class="material-symbols-outlined">sensors</span>
+                SYSTEM STATUS
+            </a>
+</div>
+</aside>
+<!-- Main Content Area -->
+<main class="ml-64 min-h-screen flex flex-col">
+<!-- Top App Bar -->
+<header class="flex justify-between items-center px-6 h-16 border-b border-zinc-800 bg-black">
+<div class="flex items-center gap-4">
+<span class="text-sm font-bold text-zinc-100 font-h2">INVENTORY_MANAGEMENT</span>
+<div class="h-4 w-[1px] bg-zinc-700"></div>
+<div class="flex items-center gap-2 text-zinc-500 font-label-caps text-[10px] tracking-widest">
+<span>ASSETS</span>
+<span class="material-symbols-outlined text-[12px]">chevron_right</span>
+<span class="text-[#CCFF00]">RED_V_RAPTOR_XL</span>
+</div>
+</div>
+<div class="flex items-center gap-6">
+<div class="relative">
+<span class="material-symbols-outlined text-zinc-400">notifications</span>
+<span class="absolute top-0 right-0 w-1.5 h-1.5 bg-[#CCFF00] rounded-full"></span>
+</div>
+<span class="material-symbols-outlined text-zinc-400">sync</span>
+<div class="w-8 h-8 rounded-none border border-zinc-700 bg-zinc-900 flex items-center justify-center">
+<img alt="User profile" class="w-full h-full object-cover grayscale" data-alt="Portrait of a professional cinematographer in a dark studio setting with soft rim lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBPcxyJUjG9C6LwRgy2vihygN54wd0YQJhrCH87yKuKbboB0WUr-zyyMbqxBpkMrcy_X8KxYLbMMYez1kA2D2FaTehwSJGfywQ9quY0zJe077dSkdVxcX8pfqdguqHRjSuzt8SFdnBn-gPPXEGrjdxilKoNzrpetbBXB5EowHJzuVGf-BHubiUeY1hE-OAGpFu24Q6JX_EMCx8kweBd_jxexKn45j3wbqaXnTdOxZVoV9A6c_XR7GP2iIBJHYB7C6EgSy3z9lfYCF8"/>
+</div>
+</div>
+</header>
+<!-- Content Canvas -->
+<div class="flex-1 overflow-y-auto p-6 space-y-6">
+<!-- Hero Asset Section -->
+<div class="grid grid-cols-12 gap-6 h-[500px]">
+<div class="col-span-8 bg-[#0F0F0F] border border-zinc-800 relative group overflow-hidden">
+<div class="absolute top-4 left-4 z-10 space-y-2">
+<span class="bg-[#CCFF00] text-black font-label-caps text-[10px] px-2 py-1">AVAILABLE</span>
+<h1 class="font-h2 text-4xl text-white uppercase tracking-tighter">RED V-RAPTOR XL</h1>
+<p class="font-mono-data text-zinc-400">S/N: VR-8829-001X</p>
+</div>
+<div class="absolute bottom-4 right-4 z-10 flex gap-2">
+<button class="bg-black/50 backdrop-blur-md border border-zinc-700 p-2 text-zinc-300 hover:text-[#CCFF00]"><span class="material-symbols-outlined">zoom_in</span></button>
+<button class="bg-black/50 backdrop-blur-md border border-zinc-700 p-2 text-zinc-300 hover:text-[#CCFF00]"><span class="material-symbols-outlined">360</span></button>
+</div>
+<img alt="RED V-Raptor" class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" data-alt="Close up high-tech cinematic camera body in a dark studio with lime green accent lighting hitting the metal textures" src="https://lh3.googleusercontent.com/aida-public/AB6AXuC7PIKGgoxH44bLfuF74Zu0KRiaUsNU6r1jz3Hu2a3QMQE1Jea5WQ_foJiVhKWy91wKsSYIo46O2oFaLyf8ImG2o388Ur49-uaosiCDZjFRxZGvZHdIAXoH3ulhuTFwrFc7hfywO0SvRBTrzLKtbQq8IWHJXUl6dOlyJPj2Nt7WTGT1rdpIUlRO80r5oKQYRsuQyjshk-ejJPc1odrUMdZ7vJFVYgKLdd2Ld-Z0PQnnq3PYl-6juUhDogitvuURHPekzuVALci3z4c"/>
+<div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/40"></div>
+</div>
+<!-- Fast Specs Side Panel -->
+<div class="col-span-4 flex flex-col gap-4">
+<div class="bg-[#0F0F0F] border border-zinc-800 p-6 flex-1">
+<h3 class="font-label-caps text-xs text-zinc-500 mb-6 tracking-widest border-b border-zinc-800 pb-2">CORE SPECIFICATIONS</h3>
+<div class="space-y-4">
+<div class="flex justify-between items-end border-b border-zinc-900 pb-1">
+<span class="font-label-caps text-[10px] text-zinc-500">SENSOR</span>
+<span class="font-mono-data text-[#CCFF00]">8K VV 35.4MP CMOS</span>
+</div>
+<div class="flex justify-between items-end border-b border-zinc-900 pb-1">
+<span class="font-label-caps text-[10px] text-zinc-500">DYNAMIC RANGE</span>
+<span class="font-mono-data text-white">17+ STOPS</span>
+</div>
+<div class="flex justify-between items-end border-b border-zinc-900 pb-1">
+<span class="font-label-caps text-[10px] text-zinc-500">MAX FPS</span>
+<span class="font-mono-data text-white">120 FPS @ 8K</span>
+</div>
+<div class="flex justify-between items-end border-b border-zinc-900 pb-1">
+<span class="font-label-caps text-[10px] text-zinc-500">MOUNT</span>
+<span class="font-mono-data text-white">INTEGRATED PL</span>
+</div>
+<div class="flex justify-between items-end border-b border-zinc-900 pb-1">
+<span class="font-label-caps text-[10px] text-zinc-500">STORAGE</span>
+<span class="font-mono-data text-white">CFEXPRESS TYPE B</span>
+</div>
+</div>
+<div class="mt-8">
+<span class="font-label-caps text-[10px] text-zinc-500 block mb-2">LAST SERVICE</span>
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-green-500 text-sm">check_circle</span>
+<span class="font-mono-data text-zinc-300">OCT 12, 2023 - OPTICAL ALIGNMENT</span>
+</div>
+</div>
+</div>
+<button class="w-full bg-[#CCFF00] text-black font-bold py-4 text-sm font-label-caps tracking-widest hover:brightness-110 active:scale-95 transition-all">
+                        REQUEST BOOKING
+                    </button>
+</div>
+</div>
+<!-- Tabs & Detailed Info -->
+<div class="grid grid-cols-12 gap-6">
+<!-- Main Info Tabs -->
+<div class="col-span-8 space-y-6">
+<div class="border-b border-zinc-800 flex gap-8">
+<button class="font-label-caps text-xs text-[#CCFF00] border-b-2 border-[#CCFF00] pb-3 px-1">TECHNICAL_SPECS</button>
+<button class="font-label-caps text-xs text-zinc-500 hover:text-white pb-3 px-1 transition-colors">HISTORY</button>
+<button class="font-label-caps text-xs text-zinc-500 hover:text-white pb-3 px-1 transition-colors">MAINTENANCE_LOG</button>
+<button class="font-label-caps text-xs text-zinc-500 hover:text-white pb-3 px-1 transition-colors">ACCESSORIES</button>
+</div>
+<!-- Specs Content -->
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-[#0F0F0F] border border-zinc-800 p-4">
+<h4 class="font-label-caps text-[10px] text-zinc-600 mb-4">SENSOR &amp; OPTICS</h4>
+<ul class="space-y-2 font-mono-data text-xs">
+<li class="flex justify-between"><span class="text-zinc-500">Effective Pixels</span> <span class="text-zinc-300">8192 x 4320</span></li>
+<li class="flex justify-between"><span class="text-zinc-500">Sensor Size</span> <span class="text-zinc-300">40.96mm x 21.60mm</span></li>
+<li class="flex justify-between"><span class="text-zinc-500">Lens Mount</span> <span class="text-zinc-300">Locking PL Mount</span></li>
+<li class="flex justify-between"><span class="text-zinc-500">ND Filters</span> <span class="text-zinc-300">Built-in Electronic (2-7 Stop)</span></li>
+</ul>
+</div>
+<div class="bg-[#0F0F0F] border border-zinc-800 p-4">
+<h4 class="font-label-caps text-[10px] text-zinc-600 mb-4">RECORDING</h4>
+<ul class="space-y-2 font-mono-data text-xs">
+<li class="flex justify-between"><span class="text-zinc-500">RAW Formats</span> <span class="text-zinc-300">REDCODE RAW (16-bit)</span></li>
+<li class="flex justify-between"><span class="text-zinc-500">ProRes</span> <span class="text-zinc-300">422 HQ up to 4K 120p</span></li>
+<li class="flex justify-between"><span class="text-zinc-500">Max Bitrate</span> <span class="text-zinc-300">800 MB/s</span></li>
+<li class="flex justify-between"><span class="text-zinc-500">Audio Channels</span> <span class="text-zinc-300">4-CH Integrated</span></li>
+</ul>
+</div>
+</div>
+<!-- History (Collapsed/Hidden state simulation) -->
+<div class="bg-[#0F0F0F] border border-zinc-800">
+<div class="p-4 border-b border-zinc-800 bg-[#1A1A1A]">
+<h4 class="font-label-caps text-[10px] text-zinc-300">RECENT BOOKING HISTORY</h4>
+</div>
+<div class="divide-y divide-zinc-900">
+<div class="p-4 flex items-center justify-between hover:bg-zinc-900/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 bg-zinc-800 flex items-center justify-center font-bold text-[#CCFF00]">01</div>
+<div>
+<p class="font-mono-data text-sm">PROD: PROJECT_AURORA</p>
+<p class="text-[10px] text-zinc-500 uppercase">DP: ELIAS VANCE</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-data text-xs text-zinc-300">NOV 01 - NOV 14</p>
+<span class="text-[9px] bg-zinc-800 text-zinc-400 px-1 py-0.5">COMPLETED</span>
+</div>
+</div>
+<div class="p-4 flex items-center justify-between hover:bg-zinc-900/50 transition-colors">
+<div class="flex items-center gap-4">
+<div class="w-8 h-8 bg-zinc-800 flex items-center justify-center font-bold text-zinc-500">02</div>
+<div>
+<p class="font-mono-data text-sm">COMMERCIAL: NIKE_FLOW</p>
+<p class="text-[10px] text-zinc-500 uppercase">DP: SARAH CHEN</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono-data text-xs text-zinc-300">OCT 15 - OCT 22</p>
+<span class="text-[9px] bg-zinc-800 text-zinc-400 px-1 py-0.5">COMPLETED</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Calendar & Availability -->
+<div class="col-span-4 space-y-4">
+<div class="bg-[#0F0F0F] border border-zinc-800 p-6">
+<div class="flex justify-between items-center mb-6">
+<h4 class="font-label-caps text-xs text-white">AVAILABILITY</h4>
+<div class="flex gap-2">
+<span class="material-symbols-outlined text-zinc-500 text-sm cursor-pointer hover:text-white">chevron_left</span>
+<span class="material-symbols-outlined text-zinc-500 text-sm cursor-pointer hover:text-white">chevron_right</span>
+</div>
+</div>
+<p class="font-mono-data text-xs text-zinc-400 mb-4 text-center">NOVEMBER 2023</p>
+<div class="grid grid-cols-7 gap-1 text-center">
+<!-- Days Header -->
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">S</div>
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">M</div>
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">T</div>
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">W</div>
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">T</div>
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">F</div>
+<div class="font-label-caps text-[9px] text-zinc-600 mb-2">S</div>
+<!-- Calendar Grid Simulation -->
+<!-- Row 1 -->
+<div class="py-2 text-[10px] text-zinc-700">29</div>
+<div class="py-2 text-[10px] text-zinc-700">30</div>
+<div class="py-2 text-[10px] text-zinc-700">31</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">01</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">02</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">03</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">04</div>
+<!-- Row 2 -->
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">05</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">06</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">07</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">08</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">09</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">10</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">11</div>
+<!-- Row 3 -->
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">12</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">13</div>
+<div class="py-2 text-[10px] bg-red-900/20 text-red-400 border border-red-900/50">14</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">15</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">16</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">17</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">18</div>
+<!-- Row 4 -->
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">19</div>
+<div class="py-2 text-[10px] bg-[#CCFF00] text-black font-bold">20</div>
+<div class="py-2 text-[10px] border border-[#CCFF00] text-[#CCFF00]">21</div>
+<div class="py-2 text-[10px] border border-[#CCFF00] text-[#CCFF00]">22</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">23</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">24</div>
+<div class="py-2 text-[10px] text-zinc-300 hover:bg-zinc-800 cursor-pointer">25</div>
+</div>
+<div class="mt-6 space-y-2">
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-red-900/50"></div>
+<span class="text-[9px] text-zinc-500 font-label-caps uppercase">BOOKED</span>
+</div>
+<div class="flex items-center gap-2">
+<div class="w-2 h-2 bg-[#CCFF00]"></div>
+<span class="text-[9px] text-zinc-500 font-label-caps uppercase">SELECTED DATES</span>
+</div>
+</div>
+</div>
+<div class="bg-[#0F0F0F] border border-zinc-800 p-4">
+<div class="flex items-center justify-between mb-2">
+<span class="font-label-caps text-[10px] text-zinc-500 uppercase">ESTIMATED RATE</span>
+<span class="font-mono-data text-[#CCFF00] text-lg">$1,250 / DAY</span>
+</div>
+<p class="text-[10px] text-zinc-600 font-body-sm leading-tight italic border-t border-zinc-900 pt-2">
+                            Standard production package includes: 2x 2TB CFexpress cards, Base expander, and PL Mount.
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- System Progress / Status Bar (Footer Overlay) -->
+<footer class="h-12 bg-black border-t border-zinc-800 px-6 flex items-center justify-between">
+<div class="flex items-center gap-4">
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[9px] text-zinc-500">SYSTEM_HEALTH</span>
+<div class="w-16 h-1 bg-zinc-800 rounded-full overflow-hidden">
+<div class="h-full bg-[#CCFF00] w-[94%]"></div>
+</div>
+</div>
+<div class="h-3 w-[1px] bg-zinc-800"></div>
+<div class="flex items-center gap-2">
+<span class="font-label-caps text-[9px] text-zinc-500">DB_SYNC</span>
+<span class="material-symbols-outlined text-[10px] text-green-500">online_prediction</span>
+</div>
+</div>
+<div class="font-mono-data text-[10px] text-zinc-600 tracking-widest">
+                TC: 23:59:12:04
+            </div>
+</footer>
+</main>
+</body></html>

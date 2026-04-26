@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700;900&amp;family=Inter:wght@400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            "colors": {
+                    "on-tertiary-fixed-variant": "#00531d",
+                    "tertiary": "#ffffff",
+                    "inverse-on-surface": "#313030",
+                    "surface-dim": "#131313",
+                    "secondary": "#c8c6c5",
+                    "primary-container": "#c3f400",
+                    "tertiary-fixed": "#6bff87",
+                    "outline": "#8e9379",
+                    "error": "#ffb4ab",
+                    "background": "#000000",
+                    "on-primary-fixed": "#161e00",
+                    "on-secondary-fixed": "#1c1b1b",
+                    "surface-container-lowest": "#0e0e0e",
+                    "on-primary": "#283500",
+                    "error-container": "#93000a",
+                    "surface-container": "#201f1f",
+                    "surface-container-low": "#1c1b1b",
+                    "inverse-primary": "#506600",
+                    "on-secondary": "#313030",
+                    "surface-tint": "#abd600",
+                    "outline-variant": "#444933",
+                    "on-surface": "#e5e2e1",
+                    "tertiary-container": "#6bff87",
+                    "primary-fixed": "#c3f400",
+                    "on-tertiary-fixed": "#002107",
+                    "on-surface-variant": "#c4c9ac",
+                    "tertiary-fixed-dim": "#4ae16d",
+                    "secondary-container": "#474746",
+                    "on-error-container": "#ffdad6",
+                    "surface": "#131313",
+                    "secondary-fixed": "#e5e2e1",
+                    "on-secondary-container": "#b7b5b4",
+                    "surface-bright": "#3a3939",
+                    "on-primary-container": "#556d00",
+                    "surface-container-high": "#2a2a2a",
+                    "primary-fixed-dim": "#abd600",
+                    "secondary-fixed-dim": "#c8c6c5",
+                    "on-primary-fixed-variant": "#3c4d00",
+                    "surface-variant": "#353534",
+                    "inverse-surface": "#e5e2e1",
+                    "on-tertiary-container": "#00752c",
+                    "primary": "#CCFF00",
+                    "on-secondary-fixed-variant": "#474746",
+                    "on-error": "#690005",
+                    "on-background": "#e5e2e1",
+                    "surface-container-highest": "#353534",
+                    "on-tertiary": "#003912"
+            },
+            "borderRadius": {
+                    "DEFAULT": "0px",
+                    "lg": "0px",
+                    "xl": "0px",
+                    "full": "9999px"
+            },
+            "spacing": {
+                    "margin": "24px",
+                    "unit-4": "16px",
+                    "base": "4px",
+                    "unit-6": "24px",
+                    "unit-12": "48px",
+                    "gutter": "16px",
+                    "unit-2": "8px",
+                    "unit-1": "4px",
+                    "unit-8": "32px"
+            },
+            "fontFamily": {
+                    "mono-data": ["Space Grotesk"],
+                    "h3": ["Space Grotesk"],
+                    "h2": ["Space Grotesk"],
+                    "body-sm": ["Inter"],
+                    "label-caps": ["Space Grotesk"],
+                    "body-lg": ["Inter"],
+                    "h1": ["Space Grotesk"]
+            },
+            "fontSize": {
+                    "mono-data": ["14px", {"lineHeight": "1", "letterSpacing": "0em", "fontWeight": "500"}],
+                    "h3": ["20px", {"lineHeight": "1.4", "letterSpacing": "0.02em", "fontWeight": "500"}],
+                    "h2": ["32px", {"lineHeight": "1.2", "letterSpacing": "-0.01em", "fontWeight": "600"}],
+                    "body-sm": ["14px", {"lineHeight": "1.5", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "label-caps": ["12px", {"lineHeight": "1", "letterSpacing": "0.1em", "fontWeight": "700"}],
+                    "body-lg": ["16px", {"lineHeight": "1.6", "letterSpacing": "0em", "fontWeight": "400"}],
+                    "h1": ["48px", {"lineHeight": "1.1", "letterSpacing": "-0.02em", "fontWeight": "700"}]
+            }
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        body {
+            background-color: #000000;
+            color: #e5e2e1;
+            font-family: 'Inter', sans-serif;
+        }
+        .technical-border {
+            border: 1px solid #222222;
+        }
+        .active-glow {
+            box-shadow: 0 0 10px rgba(204, 255, 0, 0.2);
+        }
+        /* Custom scrollbar for high-density look */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: #000000; }
+        ::-webkit-scrollbar-thumb { background: #333333; }
+        ::-webkit-scrollbar-thumb:hover { background: #CCFF00; }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+<!-- TopAppBar -->
+<header class="bg-black text-[#CCFF00] font-['Space_Grotesk'] tracking-tighter uppercase text-xs font-bold docked full-width top-0 border-b border-[#222222] flex justify-between items-center w-full px-4 h-14 z-50 sticky">
+<div class="flex items-center gap-4">
+<span class="text-[#CCFF00] font-black tracking-widest italic text-base">CINEMA_CORE</span>
+<div class="hidden md:flex gap-6 ml-8">
+<span class="text-[#333333] cursor-pointer hover:text-[#CCFF00] transition-colors">PROFILE</span>
+<span class="text-[#333333] cursor-pointer hover:text-[#CCFF00] transition-colors">GEAR</span>
+<span class="text-[#333333] cursor-pointer hover:text-[#CCFF00] transition-colors border-b-2 border-[#CCFF00]">CREW</span>
+<span class="text-[#333333] cursor-pointer hover:text-[#CCFF00] transition-colors">FINISH</span>
+</div>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-xl cursor-pointer hover:bg-[#0F0F0F] p-2 transition-all">help_outline</span>
+<button class="font-bold tracking-widest text-[10px] border border-[#222222] px-3 py-1 hover:bg-[#CCFF00] hover:text-black transition-all">EXIT</button>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-grow pb-20 pt-4 px-4 md:px-margin">
+<!-- Progress Stepper -->
+<div class="max-w-5xl mx-auto mb-unit-8">
+<div class="flex items-center justify-between px-2 mb-unit-2">
+<span class="font-label-caps text-label-caps text-primary">STEP 04</span>
+<span class="font-label-caps text-label-caps text-secondary">SOCIAL_DISCOVERY</span>
+</div>
+<div class="w-full h-[2px] bg-[#222222] flex">
+<div class="h-full bg-primary w-1/4"></div>
+<div class="h-full bg-primary w-1/4"></div>
+<div class="h-full bg-primary w-1/4"></div>
+<div class="h-full bg-primary w-1/4 relative">
+<div class="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-2 bg-primary rotate-45"></div>
+</div>
+<div class="h-full bg-[#222222] w-0"></div>
+</div>
+</div>
+<!-- Search & Filter Bar -->
+<div class="max-w-5xl mx-auto mb-unit-8 flex flex-col md:flex-row gap-gutter">
+<div class="flex-grow relative">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-[#333333] text-lg">search</span>
+<input class="w-full bg-[#0F0F0F] border-b-2 border-[#333333] focus:border-primary focus:ring-0 text-white font-mono-data text-mono-data pl-10 py-3 uppercase tracking-wider" placeholder="SEARCH CREW BY NAME, ROLE, OR GEAR..." type="text"/>
+</div>
+<div class="flex gap-unit-2 overflow-x-auto pb-2 md:pb-0">
+<button class="flex items-center gap-2 bg-[#0F0F0F] technical-border px-4 py-2 font-label-caps text-label-caps hover:border-primary transition-all text-secondary">
+<span class="material-symbols-outlined text-sm">filter_list</span> FILTERS
+                </button>
+<button class="flex items-center gap-2 bg-[#0F0F0F] technical-border px-4 py-2 font-label-caps text-label-caps hover:border-primary transition-all text-primary border-primary">
+<span class="material-symbols-outlined text-sm" style="font-variation-settings: 'FILL' 1;">groups</span> ALL_CREW
+                </button>
+</div>
+</div>
+<!-- Crew Discovery Grid -->
+<div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-gutter">
+<!-- User Card 1 -->
+<div class="bg-[#0F0F0F] technical-border group hover:border-[#444] transition-all">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="professional cinematographer in dark studio holding high-end movie camera, moody industrial lighting, dramatic shadows" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBAYkvva4cuVyi5CXrGHX7PdWPDL-IKVpnLdp6_UMsDsw5MmOElmxmpydlwQMvp3O4TOvbn-6qayd9SkdDZv_mvquvsMSS0qxZ-0qMpDNP3xPit0tUfPtk4tVr_xWb3Nr3zclFrbLwF0LmWbOXEibduBmAaBQBRx9k83NMMiCm4BdXLLVhi19jwFmdlzzuA_-1fSlp8XXZI9Butot_svQ-pHUvJ0E76m66XVx0L63f98MaiIAgERaHosnKn2exiJJZE--z-UVFgxjM"/>
+<div class="absolute top-2 right-2 bg-black/80 px-2 py-1 font-mono-data text-[10px] text-primary">DP // OPERATOR</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20 group-hover:bg-primary transition-all"></div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-h3 text-h3 uppercase text-white">ELIAS_VANCE</h3>
+<p class="font-body-sm text-body-sm text-[#888] flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> BERLIN, DE
+                            </p>
+</div>
+<button class="bg-primary text-black font-label-caps text-[10px] px-3 py-1 active:scale-95 transition-all">FOLLOW</button>
+</div>
+<div class="flex gap-2 mb-4">
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">ARRI_ALEXA</span>
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">ANAMORPHIC</span>
+</div>
+<div class="flex justify-between items-center pt-3 border-t border-[#222222]">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 bg-[#222222] border border-black overflow-hidden"><img class="w-full h-full object-cover" data-alt="portrait of a male director with glasses" src="https://lh3.googleusercontent.com/aida-public/AB6AXuA8iM5OtmbDhOfbpbs_DZCNgALQUo8rsNtD3ydFUZ4wp5p2YIXe8kM9mBPGa3Up2Gun9-0PBrGkZvezXE1ZLLfyJfn4mJsuvDEzwQ28tPCb5A6QYuEfCUWL8yw6m-3ZoR2-pcY2_MRofUyLqVEeR0dQ4S_43yRUXXXMWDx5h3z6LF16oMevbHZVCQ0EIT9cWheFt79v5hF8rl-EaTENB1xgoBArzm7hKlDrC-01eV0qs0K-NBILK_ukOyPZcj_fL3_mrBs7621o4f8"/></div>
+<div class="w-6 h-6 bg-[#222222] border border-black overflow-hidden"><img class="w-full h-full object-cover" data-alt="portrait of a female film producer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAZLg1UtxWJyU4W3fmkrCNPra49VqrVAXDQGTtO3Nrp89tvrRAsJ9e3Xggk33d-yxHc2E1ephMaXudVksYUPr1Bdcs3eIIgR4pkfSB-MxmvXsWNbJstG9Sw7LPl7sy596kM3eXmH53HBeI3L-oOgEWGkkxhjDl-PD9MtoQWc19y6v4MngZU8W-Cy9yj0wYE_XFYvCxsb48hZX5k6SlOZrte6ChSaIXf_ghwoIIyvjch8-KYpZj6Z7vrVLuuClhm0bwg5fwhb3f5pP8"/></div>
+<div class="w-6 h-6 bg-[#333333] border border-black flex items-center justify-center text-[8px] font-bold">+12</div>
+</div>
+<span class="font-mono-data text-[10px] text-[#555]">MUTUALS</span>
+</div>
+</div>
+</div>
+<!-- User Card 2 -->
+<div class="bg-[#0F0F0F] technical-border group hover:border-[#444] transition-all">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="sound engineer working on a large mixing console in a dark music studio with glowing meters" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLIkgOt6fRsPqX_4V1HhzsaTx5hYKfG6kDxYHWFzIWSpubIDLUsDBhmG1HHpWcfjMNZtZz40L6tzyHMk4B5dPsnG6Kldwk-fWzEEVXnxIuMGrWn55c6hLewh24rhPV4zdX9Gs4fqOkXEfMamOlLL4X2-CXncYhmUme7toToxF4upASXFzZkLIplB_4sev5BIpbA2P-KW5BJ4O_IO9OvCi7kx7msSfAt2AS-pjuZspwU6FQ2lmClIvwnyyK8gyjlqH7jKZBe2FPiTk"/>
+<div class="absolute top-2 right-2 bg-black/80 px-2 py-1 font-mono-data text-[10px] text-primary">SOUND_DESIGNER</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20 group-hover:bg-primary transition-all"></div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-h3 text-h3 uppercase text-white">SARA_KOCH</h3>
+<p class="font-body-sm text-body-sm text-[#888] flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> REYKJAVIK, IS
+                            </p>
+</div>
+<button class="bg-primary text-black font-label-caps text-[10px] px-3 py-1 active:scale-95 transition-all">FOLLOW</button>
+</div>
+<div class="flex gap-2 mb-4">
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">DOLBY_ATMOS</span>
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">FIELD_RECORDING</span>
+</div>
+<div class="flex justify-between items-center pt-3 border-t border-[#222222]">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 bg-[#222222] border border-black overflow-hidden"><img class="w-full h-full object-cover" data-alt="portrait of a lighting technician" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB2fel3BMsYjmQFCzhqviB6Ohd1VxuvUmH7rcIv9TXv99QS4h3fRFtLHHr3Q42e1khT8flHa8Gey7P22XXW5scGcmKfFnbdDQPpLAJTiuOk8Poc4qznNehL5jfwuaYyt10i9n8tqvkEgVR61D7nRocm3jdYOGt77eTWLbBeeVJRH60eDBR7_3xsB2T1pL7U9eupGuy6mPOuQM55tKg794sqcCUS8fZ2fRHEkQQmhfhEeq1TNEgtVTlcghM0yCiVB4v7LsAuuRQhHSE"/></div>
+<div class="w-6 h-6 bg-[#333333] border border-black flex items-center justify-center text-[8px] font-bold">+5</div>
+</div>
+<span class="font-mono-data text-[10px] text-[#555]">MUTUALS</span>
+</div>
+</div>
+</div>
+<!-- User Card 3 -->
+<div class="bg-[#0F0F0F] technical-border group hover:border-[#444] transition-all">
+<div class="h-48 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="close up of hand adjusting a professional lighting fixture on a film set, blue and orange teal lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDwAXILyDXHmYVEO2XPvSvQCRWIpOvrzdzXCveD7q6lRc2TTfU4GgKWI38TrAT4T-WRKgPu4MeXbZTQANO29t0hzXRDlyAC-3i1L-TYfNB2kpsE9kvgiv2knaWgbo-glRem-0vIBRAuTUHI4FtQmZul-AoXsqGa147k72wGMddWsLqj83tQC03JfyTRCiZoVIuGujFGZUImIf5KKyWQc8TUyBFa3fkwlkugk0R_7W8QfMrIWMLUcgZsc09qVd27nBzwwHgLA5vcT7o"/>
+<div class="absolute top-2 right-2 bg-black/80 px-2 py-1 font-mono-data text-[10px] text-primary">GAFFER // GRIP</div>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20 group-hover:bg-primary transition-all"></div>
+</div>
+<div class="p-4">
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-h3 text-h3 uppercase text-white">MARC_REED</h3>
+<p class="font-body-sm text-body-sm text-[#888] flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> LONDON, UK
+                            </p>
+</div>
+<button class="bg-primary text-black font-label-caps text-[10px] px-3 py-1 active:scale-95 transition-all">FOLLOW</button>
+</div>
+<div class="flex gap-2 mb-4">
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">ARRI_SKYPANNEL</span>
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">DMX_CONTROL</span>
+</div>
+<div class="flex justify-between items-center pt-3 border-t border-[#222222]">
+<div class="flex -space-x-2">
+<div class="w-6 h-6 bg-[#222222] border border-black overflow-hidden"><img class="w-full h-full object-cover" data-alt="portrait of a male gaffer" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCYPfP-0uED8BM0zpxD1PAYDU_pO9d6TsGLAGHkJp9IrPIBTASnkFlWs-HG5UT7s6h1nPy1_p06pSL_nyKGnWN3qJBbFKcnF4WJQwu4tr1AtSYlZ78Isq676_yD_E5eeq96Mc89eAtenpFdLA-jndgHX3VKRrsIcza9zXZvAMYrGrjLRJa5oUPeB53bLssbHFEo4vzfvD_7tIKkcsHWvWDrZr2NklhZq87JRpSQs3B3fsC94WYORKUxH4gQDfpZbhrkk-fc-QOYKLc"/></div>
+<div class="w-6 h-6 bg-[#333333] border border-black flex items-center justify-center text-[8px] font-bold">+8</div>
+</div>
+<span class="font-mono-data text-[10px] text-[#555]">MUTUALS</span>
+</div>
+</div>
+</div>
+<!-- User Card 4 (Horizontal/Bento style variant) -->
+<div class="lg:col-span-2 bg-[#0F0F0F] technical-border group flex hover:border-[#444] transition-all">
+<div class="w-1/3 relative overflow-hidden">
+<img class="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-500" data-alt="film editor working at multi-monitor setup in dark room with specialized keyboard and color grading surface" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBWUmvgnGTLhDVXy8OYUgiqRwNFvmmHlop4TczOBcwgyAQVYA4LkhHYMeUkfdTXWZFzJ8cN2aDeWGuJhVFJQzjUxhBP78PQeBIJLcryGU752gL52VfZMDuaQ9ikB6upjmKuPLvfscyr72ZTS3U0vkI8aHrTww883LbRWSZLQmchZp0eeCD9wygOqhcYjU5gKFZ8I6RDXjOQOpduPWv225YZDCzYf2j5i1jLhUtKDXVqgHrAgZoAen5_-HuXEyHD7CGQttDvleMsGUQ"/>
+<div class="absolute bottom-0 left-0 w-full h-1 bg-primary/20 group-hover:bg-primary transition-all"></div>
+</div>
+<div class="w-2/3 p-4 flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-start mb-2">
+<div>
+<h3 class="font-h3 text-h3 uppercase text-white">LENA_ZHOU</h3>
+<p class="font-body-sm text-body-sm text-[#888] flex items-center gap-1">
+<span class="material-symbols-outlined text-xs">location_on</span> TOKYO, JP
+                                </p>
+</div>
+<button class="bg-[#1A1A1A] text-primary border border-primary font-label-caps text-[10px] px-3 py-1 active:scale-95 transition-all">FOLLOWING</button>
+</div>
+<p class="font-body-sm text-[12px] text-secondary line-clamp-2 mb-4 uppercase tracking-tighter">Colorist specializing in commercial and narrative music videos. Davinci Resolve Certified Operator.</p>
+<div class="flex gap-2">
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">DAVINCI_RESOLVE</span>
+<span class="text-[9px] font-mono-data bg-[#1A1A1A] text-secondary px-2 py-0.5 border border-[#222222]">LOG_GRADING</span>
+</div>
+</div>
+<div class="flex justify-between items-center pt-3 border-t border-[#222222]">
+<div class="flex gap-4">
+<div class="text-center">
+<span class="block font-mono-data text-white text-[12px]">2.4K</span>
+<span class="block text-[8px] text-[#555]">FOLLOWERS</span>
+</div>
+<div class="text-center border-l border-[#222222] pl-4">
+<span class="block font-mono-data text-white text-[12px]">184</span>
+<span class="block text-[8px] text-[#555]">PROJECTS</span>
+</div>
+</div>
+<button class="text-primary hover:underline font-label-caps text-[10px]">VIEW_PORTFOLIO</button>
+</div>
+</div>
+</div>
+<!-- Featured Studio/Crew -->
+<div class="bg-primary p-4 flex flex-col justify-between">
+<div>
+<span class="font-label-caps text-[10px] text-black bg-black/10 px-2 py-0.5 mb-2 inline-block">SPONSORED_STUDIO</span>
+<h3 class="font-h2 text-[24px] uppercase text-black leading-none mb-2">NEON_VOID LABS</h3>
+<p class="font-body-sm text-[12px] text-black/80 uppercase font-bold tracking-tighter">Post-production collective looking for freelance vfx artists.</p>
+</div>
+<button class="w-full bg-black text-primary font-label-caps py-2 text-[10px] tracking-widest mt-4">HIRE_TEAM</button>
+</div>
+</div>
+</main>
+<!-- BottomNavBar -->
+<nav class="bg-[#0F0F0F] text-[#CCFF00] font-['Space_Grotesk'] text-[10px] font-bold tracking-widest uppercase docked full-width bottom-0 border-t border-[#222222] fixed bottom-0 left-0 w-full z-50 flex justify-around items-center h-16 px-2">
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] transition-all" href="#">
+<span class="material-symbols-outlined mb-1">person</span>
+<span>PROFILE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] transition-all" href="#">
+<span class="material-symbols-outlined mb-1">videocam</span>
+<span>GEAR</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] transition-all" href="#">
+<span class="material-symbols-outlined mb-1">inventory_2</span>
+<span>STORAGE</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#CCFF00] border-t-2 border-[#CCFF00] pt-2 opacity-80" href="#">
+<span class="material-symbols-outlined mb-1" style="font-variation-settings: 'FILL' 1;">group</span>
+<span>CREW</span>
+</a>
+<a class="flex flex-col items-center justify-center text-[#333333] pt-2 hover:text-[#CCFF00] transition-all" href="#">
+<span class="material-symbols-outlined mb-1">check_circle</span>
+<span>FINISH</span>
+</a>
+</nav>
+<!-- Contextual FAB - Suppressed as per instructions for Details/Focused pages, but if we consider this a dashboard/discovery hub, it might stay. Following instructions: "Suppress FAB on Settings, Profile, Details, and Transactional screens". This is a "Discovery" screen, closer to a Dashboard, so we keep it. -->
+<button class="fixed right-6 bottom-20 bg-primary text-black w-12 h-12 flex items-center justify-center shadow-2xl active:scale-95 transition-all z-40">
+<span class="material-symbols-outlined">person_add</span>
+</button>
+</body></html>
