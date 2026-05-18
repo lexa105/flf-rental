@@ -1,26 +1,134 @@
 @import "tailwindcss";
 
+/* ── Design tokens (theme-aware CSS variables) ──────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper:         #f1ece1;
+  --surface:       #fbf8f2;
+  --surface-2:     #f6f1e6;
+  --ink:           #1f1b16;
+  --ink-2:         #3c352d;
+  --muted:         #8a7d6b;
+  --border:        #e3dccd;
+  --border-strong: #cfc6b3;
+  --accent:        #b8431e;
+  --accent-ink:    #fbf8f2;
+  --accent-soft:   #f3dccd;
+  --green:         #4a6b3a;
+  --green-soft:    #dde6cf;
+  --amber:         #a26410;
+  --amber-soft:    #f1dfbe;
+  --red:           #94342a;
+  --red-soft:      #f0d2cc;
+  --blue:          #2f5d8a;
+  --blue-soft:     #d4e0ec;
 }
 
+[data-theme="dark"] {
+  --paper:         #18140f;
+  --surface:       #1f1b16;
+  --surface-2:     #25201a;
+  --ink:           #f1ece1;
+  --ink-2:         #d5cdbd;
+  --muted:         #8a7d6b;
+  --border:        #2c2620;
+  --border-strong: #3d362d;
+  --accent:        #d97757;
+  --accent-ink:    #18140f;
+  --accent-soft:   #3a221a;
+  --green-soft:    #1f2b16;
+  --amber-soft:    #2e2210;
+  --red-soft:      #2e1612;
+  --blue-soft:     #14202e;
+}
+
+/* ── Tailwind v4 theme tokens ─────────────────────────────────────────── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --font-sans:  var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, sans-serif;
+  --font-mono:  var(--font-geist-mono), ui-monospace, "SF Mono", Menlo, monospace;
+  --font-serif: var(--font-newsreader), Georgia, "Times New Roman", serif;
+
+  --color-paper:         var(--paper);
+  --color-surface:       var(--surface);
+  --color-surface-2:     var(--surface-2);
+  --color-ink:           var(--ink);
+  --color-ink-2:         var(--ink-2);
+  --color-muted:         var(--muted);
+  --color-border:        var(--border);
+  --color-border-strong: var(--border-strong);
+  --color-accent:        var(--accent);
+  --color-accent-ink:    var(--accent-ink);
+  --color-accent-soft:   var(--accent-soft);
+  --color-status-green:  var(--green);
+  --color-green-soft:    var(--green-soft);
+  --color-status-amber:  var(--amber);
+  --color-amber-soft:    var(--amber-soft);
+  --color-status-red:    var(--red);
+  --color-red-soft:      var(--red-soft);
+  --color-status-blue:   var(--blue);
+  --color-blue-soft:     var(--blue-soft);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* ── Base ─────────────────────────────────────────────────────────────── */
+@layer base {
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
   }
+
+  ::-webkit-scrollbar       { width: 10px; height: 10px; }
+  ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; border: 2px solid var(--surface); }
+  ::-webkit-scrollbar-track { background: transparent; }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+/* ── Component helpers ────────────────────────────────────────────────── */
+@layer components {
+  /* Striped placeholder for thumbnails */
+  .thumb-strokes::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent 0, transparent 6px,
+      var(--border) 6px, var(--border) 7px
+    );
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  /* Striped hero in drawer */
+  .drawer-hero-stripes::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      135deg,
+      transparent 0, transparent 10px,
+      var(--border) 10px, var(--border) 11px
+    );
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* Profile cover film-grain texture */
+  .profile-cover-grain {
+    position: absolute;
+    inset: 0;
+    /* stylelint-disable-next-line */
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.08 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+    opacity: 0.6;
+    pointer-events: none;
+  }
+
+  /* Minimal select with arrow */
+  select.select-minimal {
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%238a7d6b' stroke-width='2.5' stroke-linecap='round'><path d='M6 9l6 6 6-6'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 8px center;
+    padding-right: 28px;
+  }
 }
