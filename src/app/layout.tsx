@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk, Inter } from "next/font/google";
+import { Geist, Geist_Mono, Newsreader } from "next/font/google";
 import "./globals.css";
+import { Toaster } from 'sonner';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -12,19 +14,17 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
   subsets: ["latin"],
-});
-
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
+  weight: ["400", "500"],
+  style: ["normal", "italic"],
+  display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "Cinema Core",
-  description: "Camera Gear Tracker & P2P Rental",
+  title: "FLF Rental — Inventory / GearsWatch.com",
+  description: "Gear inventory manager for FLF productions",
 };
 
 export default function RootLayout({
@@ -33,14 +33,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
-      <head>
-        <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
-      </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} ${inter.variable} antialiased bg-black text-white`}
-      >
+    <html lang="en">
+      <body className={`${geistSans.variable} ${geistMono.variable} ${newsreader.variable} antialiased`}>
         {children}
+        <Toaster position="bottom-right" richColors />
       </body>
     </html>
   );

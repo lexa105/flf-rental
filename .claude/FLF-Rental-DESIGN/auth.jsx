@@ -1,35 +1,22 @@
 'use client';
 
 import React, { useState, useEffect, useMemo } from 'react';
-import { HugeiconsIcon } from "@hugeicons/react";
-import { PaymentSuccess01FreeIcons, UserIcon } from "@hugeicons/core-free-icons";
 
-import { login, signup} from "./actions";
-import { toast } from 'sonner';
-            // <button
-            //   formAction={login}
-            //   className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            // >
-            //   Log in
-            // </button>
-            // <button
-            //   formAction={signup}
 /**
  * FLF Rental — Auth (Sign in / Sign up)
  * Recreated for Next.js with Tailwind CSS v4
  */
 
 export default function AuthPage() {
-  const [activeTab, setActiveTab]           = useState('signin');
-  const [theme, setTheme]                   = useState('dark');
-  const [showPassword, setShowPassword]     = useState(false);
-  const [password, setPassword]             = useState('');
-  const [termsChecked, setTermsChecked]     = useState(false);
-  const [termsError, setTermsError]         = useState(false);
+  const [activeTab, setActiveTab] = useState('signin');
+  const [theme, setTheme] = useState('light');
+  const [showPassword, setShowPassword] = useState(false);
+  const [password, setPassword] = useState('');
+  const [role, setRole] = useState('creator');
 
   // Initialize theme
   useEffect(() => {
-    const savedTheme = localStorage.getItem('flf-theme') || 'dark';
+    const savedTheme = localStorage.getItem('flf.theme') || 'light';
     setTheme(savedTheme);
     document.documentElement.setAttribute('data-theme', savedTheme);
   }, []);
@@ -38,7 +25,7 @@ export default function AuthPage() {
     const newTheme = theme === 'light' ? 'dark' : 'light';
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
-    localStorage.setItem('flf-theme', newTheme);
+    localStorage.setItem('flf.theme', newTheme);
   };
 
   const passwordMetrics = useMemo(() => {
@@ -53,47 +40,12 @@ export default function AuthPage() {
     return { score: Math.min(s, 4), label: labels[Math.min(s, 4)] };
   }, [password]);
 
-  // SUPABASE AUTH
-  const handleSignIn = async (formData: FormData) => {
-    const result = await login(formData);
-    if (result && !result.success) {
-      toast.error('Sign in failed', { description: result.message });
-    }
-  }
-
-  const handleSignUp = async (formData: FormData) => {
-    if (!termsChecked) {
-      setTermsError(true);
-      toast.error('Terms required', { description: 'You must agree to the Terms and Privacy Policy to create an account.' });
-      return;
-    }
-    const result = await signup(formData);
-    if (result && !result.success) {
-      toast.error('Sign up failed', { description: result.message });
-    } else if (result && result.emailConfirmation) {
-      toast.success('Almost there!', { description: 'Check your email and click the confirmation link to activate your account.' });
-    }
-  }
-  
-
-  const handleComingSoon = () => {
-    toast.info("Coming Soon!", {
-      description: "This feature is still in development. If you want it, please donate to lexatuan@gmail.com"
-    })
-  }
-
-  const handlePreparing = () => {
-    toast.error("Ještě nic není!", {
-      description: "More na co furt klikas"
-    })
-  }
-
   return (
     <div className="min-h-screen bg-paper flex font-sans selection:bg-accent/20">
       <div className="grid grid-cols-1 lg:grid-cols-[1.05fr_1fr] w-full min-h-screen">
         
         {/* Brand Panel (Left) */}
-        <aside className="hidden lg:flex bg-green-800 text-paper p-9 px-11 pb-11 flex-col relative overflow-hidden">
+        <aside className="hidden lg:flex bg-ink text-paper p-9 px-11 pb-11 flex-col relative overflow-hidden">
           {/* Film Grain Texture */}
           <div 
             className="absolute inset-0 opacity-50 pointer-events-none"
@@ -109,7 +61,7 @@ export default function AuthPage() {
             <span className="w-[30px] h-[30px] bg-paper text-ink rounded-md grid place-items-center font-mono text-[11px] font-semibold">
               FLF
             </span>
-            <span>Inventory<em className="italic text-accent font-normal">&nbsp;system</em></span>
+            <span>Rental<em className="italic text-accent font-normal">&nbsp;system</em></span>
           </div>
 
           <div className="mt-auto relative z-10">
@@ -190,8 +142,8 @@ export default function AuthPage() {
                 <div 
                   className="absolute top-[3px] bottom-[3px] bg-ink rounded-full transition-all duration-220 ease-[cubic-bezier(0.32,0.72,0.24,1)]"
                   style={{
-                    left: activeTab === 'signin' ? '3px' : '80px', // Approximate values, would be better with ref measurements
-                    width: activeTab === 'signin' ? '80px' : '120px'
+                    left: activeTab === 'signin' ? '3px' : '71px', // Approximate values, would be better with ref measurements
+                    width: activeTab === 'signin' ? '68px' : '118px'
                   }}
                 />
               </div>
@@ -205,16 +157,11 @@ export default function AuthPage() {
                   <p className="text-[14px] text-muted mb-[26px]">Sign in to manage and check out gear.</p>
 
                   <div className="grid grid-cols-2 gap-2 mb-[18px]">
-                    <button className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer"
-                      onClick={handleComingSoon}
-                    >
-                      
+                    <button className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer">
                       <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 16 19 13 24 13c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.6 5C9.5 39.7 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.6l6.2 5.2c-.4.4 6.6-4.8 6.6-14.8 0-1.3-.1-2.4-.4-3.5z"/></svg>
                       Google
                     </button>
-                    <button className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer"
-                      onClick={handleComingSoon}
-                    >
+                    <button className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.7 2.2-4 2.3-4-1.2-1.8-3.2-2.1-3.9-2.1-1.6-.2-3.2 1-4.1 1-.9 0-2.2-1-3.6-1-1.8 0-3.6 1.1-4.5 2.8-1.9 3.3-.5 8.3 1.4 11 .9 1.3 2 2.8 3.5 2.8 1.4-.1 1.9-.9 3.6-.9 1.7 0 2.2.9 3.6.9 1.5 0 2.5-1.4 3.4-2.7 1.1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.4zM13.9 4.8C14.6 3.9 15.1 2.7 15 1.5c-1 .1-2.3.7-3 1.6-.7.7-1.3 2-1.1 3.1 1.1.1 2.3-.5 3-1.4z"/></svg>
                       Apple
                     </button>
@@ -224,7 +171,7 @@ export default function AuthPage() {
                     or with email
                   </div>
 
-                  <form onSubmit={(e) => { e.preventDefault(); handleSignIn(new FormData(e.currentTarget)); }} className="flex flex-col gap-3.5">
+                  <form className="flex flex-col gap-3.5" onSubmit={(e) => e.preventDefault()}>
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[11px] uppercase tracking-wider text-muted font-semibold flex justify-between items-center">
                         Work email
@@ -233,14 +180,14 @@ export default function AuthPage() {
                         <span className="text-muted grid place-items-center">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                         </span>
-                        <input type="email" name='email' placeholder="you@studio.com" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
+                        <input type="email" placeholder="you@studio.com" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
                       </div>
                     </div>
 
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[11px] uppercase tracking-wider text-muted font-semibold flex justify-between items-center">
                         Password
-                        <a onClick={handlePreparing} className="normal-case tracking-normal font-medium text-[12px] text-accent no-underline hover:underline">Forgot?</a>
+                        <a href="#" className="normal-case tracking-normal font-medium text-[12px] text-accent no-underline hover:underline">Forgot?</a>
                       </label>
                       <div className="flex items-center bg-surface border border-border-strong rounded-lg px-3 h-[42px] gap-2.5 transition-all focus-within:border-accent focus-within:ring-3 focus-within:ring-accent-soft">
                         <span className="text-muted grid place-items-center">
@@ -248,7 +195,6 @@ export default function AuthPage() {
                         </span>
                         <input 
                           type={showPassword ? 'text' : 'password'} 
-                          name='password'
                           placeholder="••••••••" 
                           className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" 
                           required 
@@ -275,7 +221,7 @@ export default function AuthPage() {
                         </span>
                         Keep me signed in
                       </label>
-                      <a onClick={handleComingSoon} className="text-accent no-underline hover:underline">Use SSO instead</a>
+                      <a href="#" className="text-accent no-underline hover:underline">Use SSO instead</a>
                     </div>
 
                     <button type="submit" className="inline-flex items-center justify-center gap-2 w-full h-11 rounded-lg border border-ink bg-ink text-paper text-[14px] font-medium tracking-tight mt-1.5 transition-colors hover:bg-ink-2 active:translate-y-px group cursor-pointer">
@@ -297,11 +243,11 @@ export default function AuthPage() {
                   <p className="text-[14px] text-muted mb-[26px]">Create an account to start tracking gear with your crew.</p>
 
                   <div className="grid grid-cols-2 gap-2 mb-[18px]">
-                    <button onClick={handleComingSoon} className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer">
+                    <button className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer">
                       <svg width="16" height="16" viewBox="0 0 48 48"><path fill="#FFC107" d="M43.6 20.5H42V20H24v8h11.3C33.7 32.6 29.2 36 24 36c-6.6 0-12-5.4-12-12s5.4-12 12-12c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 12.9 4 4 12.9 4 24s8.9 20 20 20 20-8.9 20-20c0-1.3-.1-2.4-.4-3.5z"/><path fill="#FF3D00" d="m6.3 14.7 6.6 4.8C14.7 16 19 13 24 13c3 0 5.8 1.1 7.9 3l5.7-5.7C34 6.1 29.3 4 24 4 16.3 4 9.6 8.3 6.3 14.7z"/><path fill="#4CAF50" d="M24 44c5.2 0 9.9-2 13.4-5.2l-6.2-5.2C29.2 35 26.7 36 24 36c-5.2 0-9.6-3.3-11.3-7.9l-6.6 5C9.5 39.7 16.2 44 24 44z"/><path fill="#1976D2" d="M43.6 20.5H42V20H24v8h11.3c-.8 2.2-2.2 4.1-4.1 5.6l6.2 5.2c-.4.4 6.6-4.8 6.6-14.8 0-1.3-.1-2.4-.4-3.5z"/></svg>
                       Google
                     </button>
-                    <button onClick={handleComingSoon} className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer">
+                    <button className="inline-flex items-center justify-center gap-2 px-3 py-2.25 border border-border-strong bg-surface text-ink rounded-lg text-[13px] font-medium hover:bg-surface-2 hover:border-ink-2 transition-colors cursor-pointer">
                       <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M16.4 12.6c0-2.7 2.2-4 2.3-4-1.2-1.8-3.2-2.1-3.9-2.1-1.6-.2-3.2 1-4.1 1-.9 0-2.2-1-3.6-1-1.8 0-3.6 1.1-4.5 2.8-1.9 3.3-.5 8.3 1.4 11 .9 1.3 2 2.8 3.5 2.8 1.4-.1 1.9-.9 3.6-.9 1.7 0 2.2.9 3.6.9 1.5 0 2.5-1.4 3.4-2.7 1.1-1.5 1.5-3 1.5-3.1-.1-.1-2.9-1.1-2.9-4.4zM13.9 4.8C14.6 3.9 15.1 2.7 15 1.5c-1 .1-2.3.7-3 1.6-.7.7-1.3 2-1.1 3.1 1.1.1 2.3-.5 3-1.4z"/></svg>
                       Apple
                     </button>
@@ -311,30 +257,21 @@ export default function AuthPage() {
                     or with email
                   </div>
 
-                  <form onSubmit={(e) => { e.preventDefault(); handleSignUp(new FormData(e.currentTarget)); }} className="flex flex-col gap-3.5">
+                  <form className="flex flex-col gap-3.5" onSubmit={(e) => e.preventDefault()}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-2.5">
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[11px] uppercase tracking-wider text-muted font-semibold">First name</label>
                         <div className="flex items-center bg-surface border border-border-strong rounded-lg px-3 h-[42px] transition-all focus-within:border-accent focus-within:ring-3 focus-within:ring-accent-soft">
-                          <input type="text" name="firstName" placeholder="Maya" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
+                          <input type="text" placeholder="Maya" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
                         </div>
                       </div>
                       <div className="flex flex-col gap-1.5">
                         <label className="text-[11px] uppercase tracking-wider text-muted font-semibold">Last name</label>
                         <div className="flex items-center bg-surface border border-border-strong rounded-lg px-3 h-[42px] transition-all focus-within:border-accent focus-within:ring-3 focus-within:ring-accent-soft">
-                          <input type="text" name="lastName" placeholder="Chen" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
+                          <input type="text" placeholder="Chen" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
                         </div>
                       </div>
                     </div>
-
-                    <div className="flex flex-col gap-1.5">
-                      <label className="text-[11px] uppercase tracking-wider text-muted font-semibold">USERNAME</label>
-                      <div className="flex items-center bg-surface border border-border-strong rounded-lg px-3 h-[42px] gap-2.5 transition-all focus-within:border-accent focus-within:ring-3 focus-within:ring-accent-soft">
-                        <HugeiconsIcon icon={UserIcon} size={15} color='#8a7d6b' strokeWidth={2}/>
-                        <input type="text" name="username" placeholder="mayachen" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
-                      </div>
-                    </div>
-
 
                     <div className="flex flex-col gap-1.5">
                       <label className="text-[11px] uppercase tracking-wider text-muted font-semibold">Work email</label>
@@ -342,7 +279,37 @@ export default function AuthPage() {
                         <span className="text-muted grid place-items-center">
                           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                         </span>
-                        <input type="email" placeholder="you@studio.com" name='email' className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
+                        <input type="email" placeholder="you@studio.com" className="bg-transparent border-0 outline-0 flex-1 text-[14px] text-ink h-full tracking-tight placeholder:text-muted" required />
+                      </div>
+                    </div>
+
+                    <div className="flex flex-col gap-1.5">
+                      <label className="text-[11px] uppercase tracking-wider text-muted font-semibold">Your role</label>
+                      <div className="grid grid-cols-1 sm:grid-cols-3 gap-1.5">
+                        <button 
+                          type="button" 
+                          onClick={() => setRole('creator')}
+                          className={`border rounded-lg p-2.5 px-2.5 pb-3 bg-surface cursor-pointer text-left flex flex-col gap-1 transition-colors ${role === 'creator' ? 'border-accent bg-accent-soft' : 'border-border-strong hover:border-ink-2'}`}
+                        >
+                          <span className="text-[13px] font-medium text-ink tracking-tight">Creator</span>
+                          <span className="text-[11px] text-muted">Check gear in & out</span>
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => setRole('lead')}
+                          className={`border rounded-lg p-2.5 px-2.5 pb-3 bg-surface cursor-pointer text-left flex flex-col gap-1 transition-colors ${role === 'lead' ? 'border-accent bg-accent-soft' : 'border-border-strong hover:border-ink-2'}`}
+                        >
+                          <span className="text-[13px] font-medium text-ink tracking-tight">Team lead</span>
+                          <span className="text-[11px] text-muted">Manage your crew</span>
+                        </button>
+                        <button 
+                          type="button" 
+                          onClick={() => setRole('admin')}
+                          className={`border rounded-lg p-2.5 px-2.5 pb-3 bg-surface cursor-pointer text-left flex flex-col gap-1 transition-colors ${role === 'admin' ? 'border-accent bg-accent-soft' : 'border-border-strong hover:border-ink-2'}`}
+                        >
+                          <span className="text-[13px] font-medium text-ink tracking-tight">Admin</span>
+                          <span className="text-[11px] text-muted">Full inventory access</span>
+                        </button>
                       </div>
                     </div>
 
@@ -354,7 +321,6 @@ export default function AuthPage() {
                         </span>
                         <input 
                           type={showPassword ? 'text' : 'password'} 
-                          name='password'
                           placeholder="At least 8 characters" 
                           value={password}
                           onChange={(e) => setPassword(e.target.value)}
@@ -388,23 +354,15 @@ export default function AuthPage() {
                       </div>
                     </div>
 
-                    <div className="mt-1.5">
-                      <label className="inline-flex items-start gap-2 cursor-pointer select-none">
-                        <input
-                          type="checkbox"
-                          className="hidden peer"
-                          checked={termsChecked}
-                          onChange={(e) => { setTermsChecked(e.target.checked); if (e.target.checked) setTermsError(false); }}
-                        />
-                        <span className={`w-4 h-4 rounded border bg-surface grid place-items-center text-transparent transition-all peer-checked:bg-ink peer-checked:border-ink peer-checked:text-paper mt-0.5 shrink-0 ${termsError ? 'border-red-500 ring-2 ring-red-500/30' : 'border-border-strong'}`}>
-                          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 6"/></svg>
-                        </span>
-                        <span className={`text-[12.5px] leading-[1.5] ${termsError ? 'text-red-500' : 'text-ink-2'}`}>
-                          I agree to the <a href="#" className="text-accent no-underline hover:underline">Terms</a> and <a href="#" className="text-accent no-underline hover:underline">Privacy Policy</a>.
-                          {termsError && <span className="ml-1 font-medium">(Required)</span>}
-                        </span>
-                      </label>
-                    </div>
+                    <label className="inline-flex items-start gap-2 cursor-pointer select-none mt-1.5">
+                      <input type="checkbox" className="hidden peer" required />
+                      <span className="w-4 h-4 rounded border border-border-strong bg-surface grid place-items-center text-transparent transition-all peer-checked:bg-ink peer-checked:border-ink peer-checked:text-paper mt-0.5 shrink-0">
+                        <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round"><path d="M5 12l5 5L20 6"/></svg>
+                      </span>
+                      <span className="text-ink-2 text-[12.5px] leading-[1.5]">
+                        I agree to the <a href="#" className="text-accent no-underline hover:underline">Terms</a> and <a href="#" className="text-accent no-underline hover:underline">Privacy Policy</a>.
+                      </span>
+                    </label>
 
                     <button type="submit" className="inline-flex items-center justify-center gap-2 w-full h-11 rounded-lg border border-ink bg-ink text-paper text-[14px] font-medium tracking-tight mt-1.5 transition-colors hover:bg-ink-2 active:translate-y-px group cursor-pointer">
                       Create account
