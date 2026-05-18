@@ -1,53 +1,5 @@
 @import "tailwindcss";
 
-<<<<<<< HEAD
-@theme inline {
-  --color-primary-fixed: #c3f400;
-  --color-secondary-container: #474746;
-  --color-surface-container: #201f1f;
-  --color-surface-variant: #353534;
-  --color-primary-container: #c3f400;
-  --color-secondary: #c8c6c5;
-  --color-tertiary: #ffffff;
-  
-  --font-mono-data: var(--font-space-grotesk), monospace;
-  --font-h3: var(--font-space-grotesk), sans-serif;
-  --font-h2: var(--font-space-grotesk), sans-serif;
-  --font-body-sm: var(--font-inter), sans-serif;
-  --font-label-caps: var(--font-space-grotesk), sans-serif;
-  --font-body-lg: var(--font-inter), sans-serif;
-  --font-h1: var(--font-space-grotesk), sans-serif;
-}
-
-:root {
-  --background: #000000;
-  --foreground: #e5e2e1;
-}
-
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-inter), sans-serif;
-}
-
-.material-symbols-outlined {
-  font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
-}
-
-.cinema-grid { 
-  background-image: radial-gradient(#222222 1px, transparent 1px); 
-  background-size: 24px 24px; 
-}
-
-.custom-scrollbar::-webkit-scrollbar { width: 4px; }
-.custom-scrollbar::-webkit-scrollbar-track { background: #0F0F0F; }
-.custom-scrollbar::-webkit-scrollbar-thumb { background: #222222; }
-
-.map-gradient { background: linear-gradient(180deg, rgba(0,0,0,0) 0%, rgba(0,0,0,0.8) 100%); }
-
-.success-glow { box-shadow: 0 0 40px -10px rgba(204, 255, 0, 0.3); }
-
-=======
 /* ── Design tokens (theme-aware CSS variables) ──────────────────────── */
 :root {
   --paper:         #f1ece1;
@@ -180,4 +132,3 @@ body {
     padding-right: 28px;
   }
 }
->>>>>>> claude-auth
