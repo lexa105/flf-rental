@@ -1,0 +1,916 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>FLF Rental — Set up your profile</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;1,400;1,500&display=swap" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            paper:        "#f1ece1",
+            surface:      "#fbf8f2",
+            "surface-2":  "#f6f1e6",
+            ink:          "#1f1b16",
+            "ink-2":      "#3c352d",
+            muted:        "#8a7d6b",
+            line:         "#e3dccd",
+            "line-strong":"#cfc6b3",
+            accent:       "#b8431e",
+            "accent-soft":"#f3dccd",
+            grass:        "#4a6b3a",
+            "grass-soft": "#dde6cf",
+            amber:        "#a26410",
+            "amber-soft": "#f1dfbe",
+            red:          "#94342a",
+            "red-soft":   "#f0d2cc",
+            blue:         "#2f5d8a",
+            "blue-soft":  "#d4e0ec",
+          },
+          fontFamily: {
+            sans:  ['Geist', 'ui-sans-serif', 'system-ui', '-apple-system', '"Helvetica Neue"', 'sans-serif'],
+            serif: ['Newsreader', 'Georgia', '"Times New Roman"', 'serif'],
+            mono:  ['"Geist Mono"', 'ui-monospace', '"SF Mono"', 'Menlo', 'monospace'],
+          },
+          letterSpacing: {
+            tightish: '-0.005em',
+            tighter2: '-0.015em',
+            tracked:  '0.08em',
+            tracked2: '0.16em',
+          }
+        }
+      }
+    };
+  </script>
+
+  <style type="text/tailwindcss">
+    @layer base {
+      html, body { @apply font-sans bg-paper text-ink antialiased; }
+      body { font-size: 14px; line-height: 1.5; }
+    }
+    @layer components {
+      .serif-h     { @apply font-serif font-medium tracking-tighter2; }
+      .accent-em   em { @apply not-italic; font-style: italic; color: #b8431e; font-weight: 400; }
+      .micro-label { @apply text-[11px] uppercase tracking-tracked font-semibold text-muted; }
+      .mono-tag    { @apply font-mono text-[11px] tracking-[0.04em] text-muted; }
+
+      .field-input {
+        @apply w-full bg-surface border border-line-strong rounded-lg
+               h-[42px] px-3 text-[14px] text-ink outline-none
+               transition placeholder:text-muted;
+      }
+      .field-input:focus { @apply border-accent; box-shadow: 0 0 0 3px #f3dccd; }
+      .field-textarea {
+        @apply w-full bg-surface border border-line-strong rounded-lg
+               px-3 py-2 text-[14px] text-ink outline-none transition
+               placeholder:text-muted resize-none;
+      }
+      .field-textarea:focus { @apply border-accent; box-shadow: 0 0 0 3px #f3dccd; }
+
+      .pill-btn {
+        @apply inline-flex items-center gap-2 h-[42px] px-4 rounded-lg
+               border text-[13px] font-medium tracking-tightish transition;
+      }
+      .pill-btn-ghost { @apply border-line-strong bg-surface text-ink hover:bg-surface-2; }
+      .pill-btn-ink   { @apply border-ink bg-ink text-paper hover:bg-ink-2; }
+      .pill-btn-ink svg { transition: transform 160ms; }
+      .pill-btn-ink:hover svg { transform: translateX(2px); }
+      .pill-btn-ghost-sm {
+        @apply inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md
+               text-[12.5px] text-ink-2 hover:bg-surface-2 hover:text-ink transition;
+      }
+
+      /* Cards (role / department / etc.) */
+      .pick-card {
+        @apply text-left bg-surface border border-line-strong rounded-xl p-4
+               flex flex-col gap-1.5 transition cursor-pointer relative;
+      }
+      .pick-card:hover { @apply border-ink-2; }
+      .pick-card.active {
+        @apply border-accent bg-accent-soft;
+      }
+      .pick-card .check-dot {
+        @apply absolute top-3 right-3 w-[18px] h-[18px] rounded-full border border-line-strong
+               grid place-items-center text-accent transition;
+      }
+      .pick-card.active .check-dot {
+        @apply border-accent bg-accent text-paper;
+      }
+      .pick-card .check-dot svg { opacity: 0; transition: opacity 120ms; }
+      .pick-card.active .check-dot svg { opacity: 1; }
+
+      /* Chip toggle for multiselect */
+      .chip-toggle {
+        @apply inline-flex items-center gap-2 px-3 py-2 rounded-full text-[13px]
+               border border-line-strong bg-surface text-ink-2 transition cursor-pointer;
+      }
+      .chip-toggle:hover { @apply text-ink bg-surface-2; }
+      .chip-toggle.active { @apply bg-ink text-paper border-ink; }
+
+      /* Toggle switch */
+      .switch {
+        @apply relative inline-block w-[36px] h-[20px] rounded-full
+               bg-line-strong transition cursor-pointer flex-shrink-0;
+      }
+      .switch::after {
+        content: ""; position: absolute;
+        top: 2px; left: 2px;
+        width: 16px; height: 16px; border-radius: 999px;
+        background: #fbf8f2;
+        transition: transform 160ms cubic-bezier(.32,.72,.24,1);
+        box-shadow: 0 1px 2px rgba(31,27,22,0.25);
+      }
+      .switch.on { @apply bg-ink; }
+      .switch.on::after { transform: translateX(16px); }
+
+      /* Step rail */
+      .step-pip {
+        @apply w-6 h-6 rounded-full grid place-items-center
+               text-[11px] font-mono font-medium
+               bg-white/8 border border-white/15 text-paper/65 transition;
+      }
+      .step-row.active .step-pip {
+        @apply bg-accent border-accent text-paper;
+      }
+      .step-row.done .step-pip {
+        @apply bg-paper border-paper text-ink;
+      }
+      .step-row.active .step-label { @apply text-paper; }
+      .step-row.done .step-label { @apply text-paper/75; }
+
+      /* Avatar uploader */
+      .avatar-drop {
+        @apply relative w-[112px] h-[112px] rounded-full border border-dashed border-line-strong
+               bg-surface-2 grid place-items-center text-muted overflow-hidden
+               transition cursor-pointer;
+      }
+      .avatar-drop:hover { @apply border-ink-2 text-ink-2; }
+      .avatar-drop.dragging { @apply border-accent text-accent bg-accent-soft; }
+      .avatar-drop img {
+        position: absolute; inset: 0;
+        width: 100%; height: 100%; object-fit: cover;
+      }
+      .avatar-edit-badge {
+        @apply absolute bottom-1 right-1 z-10
+               w-7 h-7 grid place-items-center rounded-full
+               bg-ink text-paper border-2 border-paper;
+      }
+
+      /* Field label */
+      .lbl {
+        @apply text-[11px] uppercase tracking-tracked font-semibold text-muted
+               flex items-center justify-between mb-1.5;
+      }
+      .lbl .hint { @apply normal-case tracking-normal font-medium text-[12px] text-muted; }
+
+      .panel-card {
+        @apply bg-surface border border-line rounded-xl p-5;
+      }
+
+      /* Step content fade */
+      .step-pane[hidden] { display: none !important; }
+      .step-pane {
+        animation: stepIn 280ms cubic-bezier(.22,.7,.25,1);
+      }
+      @keyframes stepIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* Progress bar */
+      .progress-track {
+        @apply h-[3px] w-full bg-line rounded-full overflow-hidden;
+      }
+      .progress-fill {
+        @apply h-full bg-accent rounded-full transition-[width] duration-500;
+      }
+
+      /* Subtle film grain for the dark panel */
+      .brand-grain::before {
+        content: "";
+        position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.85  0 0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+        opacity: 0.5; pointer-events: none;
+      }
+
+      /* Striped placeholder hero box */
+      .stripes {
+        background:
+          repeating-linear-gradient(135deg,
+            transparent 0, transparent 8px,
+            #e3dccd 8px, #e3dccd 9px);
+      }
+    }
+  </style>
+</head>
+
+<body class="min-h-screen">
+  <div class="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] min-h-screen">
+
+    <!-- ============ BRAND / STEP RAIL (left) ============ -->
+    <aside class="relative bg-ink text-paper px-10 py-9 lg:flex flex-col hidden brand-grain overflow-hidden">
+      <!-- decorative blob -->
+      <div class="absolute -top-16 -right-16 w-[280px] h-[280px] rounded-full pointer-events-none"
+           style="background: radial-gradient(circle at center, rgba(184,67,30,0.22), transparent 60%);"></div>
+
+      <!-- brand mark -->
+      <div class="relative z-10 flex items-center gap-2.5 font-serif text-[19px] tracking-tightish">
+        <span class="w-[30px] h-[30px] bg-paper text-ink rounded-md grid place-items-center font-mono text-[11px] font-semibold">FLF</span>
+        <span>Rental<em class="not-italic italic text-accent font-normal">&nbsp;system</em></span>
+      </div>
+
+      <!-- headline -->
+      <div class="relative z-10 mt-12 max-w-[22ch]">
+        <div class="font-mono text-[11px] tracking-tracked2 uppercase text-accent flex items-center gap-3 mb-4">
+          Profile setup
+          <span class="flex-1 max-w-[80px] h-px bg-accent/45"></span>
+        </div>
+        <h1 class="font-serif text-[44px] leading-[1.04] tracking-tighter2 font-normal">
+          Let's get your <em class="not-italic italic text-accent">cage card</em> sorted.
+        </h1>
+        <p class="text-[14px] leading-[1.55] text-paper/65 mt-4 max-w-[36ch]">
+          A few quick questions so your check-outs, returns, and overdue pings land in the right place.
+        </p>
+      </div>
+
+      <!-- step rail -->
+      <ol id="step-rail" class="relative z-10 mt-12 flex flex-col gap-1">
+        <!-- rows injected -->
+      </ol>
+
+      <!-- foot -->
+      <div class="relative z-10 mt-auto pt-9 flex items-center justify-between gap-4 mono-tag" style="color: rgba(241,236,225,0.5);">
+        <span>FLF · Studio A · Rental ops</span>
+        <span class="text-accent/85">v 1.0 — 2026</span>
+      </div>
+    </aside>
+
+    <!-- ============ FORM PANEL (right) ============ -->
+    <section class="bg-paper flex flex-col relative">
+
+      <!-- top bar -->
+      <header class="flex items-center justify-between gap-3 px-8 pt-6">
+        <div class="text-[12.5px] text-muted flex items-center gap-2">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12.5l2 2 4-4.5"/><circle cx="12" cy="12" r="9"/></svg>
+          Step <span id="topbar-step">1</span> of 6
+        </div>
+        <div class="flex items-center gap-3">
+          <button id="save-exit" class="pill-btn-ghost-sm">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
+            Save &amp; finish later
+          </button>
+          <a href="index.html" class="text-[12.5px] text-ink-2 border-b border-dotted border-line-strong hover:text-accent hover:border-accent">
+            Skip for now →
+          </a>
+        </div>
+      </header>
+
+      <!-- center stage -->
+      <main class="flex-1 flex justify-center px-8 py-10">
+        <div class="w-full max-w-[560px]">
+
+          <!-- ===== STEP 1 — Identity ===== -->
+          <div class="step-pane" data-step="1">
+            <p class="mono-tag uppercase tracking-tracked2 mb-3">01 · About you</p>
+            <h2 class="serif-h text-[36px] leading-[1.08] mb-2">
+              Tell us about <em class="not-italic italic text-accent">you</em>.
+            </h2>
+            <p class="text-muted text-[14px] mb-8 max-w-[44ch]">
+              Your name and face show up on every checkout, return, and gear handoff. Make it count.
+            </p>
+
+            <div class="flex items-start gap-6 mb-7">
+              <!-- avatar drop -->
+              <label class="avatar-drop group" id="avatar-drop">
+                <input type="file" accept="image/*" class="hidden" id="avatar-input" />
+                <img id="avatar-img" alt="" hidden />
+                <div id="avatar-placeholder" class="text-center">
+                  <svg class="mx-auto mb-1" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="9" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg>
+                  <div class="mono-tag normal-case tracking-normal text-[11px]">drop photo</div>
+                </div>
+                <span class="avatar-edit-badge">
+                  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>
+                </span>
+              </label>
+              <div class="flex-1 pt-1.5">
+                <div class="micro-label mb-1.5">Display</div>
+                <p class="text-[13.5px] text-ink-2 leading-[1.55] mb-2">
+                  PNG or JPG, at least 200&nbsp;×&nbsp;200. We'll crop to a circle. You can also
+                  <button type="button" id="use-initials" class="text-accent hover:underline">use your initials</button>
+                  for now.
+                </p>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <div class="lbl">First name</div>
+                <input class="field-input" id="f-first" type="text" placeholder="Maya" value="Maya" />
+              </div>
+              <div>
+                <div class="lbl">Last name</div>
+                <input class="field-input" id="f-last" type="text" placeholder="Chen" value="Chen" />
+              </div>
+            </div>
+
+            <div class="grid grid-cols-[1fr_140px] gap-3 mb-4">
+              <div>
+                <div class="lbl">Display name <span class="hint">how it appears in the cage</span></div>
+                <input class="field-input" id="f-display" type="text" placeholder="Maya C." value="Maya C." />
+              </div>
+              <div>
+                <div class="lbl">Pronouns</div>
+                <input class="field-input" id="f-pronouns" type="text" placeholder="she/her" />
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="lbl">Job title <span class="hint">used in handoff notes</span></div>
+              <input class="field-input" id="f-title" type="text" placeholder="Director, DP, Producer…" />
+            </div>
+
+            <div>
+              <div class="lbl">Short bio <span class="hint">optional</span></div>
+              <textarea class="field-textarea" id="f-bio" rows="2" placeholder="One line — what you tend to shoot, the lenses you steal first, etc."></textarea>
+            </div>
+          </div>
+
+          <!-- ===== STEP 2 — Role ===== -->
+          <div class="step-pane" data-step="2" hidden>
+            <p class="mono-tag uppercase tracking-tracked2 mb-3">02 · Permissions</p>
+            <h2 class="serif-h text-[36px] leading-[1.08] mb-2">
+              What's your <em class="not-italic italic text-accent">role</em>?
+            </h2>
+            <p class="text-muted text-[14px] mb-7 max-w-[44ch]">
+              Pick the closest fit. Your team lead can change this any time from settings.
+            </p>
+
+            <div class="flex flex-col gap-3 mb-6" id="role-list" role="radiogroup">
+              <button type="button" class="pick-card active" data-role="creator">
+                <span class="check-dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+                <div class="flex items-center gap-2.5">
+                  <span class="font-serif italic text-accent text-[15px]">Creator</span>
+                  <span class="mono-tag uppercase">most common</span>
+                </div>
+                <p class="text-[13.5px] text-ink-2">Check gear in and out, see what's available, leave notes on items.</p>
+                <p class="mono-tag normal-case tracking-normal text-[11.5px] mt-1">
+                  Cannot · add items · invite teammates · delete history
+                </p>
+              </button>
+
+              <button type="button" class="pick-card" data-role="lead">
+                <span class="check-dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+                <div class="flex items-center gap-2.5">
+                  <span class="font-serif italic text-accent text-[15px]">Team lead</span>
+                  <span class="mono-tag uppercase">approval needed</span>
+                </div>
+                <p class="text-[13.5px] text-ink-2">Everything a Creator can do, plus assign gear on others' behalf, mark items missing, and triage overdue returns.</p>
+              </button>
+
+              <button type="button" class="pick-card" data-role="admin">
+                <span class="check-dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+                <div class="flex items-center gap-2.5">
+                  <span class="font-serif italic text-accent text-[15px]">Admin</span>
+                  <span class="mono-tag uppercase">approval needed</span>
+                </div>
+                <p class="text-[13.5px] text-ink-2">Full inventory access. Add and retire items, invite teammates, set policies, export reports.</p>
+              </button>
+            </div>
+
+            <div class="panel-card flex items-start gap-3 bg-surface-2 border-dashed">
+              <div class="w-7 h-7 rounded-full bg-amber-soft text-amber grid place-items-center flex-shrink-0 mt-0.5">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.7 2.7 17a2 2 0 0 0 1.7 3h15.2a2 2 0 0 0 1.7-3L13.7 3.7a2 2 0 0 0-3.4 0z"/></svg>
+              </div>
+              <div class="text-[12.5px] text-ink-2 leading-[1.55]">
+                Lead and Admin both require approval from <span class="font-medium">Riley&nbsp;B.</span> (owner). You'll start as a Creator and get an email once they sign off.
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== STEP 3 — Departments ===== -->
+          <div class="step-pane" data-step="3" hidden>
+            <p class="mono-tag uppercase tracking-tracked2 mb-3">03 · Specialty</p>
+            <h2 class="serif-h text-[36px] leading-[1.08] mb-2">
+              What gear do you <em class="not-italic italic text-accent">handle</em>?
+            </h2>
+            <p class="text-muted text-[14px] mb-7 max-w-[46ch]">
+              We'll surface the right shelves first when you open inventory. Pick as many as fit — you can change this later.
+            </p>
+
+            <div class="grid grid-cols-2 gap-3 mb-7" id="dept-grid">
+              <!-- departments injected -->
+            </div>
+
+            <div class="mb-2">
+              <div class="lbl">Primary discipline <span class="hint">shown on your profile</span></div>
+              <div class="relative">
+                <select id="primary-dept" class="field-input appearance-none pr-9 cursor-pointer">
+                  <option>Cinematography</option>
+                  <option>Camera operating</option>
+                  <option>Sound</option>
+                  <option>Lighting / Gaffer</option>
+                  <option>Grip</option>
+                  <option>Producing</option>
+                  <option>Editing / Post</option>
+                  <option>Production assist</option>
+                </select>
+                <svg class="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== STEP 4 — Studio defaults ===== -->
+          <div class="step-pane" data-step="4" hidden>
+            <p class="mono-tag uppercase tracking-tracked2 mb-3">04 · Workspace</p>
+            <h2 class="serif-h text-[36px] leading-[1.08] mb-2">
+              Where do you <em class="not-italic italic text-accent">work</em> from?
+            </h2>
+            <p class="text-muted text-[14px] mb-7 max-w-[46ch]">
+              This sets your default checkout window and the cage we open first when you scan in.
+            </p>
+
+            <div class="mb-4">
+              <div class="lbl">Home studio</div>
+              <div class="grid grid-cols-3 gap-2" id="studio-grid">
+                <button type="button" class="pick-card active !p-3.5" data-studio="A">
+                  <span class="check-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+                  <span class="font-serif italic text-accent text-[14px]">Studio A</span>
+                  <span class="text-[12px] text-ink-2">San Francisco</span>
+                  <span class="mono-tag text-[10.5px] mt-1">52 items</span>
+                </button>
+                <button type="button" class="pick-card !p-3.5" data-studio="B">
+                  <span class="check-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+                  <span class="font-serif italic text-accent text-[14px]">Studio B</span>
+                  <span class="text-[12px] text-ink-2">Oakland</span>
+                  <span class="mono-tag text-[10.5px] mt-1">28 items</span>
+                </button>
+                <button type="button" class="pick-card !p-3.5" data-studio="remote">
+                  <span class="check-dot"><svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+                  <span class="font-serif italic text-accent text-[14px]">Remote</span>
+                  <span class="text-[12px] text-ink-2">No fixed cage</span>
+                  <span class="mono-tag text-[10.5px] mt-1">request only</span>
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 mb-4">
+              <div>
+                <div class="lbl">Default checkout window</div>
+                <div class="relative">
+                  <select id="window" class="field-input appearance-none pr-9 cursor-pointer">
+                    <option>Same day</option>
+                    <option>Overnight</option>
+                    <option selected>2 days</option>
+                    <option>1 week</option>
+                    <option>Custom each time</option>
+                  </select>
+                  <svg class="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </div>
+              <div>
+                <div class="lbl">Time zone</div>
+                <div class="relative">
+                  <select id="tz" class="field-input appearance-none pr-9 cursor-pointer">
+                    <option>Pacific — Los Angeles</option>
+                    <option>Mountain — Denver</option>
+                    <option>Central — Chicago</option>
+                    <option>Eastern — New York</option>
+                  </select>
+                  <svg class="absolute right-3 top-1/2 -translate-y-1/2 text-muted pointer-events-none" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+              </div>
+            </div>
+
+            <div class="mb-4">
+              <div class="lbl">Mobile <span class="hint">for SMS overdue pings — optional</span></div>
+              <div class="flex items-center gap-2">
+                <div class="relative w-[110px]">
+                  <select class="field-input appearance-none pr-8 cursor-pointer">
+                    <option>+1 US</option>
+                    <option>+44 UK</option>
+                    <option>+61 AU</option>
+                  </select>
+                  <svg class="absolute right-2 top-1/2 -translate-y-1/2 text-muted pointer-events-none" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+                </div>
+                <input class="field-input flex-1" type="tel" placeholder="(415) 555-0142" />
+              </div>
+            </div>
+
+            <label class="flex items-start gap-3 cursor-pointer select-none pt-2">
+              <span class="switch on mt-0.5" id="auto-return"></span>
+              <span>
+                <span class="block text-[13.5px] text-ink font-medium">Auto-extend if I'm still on a shoot</span>
+                <span class="block text-[12.5px] text-muted mt-0.5">If you check out gear and the shoot calendar shows you're still working, we'll push the due date by 24 hours instead of marking you overdue.</span>
+              </span>
+            </label>
+          </div>
+
+          <!-- ===== STEP 5 — Notifications ===== -->
+          <div class="step-pane" data-step="5" hidden>
+            <p class="mono-tag uppercase tracking-tracked2 mb-3">05 · Notifications</p>
+            <h2 class="serif-h text-[36px] leading-[1.08] mb-2">
+              When should we <em class="not-italic italic text-accent">ping</em> you?
+            </h2>
+            <p class="text-muted text-[14px] mb-7 max-w-[46ch]">
+              Pick what reaches you and how. You can fine-tune individual items from settings later.
+            </p>
+
+            <div class="panel-card divide-y divide-line p-0" id="notif-list">
+              <!-- rows injected -->
+            </div>
+
+            <div class="mt-6">
+              <div class="lbl">Quiet hours <span class="hint">no SMS or push during this window</span></div>
+              <div class="flex items-center gap-3">
+                <input type="time" class="field-input flex-1" value="22:00" />
+                <span class="mono-tag normal-case">to</span>
+                <input type="time" class="field-input flex-1" value="08:00" />
+              </div>
+            </div>
+          </div>
+
+          <!-- ===== STEP 6 — Done ===== -->
+          <div class="step-pane" data-step="6" hidden>
+            <p class="mono-tag uppercase tracking-tracked2 mb-3">06 · All set</p>
+            <h2 class="serif-h text-[36px] leading-[1.08] mb-2">
+              You're <em class="not-italic italic text-accent">on the books</em>.
+            </h2>
+            <p class="text-muted text-[14px] mb-7 max-w-[48ch]">
+              Your cage card is ready. Here's a quick look — anything wrong, jump back and tweak it.
+            </p>
+
+            <!-- Profile card preview -->
+            <div class="panel-card !p-0 overflow-hidden mb-6">
+              <!-- cover band -->
+              <div class="h-[100px] stripes border-b border-line relative">
+                <div class="absolute inset-0 bg-gradient-to-br from-accent-soft/70 via-transparent to-transparent"></div>
+              </div>
+
+              <div class="px-5 pb-5 -mt-10 relative">
+                <!-- avatar (mirrors step 1) -->
+                <div id="recap-avatar-wrap" class="w-[72px] h-[72px] rounded-full border-[3px] border-surface bg-ink text-paper grid place-items-center font-serif text-[24px] tracking-tighter2 mb-3 overflow-hidden relative">
+                  <span id="recap-initials">MC</span>
+                  <img id="recap-avatar" alt="" hidden class="absolute inset-0 w-full h-full object-cover" />
+                </div>
+
+                <div class="flex items-end justify-between gap-3 mb-1">
+                  <h3 class="font-serif text-[22px] tracking-tighter2 leading-tight">
+                    <span id="recap-name">Maya Chen</span>
+                  </h3>
+                  <span class="mono-tag normal-case tracking-normal text-[11px] px-2 py-0.5 bg-grass-soft text-grass rounded-full">Creator · pending lead</span>
+                </div>
+                <div class="text-[13px] text-muted flex items-center gap-2 flex-wrap" id="recap-meta">
+                  <span id="recap-title">Director</span>
+                  <span class="opacity-40">·</span>
+                  <span id="recap-pronouns">she/her</span>
+                  <span class="opacity-40">·</span>
+                  <span id="recap-studio">Studio A · San Francisco</span>
+                </div>
+
+                <div class="grid grid-cols-3 gap-px bg-line mt-4 border border-line rounded-lg overflow-hidden">
+                  <div class="bg-surface-2 px-3 py-2.5">
+                    <div class="font-serif text-[19px] tracking-tighter2" id="recap-depts">3</div>
+                    <div class="micro-label text-[10.5px] mt-0.5">Departments</div>
+                  </div>
+                  <div class="bg-surface-2 px-3 py-2.5">
+                    <div class="font-serif text-[19px] tracking-tighter2" id="recap-window">2d</div>
+                    <div class="micro-label text-[10.5px] mt-0.5">Default window</div>
+                  </div>
+                  <div class="bg-surface-2 px-3 py-2.5">
+                    <div class="font-serif text-[19px] tracking-tighter2" id="recap-notifs">5</div>
+                    <div class="micro-label text-[10.5px] mt-0.5">Alerts on</div>
+                  </div>
+                </div>
+
+                <div class="mt-4 pt-4 border-t border-dashed border-line">
+                  <div class="micro-label mb-2">Specialty</div>
+                  <div class="flex flex-wrap gap-1.5" id="recap-chips">
+                    <!-- chips injected -->
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="flex items-start gap-3 text-[12.5px] text-muted bg-surface-2 border border-line rounded-lg px-4 py-3 mb-2">
+              <svg class="text-accent flex-shrink-0 mt-0.5" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.4 8.4 0 0 1-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.4 8.4 0 0 1 3.8-.9h.5a8.5 8.5 0 0 1 8 8v.5z"/></svg>
+              Riley B. has been notified about your role request. You'll get an email when it's approved — usually within a day.
+            </div>
+          </div>
+
+        </div>
+      </main>
+
+      <!-- footer -->
+      <footer class="border-t border-line bg-surface/60 backdrop-blur-sm px-8 py-4">
+        <div class="max-w-[1080px] mx-auto flex items-center gap-5">
+          <!-- progress -->
+          <div class="flex-1 flex items-center gap-3">
+            <div class="progress-track flex-1">
+              <div id="progress-fill" class="progress-fill" style="width: 16.66%"></div>
+            </div>
+            <div class="mono-tag normal-case w-[58px] text-right" id="progress-label">17%</div>
+          </div>
+          <!-- nav -->
+          <div class="flex items-center gap-2.5">
+            <button id="back" class="pill-btn pill-btn-ghost" disabled style="opacity:0.4; cursor:not-allowed;">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>
+              Back
+            </button>
+            <button id="next" class="pill-btn pill-btn-ink">
+              <span id="next-label">Continue</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg>
+            </button>
+          </div>
+        </div>
+      </footer>
+    </section>
+  </div>
+
+  <!-- ============ Script ============ -->
+  <script>
+    // ---------- Data ----------
+    const STEPS = [
+      { n: 1, t: "About you",      h: "Who you are" },
+      { n: 2, t: "Role",           h: "Permissions" },
+      { n: 3, t: "Specialty",      h: "Departments" },
+      { n: 4, t: "Workspace",      h: "Defaults" },
+      { n: 5, t: "Notifications",  h: "Alerts" },
+      { n: 6, t: "All set",        h: "Review" },
+    ];
+    const DEPARTMENTS = [
+      { id: "camera",   name: "Cameras",         desc: "Bodies, cages, rigs",          icon: "camera" },
+      { id: "lens",     name: "Lenses",          desc: "Primes, zooms, anamorphic",    icon: "lens" },
+      { id: "audio",    name: "Audio",           desc: "Mics, recorders, wireless",    icon: "audio" },
+      { id: "lighting", name: "Lighting",        desc: "LED, HMI, practicals",         icon: "light" },
+      { id: "grip",     name: "Grip & support",  desc: "Tripods, stands, sandbags",    icon: "grip" },
+      { id: "storage",  name: "Cards & storage", desc: "CFexpress, SSDs, readers",     icon: "card" },
+    ];
+    const NOTIFS = [
+      { id: "checkout", title: "Checkout confirmations",   desc: "Receipt when you take gear out of the cage.", email: true,  push: false },
+      { id: "return",   title: "Return reminders",          desc: "Heads-up 4 hours before your gear is due back.", email: true, push: true },
+      { id: "overdue",  title: "Overdue alerts",             desc: "Daily ping if gear is more than 24 hours late.", email: true, push: true },
+      { id: "assigned", title: "Gear assigned to me",        desc: "When a teammate hands something to your name.", email: true, push: true },
+      { id: "mentions", title: "Mentions & comments",        desc: "When someone @s you in a handoff note.", email: false, push: true },
+      { id: "digest",   title: "Weekly cage digest",         desc: "Monday morning: what's out, what's coming back.", email: true, push: false },
+    ];
+
+    // ---------- State ----------
+    const state = {
+      step: 1,
+      first: "Maya",
+      last: "Chen",
+      pronouns: "",
+      title: "",
+      avatar: null, // dataURL
+      role: "creator",
+      depts: new Set(["camera", "lens", "lighting"]),
+      primaryDept: "Cinematography",
+      studio: "A",
+      window: "2 days",
+      notifs: {}, // {id: {email, push}}
+    };
+    NOTIFS.forEach((n) => state.notifs[n.id] = { email: n.email, push: n.push });
+
+    // ---------- Step rail (left panel) ----------
+    const rail = document.getElementById("step-rail");
+    STEPS.forEach((s, i) => {
+      const li = document.createElement("li");
+      li.className = "step-row flex items-center gap-3 py-2";
+      li.dataset.step = s.n;
+      li.innerHTML = `
+        <span class="step-pip">${String(s.n).padStart(2,'0')}</span>
+        <span class="step-label text-[13.5px] text-paper/55 tracking-tightish">${s.t}</span>
+      `;
+      rail.appendChild(li);
+    });
+    function renderRail() {
+      rail.querySelectorAll(".step-row").forEach((row) => {
+        const n = +row.dataset.step;
+        row.classList.toggle("active", n === state.step);
+        row.classList.toggle("done", n < state.step);
+        const pip = row.querySelector(".step-pip");
+        if (n < state.step) {
+          pip.innerHTML = `<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg>`;
+        } else {
+          pip.textContent = String(n).padStart(2,'0');
+        }
+      });
+    }
+
+    // ---------- Department grid ----------
+    const deptIcon = {
+      camera: `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7h3l2-3h8l2 3h3v12H3z"/><circle cx="12" cy="13" r="4"/></svg>`,
+      lens:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3"/></svg>`,
+      audio:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="12" rx="3"/><path d="M5 12a7 7 0 0 0 14 0M12 19v3"/></svg>`,
+      light:  `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12c1 .7 1.5 1.5 1.5 2.5h5c0-1 .5-1.8 1.5-2.5A7 7 0 0 0 12 2z"/></svg>`,
+      grip:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M7 21h10M9 7l3-4 3 4M5 11l7 2 7-2"/></svg>`,
+      card:   `<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="3" width="16" height="18" rx="2"/><path d="M9 3v6h6V3M8 14h8M8 17h5"/></svg>`,
+    };
+    const deptGrid = document.getElementById("dept-grid");
+    DEPARTMENTS.forEach((d) => {
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "pick-card";
+      btn.dataset.dept = d.id;
+      if (state.depts.has(d.id)) btn.classList.add("active");
+      btn.innerHTML = `
+        <span class="check-dot"><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l4.5 4.5L20 6"/></svg></span>
+        <div class="flex items-center gap-2 text-ink-2">${deptIcon[d.icon]}<span class="font-serif italic text-accent text-[15px] leading-none">${d.name}</span></div>
+        <p class="text-[12.5px] text-muted">${d.desc}</p>
+      `;
+      btn.addEventListener("click", () => {
+        if (state.depts.has(d.id)) state.depts.delete(d.id);
+        else state.depts.add(d.id);
+        btn.classList.toggle("active", state.depts.has(d.id));
+      });
+      deptGrid.appendChild(btn);
+    });
+
+    // ---------- Role list (radio behavior) ----------
+    document.querySelectorAll("#role-list .pick-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll("#role-list .pick-card").forEach((c) => c.classList.remove("active"));
+        card.classList.add("active");
+        state.role = card.dataset.role;
+      });
+    });
+
+    // ---------- Studio (radio) ----------
+    document.querySelectorAll("#studio-grid .pick-card").forEach((card) => {
+      card.addEventListener("click", () => {
+        document.querySelectorAll("#studio-grid .pick-card").forEach((c) => c.classList.remove("active"));
+        card.classList.add("active");
+        state.studio = card.dataset.studio;
+      });
+    });
+
+    // ---------- Notifications list ----------
+    const notifList = document.getElementById("notif-list");
+    NOTIFS.forEach((n, i) => {
+      const row = document.createElement("div");
+      row.className = "flex items-center gap-4 px-5 py-3.5";
+      row.innerHTML = `
+        <div class="flex-1">
+          <div class="text-[13.5px] text-ink font-medium tracking-tightish">${n.title}</div>
+          <div class="text-[12.5px] text-muted mt-0.5">${n.desc}</div>
+        </div>
+        <div class="flex items-center gap-5">
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <span class="switch ${state.notifs[n.id].email ? 'on' : ''}" data-channel="email" data-id="${n.id}"></span>
+            <span class="mono-tag normal-case tracking-normal text-[11px]">email</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer select-none">
+            <span class="switch ${state.notifs[n.id].push ? 'on' : ''}" data-channel="push" data-id="${n.id}"></span>
+            <span class="mono-tag normal-case tracking-normal text-[11px]">push</span>
+          </label>
+        </div>
+      `;
+      notifList.appendChild(row);
+    });
+    notifList.addEventListener("click", (e) => {
+      const sw = e.target.closest(".switch");
+      if (!sw) return;
+      const id = sw.dataset.id, ch = sw.dataset.channel;
+      state.notifs[id][ch] = !state.notifs[id][ch];
+      sw.classList.toggle("on", state.notifs[id][ch]);
+    });
+
+    // ---------- Step 4 auto-extend toggle ----------
+    document.getElementById("auto-return").addEventListener("click", (e) => {
+      e.currentTarget.classList.toggle("on");
+    });
+
+    // ---------- Avatar uploader ----------
+    const drop = document.getElementById("avatar-drop");
+    const fileInput = document.getElementById("avatar-input");
+    const avImg = document.getElementById("avatar-img");
+    const avPh = document.getElementById("avatar-placeholder");
+    function setAvatar(dataUrl) {
+      state.avatar = dataUrl;
+      if (dataUrl) {
+        avImg.src = dataUrl; avImg.hidden = false; avPh.style.display = "none";
+      } else {
+        avImg.hidden = true; avPh.style.display = "";
+      }
+    }
+    drop.addEventListener("click", (e) => {
+      if (e.target.closest("button") || e.target.closest("input")) return;
+      fileInput.click();
+    });
+    fileInput.addEventListener("change", (e) => {
+      const f = e.target.files?.[0]; if (!f) return;
+      const r = new FileReader();
+      r.onload = () => setAvatar(r.result);
+      r.readAsDataURL(f);
+    });
+    ["dragenter", "dragover"].forEach((ev) =>
+      drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("dragging"); }));
+    ["dragleave", "drop"].forEach((ev) =>
+      drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("dragging"); }));
+    drop.addEventListener("drop", (e) => {
+      const f = e.dataTransfer.files?.[0]; if (!f) return;
+      const r = new FileReader();
+      r.onload = () => setAvatar(r.result);
+      r.readAsDataURL(f);
+    });
+    document.getElementById("use-initials").addEventListener("click", () => setAvatar(null));
+
+    // ---------- Nav ----------
+    const TOTAL = 6;
+    const panes = document.querySelectorAll(".step-pane");
+    const backBtn = document.getElementById("back");
+    const nextBtn = document.getElementById("next");
+    const nextLabel = document.getElementById("next-label");
+    const progressFill = document.getElementById("progress-fill");
+    const progressLabel = document.getElementById("progress-label");
+    const topbarStep = document.getElementById("topbar-step");
+
+    function showStep(n) {
+      state.step = n;
+      panes.forEach((p) => { p.hidden = +p.dataset.step !== n; });
+      // chrome
+      topbarStep.textContent = n;
+      const pct = Math.round((n / TOTAL) * 100);
+      progressFill.style.width = pct + "%";
+      progressLabel.textContent = pct + "%";
+      // buttons
+      const disabled = n === 1;
+      backBtn.disabled = disabled;
+      backBtn.style.opacity = disabled ? 0.4 : 1;
+      backBtn.style.cursor = disabled ? "not-allowed" : "pointer";
+      if (n === TOTAL - 1) nextLabel.textContent = "Finish & review";
+      else if (n === TOTAL) nextLabel.textContent = "Open inventory";
+      else nextLabel.textContent = "Continue";
+      renderRail();
+      if (n === TOTAL) renderRecap();
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    backBtn.addEventListener("click", () => { if (state.step > 1) showStep(state.step - 1); });
+    nextBtn.addEventListener("click", () => {
+      collect();
+      if (state.step === TOTAL) {
+        // open inventory
+        window.location.href = "index.html";
+        return;
+      }
+      showStep(state.step + 1);
+    });
+
+    function collect() {
+      state.first    = document.getElementById("f-first").value || "Maya";
+      state.last     = document.getElementById("f-last").value || "Chen";
+      state.pronouns = document.getElementById("f-pronouns").value || "";
+      state.title    = document.getElementById("f-title").value || "Director";
+      state.primaryDept = document.getElementById("primary-dept").value;
+      state.window   = document.getElementById("window").value;
+    }
+
+    // ---------- Recap (step 6) ----------
+    function renderRecap() {
+      collect();
+      const initials = (state.first[0] || "?") + (state.last[0] || "");
+      document.getElementById("recap-initials").textContent = initials.toUpperCase();
+      const recapImg = document.getElementById("recap-avatar");
+      if (state.avatar) { recapImg.src = state.avatar; recapImg.hidden = false; }
+      else { recapImg.hidden = true; }
+      document.getElementById("recap-name").textContent = `${state.first} ${state.last}`;
+      document.getElementById("recap-title").textContent = state.title || state.primaryDept;
+      document.getElementById("recap-pronouns").textContent = state.pronouns || "—";
+      const studioMap = { "A": "Studio A · San Francisco", "B": "Studio B · Oakland", "remote": "Remote" };
+      document.getElementById("recap-studio").textContent = studioMap[state.studio];
+      document.getElementById("recap-depts").textContent = state.depts.size;
+      const windowShort = { "Same day": "0d", "Overnight": "1d", "2 days": "2d", "1 week": "7d", "Custom each time": "—" };
+      document.getElementById("recap-window").textContent = windowShort[state.window] || "—";
+      const onCount = Object.values(state.notifs).reduce((a, c) => a + (c.email || c.push ? 1 : 0), 0);
+      document.getElementById("recap-notifs").textContent = onCount;
+
+      const chipsEl = document.getElementById("recap-chips");
+      chipsEl.innerHTML = "";
+      [...state.depts].forEach((id) => {
+        const d = DEPARTMENTS.find((x) => x.id === id);
+        const chip = document.createElement("span");
+        chip.className = "chip-toggle active !py-1 !px-2.5 !text-[12px] cursor-default";
+        chip.textContent = d.name;
+        chipsEl.appendChild(chip);
+      });
+      if (state.depts.size === 0) {
+        const e = document.createElement("span");
+        e.className = "text-[12.5px] text-muted italic";
+        e.textContent = "No specialty selected";
+        chipsEl.appendChild(e);
+      }
+    }
+
+    // ---------- Init ----------
+    showStep(1);
+  </script>
+</body>
+</html>

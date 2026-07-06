@@ -2,14 +2,14 @@
 
 ## Step 1: Foundation (Current Status)
 - [x] Initialize Next.js project.
-- [ ] Connect Supabase.
-- [ ] Set up `profiles` and `equipment` tables.
+- [x] Connect Supabase.
+- [x] Set up `profiles` and `equipment` tables.
 - [ ] Create Auth trigger for new users.
 
 ## Step 2: Personal Inventory (Immediate Goal)
-- [ ] Implement `Add Gear` form (Name, Category, Image upload to Supabase Storage).
-- [ ] Create `Dashboard` grid view to see all my gear.
-- [ ] Create `Edit/Delete` functionality for equipment.
+- [] Implement `Add Gear` form (Name, Category, Image upload to Supabase Storage).
+- [] Create `Dashboard` grid view to see all my gear.
+- [] Create `Edit/Delete` functionality for equipment.
 
 ## Step 3: Social & P2P (Future)
 - [ ] Build "Public Profile" page (e.g., lenslease.com/u/username).

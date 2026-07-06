@@ -1,6 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useMemo } from "react";
+import { toast } from "sonner";
+import { useTheme } from "@/components/ThemeProvider";
 import { Header } from "./Header";
 import { InventoryView, ActivityView, TeamView } from "./views";
 import { ItemDrawer, AddItemModal, StatusConfirmModal, ProfileDrawer } from "./overlays";
@@ -56,18 +58,6 @@ function PageHead({ view }: { view: ViewTab }) {
   return null;
 }
 
-function Toast({ msg }: { msg: string }) {
-  return (
-    <div
-      className={`fixed bottom-6 left-1/2 -translate-x-1/2 bg-ink text-paper px-4 py-[10px] rounded-lg text-[13px] flex items-center gap-2.5 shadow-[0_1px_0_rgba(31,27,22,0.06),0_20px_60px_-20px_rgba(31,27,22,0.25)] z-[80] transition-all duration-[180ms] pointer-events-none ${
-        msg ? "opacity-100 translate-y-0" : "opacity-0 translate-y-5"
-      }`}
-    >
-      <Icons.check size={14} className="text-accent" /> {msg}
-    </div>
-  );
-}
-
 export default function InventoryApp() {
   const [items, setItems]           = useState<Item[]>(ITEMS);
   const [activity, setActivity]     = useState<ActivityEntry[]>(ACTIVITY);
@@ -81,21 +71,7 @@ export default function InventoryApp() {
   const [showAdd, setShowAdd]       = useState(false);
   const [pending, setPending]       = useState<PendingAction | null>(null);
   const [profileUser, setProfileUser] = useState<TeamMember | null>(null);
-  const [toast, setToast]           = useState("");
-  const [theme, setTheme]           = useState<"light" | "dark">("light");
-
-  // Persist theme to localStorage and apply to <html>
-  useEffect(() => {
-    const saved = localStorage.getItem("flf-theme") as "light" | "dark" | null;
-    if (saved) setTheme(saved);
-  }, []);
-
-  useEffect(() => {
-    document.documentElement.setAttribute("data-theme", theme);
-    localStorage.setItem("flf-theme", theme);
-  }, [theme]);
-
-  const toggleTheme = () => setTheme((t) => (t === "light" ? "dark" : "light"));
+  const { theme, toggleTheme } = useTheme();
 
   // Filtering + sorting
   const filtered = useMemo(() => {
@@ -127,12 +103,6 @@ export default function InventoryApp() {
     }
     return r;
   }, [items, status, category, query, sort, activity]);
-
-  // Toast helper
-  const showToast = (m: string) => {
-    setToast(m);
-    setTimeout(() => setToast(""), 2200);
-  };
 
   // Drawer
   const openDrawer = (id: string) => {
@@ -173,7 +143,7 @@ export default function InventoryApp() {
         ? { ...d, status: action === "checkout" ? "checked-out" : action === "checkin" ? "available" : "maintenance" }
         : d
     );
-    showToast(`${verbs[action]} · ${item.name}`);
+    toast.success(`${verbs[action]} · ${item.name}`);
   };
 
   // Add item
@@ -198,7 +168,7 @@ export default function InventoryApp() {
       note: `Added to inventory · ${form.location}`,
     }, ...prev]);
     setShowAdd(false);
-    showToast(`Added · ${newItem.name}`);
+    toast.success(`Added · ${newItem.name}`);
   };
 
   return (
@@ -236,7 +206,6 @@ export default function InventoryApp() {
       <ProfileDrawer user={profileUser} onClose={() => setProfileUser(null)} items={items} activity={activity} />
       <AddItemModal open={showAdd} onClose={() => setShowAdd(false)} onSubmit={addItem} />
       <StatusConfirmModal pending={pending} onClose={() => setPending(null)} onConfirm={confirmAction} />
-      <Toast msg={toast} />
     </div>
   );
 }

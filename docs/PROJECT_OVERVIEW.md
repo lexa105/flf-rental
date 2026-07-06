@@ -1,4 +1,4 @@
-# Project: LensLease (Camera Gear Tracker & P2P Rental)
+# Project: FLF GearWatch (Camera Gear Tracker & P2P Rental)
 
 ## Vision
 A web application to track personal camera equipment inventory. 
