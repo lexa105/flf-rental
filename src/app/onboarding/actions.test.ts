@@ -159,8 +159,8 @@ describe('saveProfile', () => {
 });
 
 describe('saveLocations', () => {
-  const primary = { name: 'Studio A', address: '123 Main St', type: 'studio' as const };
-  const secondary = { name: 'Home', address: '456 Side St', type: 'home-studio' as const };
+  const primary = { name: 'Studio A', address: '123 Main St', type: 'studio' as const, isPublic: true };
+  const secondary = { name: 'Home', address: '456 Side St', type: 'home-studio' as const, isPublic: false };
 
   it('returns not authenticated when there is no user', async () => {
     mockUnauthenticated();
@@ -176,8 +176,8 @@ describe('saveLocations', () => {
     expect(mockFrom).toHaveBeenCalledWith('location');
     expect(mockDeleteEq).toHaveBeenCalledWith('profile_id', 'user-123');
     expect(mockInsert).toHaveBeenCalledWith([
-      { profile_id: 'user-123', ...primary, is_primary: true },
-      { profile_id: 'user-123', ...secondary, is_primary: false },
+      { profile_id: 'user-123', name: 'Studio A', address: '123 Main St', type: 'studio', is_primary: true, is_public: true },
+      { profile_id: 'user-123', name: 'Home', address: '456 Side St', type: 'home-studio', is_primary: false, is_public: false },
     ]);
   });
 });

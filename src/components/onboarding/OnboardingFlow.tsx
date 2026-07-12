@@ -14,7 +14,6 @@ interface Profile {
   firstName: string;
   lastName: string;
   displayName: string;
-  pronouns: string;
   jobTitle: string;
   bio: string;
   avatar: string | null;
@@ -24,6 +23,7 @@ interface Location {
   name: string;
   address: string;
   type: LocationType;
+  isPublic: boolean;
 }
 
 interface LocationsData {
@@ -85,10 +85,16 @@ const CONDITION_COLORS: Record<GearCondition, string> = {
   'needs-repair': 'text-status-red bg-red-soft',
 };
 
-// TODO(@you): Replace with a real Supabase query.
-// SELECT p.display_name, p.job_title, p.avatar_url, COUNT(i.id) AS item_count
-// FROM profiles p LEFT JOIN inventory_items i ON i.owner_id = p.user_id
-// WHERE p.user_id != auth.uid() GROUP BY p.user_id LIMIT 6
+// TODO: MOCK DATA — the Step 4 "Explore" creators below are made-up people,
+// shown only so the step isn't empty. When the P2P/community features land,
+// replace them with real users from Supabase, e.g.:
+//   select p.display_name, p.job_title, p.avatar_url, count(e.id) as item_count
+//   from profile p
+//   left join equipment e on e.owner_id = p.id and e.is_public
+//   where p.id != auth.uid()
+//   group by p.id, p.display_name, p.job_title, p.avatar_url
+//   limit 6
+// (RLS note: only is_public gear is countable for other users.)
 const MOCK_CREATORS = [
   { id: '1', name: 'Riley Bauer',  initials: 'RB', role: 'Director of Photography', itemCount: 15, badges: ['Cameras', 'Lenses', 'Lighting'] },
   { id: '2', name: 'Marco Della',  initials: 'MD', role: 'Sound Engineer',           itemCount: 16, badges: ['Audio', 'Accessories']         },
@@ -243,18 +249,14 @@ function StepProfile({ data, onChange }: {
         </div>
       </div>
 
-      {/* Display name + pronouns */}
-      <div className="grid grid-cols-[1fr_140px] gap-3 mb-4">
+      {/* Display name */}
+      <div className="gap-3 mb-4">
         <div>
           <Lbl>Display name <Hint>shown in the cage</Hint></Lbl>
           <FieldInput type="text" placeholder="Maya C." value={data.displayName}
             onChange={(e) => onChange({ displayName: e.target.value })} />
         </div>
-        <div>
-          <Lbl>Pronouns</Lbl>
-          <FieldInput type="text" placeholder="she/her" value={data.pronouns}
-            onChange={(e) => onChange({ pronouns: e.target.value })} />
-        </div>
+        
       </div>
 
       {/* Job title */}
@@ -319,6 +321,27 @@ function LocationCard({ data, onChange, heading }: {
           })}
         </div>
       </div>
+
+      <div className="flex items-center justify-between gap-3 rounded-lg border border-border bg-surface-2 px-3 py-2.5">
+        <div>
+          <div className="text-[12.5px] font-medium text-ink">Share publicly</div>
+          <div className="text-[11px] text-muted mt-0.5">Other users can see this location&apos;s name and address. Off = only you.</div>
+        </div>
+        <button type="button"
+          role="switch"
+          aria-checked={data.isPublic}
+          onClick={() => onChange({ isPublic: !data.isPublic })}
+          className={`relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full border transition cursor-pointer ${
+            data.isPublic ? 'bg-accent border-accent' : 'bg-surface border-border-strong'
+          }`}
+        >
+          <span
+            className={`inline-block h-3.5 w-3.5 rounded-full bg-surface shadow-sm transition-transform ${
+              data.isPublic ? 'translate-x-[18px] bg-accent-ink' : 'translate-x-[3px]'
+            }`}
+          />
+        </button>
+      </div>
     </div>
   );
 }
@@ -331,7 +354,7 @@ function StepLocations({ data, onChange }: {
     <>
       <p className="font-mono text-[11px] tracking-[0.16em] uppercase text-muted mb-3">02 · Locations</p>
       <h2 className="font-serif text-[36px] leading-[1.08] font-medium tracking-tight mb-2">
-        Where's your <em className="italic text-accent font-normal">home cage</em>?
+        Dude, Where's my <em className="italic text-accent font-normal">gear</em>?
       </h2>
       <p className="text-muted text-[14px] mb-8 max-w-[44ch]">
         Set your primary inventory location — we'll default checkouts here. Add a secondary if you work across multiple spots.
@@ -658,17 +681,29 @@ function StepAllSet({ profile, locations, gearCount }: {
           </div>
 
           <div className="flex items-end justify-between gap-3 mb-1">
-            <h3 className="font-serif text-[22px] tracking-tight leading-tight">{fullName}</h3>
+            <div>
+              <h3 className="font-serif text-[22px] tracking-tight leading-tight">{fullName}</h3>
+              {profile.displayName && (
+                <div className="text-[13px] text-muted mt-0.5">@{profile.displayName}</div>
+              )}
+            </div>
             <span className="font-mono text-[11px] px-2 py-0.5 bg-green-soft text-status-green rounded-full whitespace-nowrap flex-shrink-0">
               {gearCount} item{gearCount !== 1 ? 's' : ''} added
             </span>
           </div>
 
-          <div className="text-[13px] text-muted flex items-center gap-2 flex-wrap">
-            {profile.jobTitle && <span>{profile.jobTitle}</span>}
-            {profile.pronouns && <><span className="opacity-40">·</span><span>{profile.pronouns}</span></>}
-            {locations.primary.name && <><span className="opacity-40">·</span><span>{locations.primary.name}</span></>}
-          </div>
+          {profile.jobTitle && (
+            <div className="text-[13px] text-muted">{profile.jobTitle}</div>
+          )}
+
+          {locations.primary.name && (
+            <div className="text-[13px] text-muted flex items-center gap-1.5 mt-1.5">
+              <svg className="text-accent flex-shrink-0" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/>
+              </svg>
+              <span>{[locations.primary.name, locations.primary.address].filter(Boolean).join(', ')}</span>
+            </div>
+          )}
 
           {profile.bio && (
             <p className="text-[13px] text-muted mt-3 pt-3 border-t border-border leading-[1.55] italic">
@@ -712,14 +747,14 @@ export default function OnboardingFlow() {
   const [isLoading, setIsLoading] = useState(false);
 
   const [profile, setProfile] = useState<Profile>({
-    firstName: '', lastName: '', displayName: '', pronouns: '',
+    firstName: '', lastName: '', displayName: '',
     jobTitle: '', bio: '', avatar: null,
   });
 
   const [locations, setLocations] = useState<LocationsData>({
-    primary:      { name: '', address: '', type: 'studio' },
+    primary:      { name: '', address: '', type: 'studio', isPublic: false },
     hasSecondary: false,
-    secondary:    { name: '', address: '', type: 'studio' },
+    secondary:    { name: '', address: '', type: 'studio', isPublic: false },
   });
 
   const [gear, setGear] = useState<GearItem[]>([]);
@@ -867,21 +902,6 @@ export default function OnboardingFlow() {
               <path d="M9 12.5l2 2 4-4.5"/><circle cx="12" cy="12" r="9"/>
             </svg>
             Step {step} of {TOTAL}
-          </div>
-          <div className="flex items-center gap-3">
-            <button type="button"
-              onClick={() => toast.info('Progress saved', { description: 'Come back any time to finish setting up your profile.' })}
-              className="inline-flex items-center gap-1.5 h-8 px-2.5 rounded-md text-[12.5px] text-ink-2 hover:bg-surface-2 hover:text-ink transition cursor-pointer"
-            >
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
-                <polyline points="17 21 17 13 7 13 7 21"/>
-              </svg>
-              Save &amp; finish later
-            </button>
-            <a href="/" className="text-[12.5px] text-ink-2 border-b border-dotted border-border-strong hover:text-accent hover:border-accent">
-              Skip for now →
-            </a>
           </div>
         </header>
 

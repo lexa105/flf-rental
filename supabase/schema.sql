@@ -22,18 +22,12 @@ create table public.profile (
 create table public.location (
   id uuid default gen_random_uuid() primary key,
   profile_id uuid not null references public.profile(id),
-  -- NOTE (live schema oddity): the `name` column carries a stray column
-  -- default of the literal string 'not null' (i.e. `default 'not null'`)
-  -- in addition to its NOT NULL constraint. This looks like a copy/paste
-  -- artifact from whoever first created the table rather than intentional
-  -- behavior — callers always supply an explicit name, so it has no
-  -- observed effect, but leave it in place until a migration deliberately
-  -- cleans it up.
-  name text not null default 'not null',
+  name text not null,
   address text,
   is_default boolean default false,
   type text, -- constrained by location_type_check below
   is_primary boolean default false,
+  is_public boolean not null default false,
   created_at timestamptz default now()
 );
 
@@ -50,20 +44,36 @@ create table public.equipment (
   image_url text,
   location_id uuid references public.location(id),
   assignee_id uuid references public.profile(id),
-  quantity int default 1,
+  quantity int default 1, -- constrained > 0 by equipment_quantity_check
   condition text,
   category text,
-  notes text
+  notes text,
+  is_public boolean not null default false
 );
+
+alter table public.equipment add constraint equipment_status_check
+  check ( status in ('available', 'checked-out', 'maintenance', 'missing') or status is null );
+alter table public.equipment add constraint equipment_quantity_check
+  check ( quantity is null or quantity > 0 );
+
+-- Indexes on FK columns
+create index location_profile_id_idx   on public.location  (profile_id);
+create index equipment_owner_id_idx    on public.equipment (owner_id);
+create index equipment_location_id_idx on public.equipment (location_id);
+create index equipment_assignee_id_idx on public.equipment (assignee_id);
 
 -- Row Level Security
 alter table public.profile enable row level security;
 alter table public.location enable row level security;
 alter table public.equipment enable row level security;
 
+-- Visibility model (P2P groundwork): everything is private by default and
+-- reads require a signed-in user; owners opt in per row via is_public.
+
 -- Profile policies
-create policy "Public profiles are viewable by everyone."
+create policy "Profiles are viewable by signed-in users."
   on profile for select
+  to authenticated
   using ( true );
 
 create policy "Users can insert their own profile."
@@ -74,10 +84,11 @@ create policy "Users can update own profile."
   on profile for update
   using ( auth.uid() = id );
 
--- Location policies (owner-only via profile_id)
-create policy "Users can view own locations."
+-- Location policies
+create policy "Locations are viewable by owner or when public."
   on location for select
-  using ( auth.uid() = profile_id );
+  to authenticated
+  using ( auth.uid() = profile_id or is_public );
 
 create policy "Users can insert own locations."
   on location for insert
@@ -92,9 +103,10 @@ create policy "Users can delete own locations."
   using ( auth.uid() = profile_id );
 
 -- Equipment policies
-create policy "Equipment is viewable by everyone."
+create policy "Equipment is viewable by owner or when public."
   on equipment for select
-  using ( true );
+  to authenticated
+  using ( auth.uid() = owner_id or is_public );
 
 create policy "Users can insert their own equipment."
   on equipment for insert
@@ -108,14 +120,13 @@ create policy "Users can delete own equipment."
   on equipment for delete
   using ( auth.uid() = owner_id );
 
--- Storage: avatars bucket (public read, owner-scoped write) for onboarding
--- Step 1 profile photo upload.
-insert into storage.buckets (id, name, public)
-values ('avatars', 'avatars', true);
-
-create policy "Avatar images are publicly accessible."
-  on storage.objects for select
-  using ( bucket_id = 'avatars' );
+-- Storage: avatars bucket for onboarding Step 1 profile photo upload.
+-- Public bucket = object URLs are world-readable, but there is deliberately
+-- NO select policy on storage.objects: that would allow listing every file
+-- (Supabase advisor 0025). 5 MB cap, images only.
+insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+values ('avatars', 'avatars', true, 5242880,
+        array['image/png', 'image/jpeg', 'image/webp', 'image/gif']);
 
 create policy "Users can upload their own avatar."
   on storage.objects for insert
@@ -156,6 +167,10 @@ begin
   return new;
 end;
 $$ language plpgsql security definer;
+
+-- Hardening: pinned search_path; not callable via /rest/v1/rpc (trigger-only).
+alter function public.handle_new_user() set search_path = '';
+revoke execute on function public.handle_new_user() from public, anon, authenticated;
 
 create trigger on_auth_user_created
   after insert on auth.users

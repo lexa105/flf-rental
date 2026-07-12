@@ -11,7 +11,8 @@ export interface ProfileData {
   firstName: string;
   lastName: string;
   displayName: string;
-  pronouns: string;
+  /** No longer collected by the wizard; kept optional for future profile settings. */
+  pronouns?: string;
   jobTitle: string;
   bio: string;
   /** Base64 dataURL from FileReader. Upload to Supabase Storage first, then store the public URL. */
@@ -23,6 +24,7 @@ export interface LocationData {
   address: string;
   type: 'studio' | 'home-studio' | 'remote' | 'office' | 'other';
   isPrimary: boolean;
+  isPublic: boolean;
 }
 
 export interface GearItemData {
@@ -77,7 +79,7 @@ export async function saveProfile(
     first_name: data.firstName,
     last_name: data.lastName,
     display_name: data.displayName,
-    pronouns: data.pronouns,
+    pronouns: data.pronouns ?? null,
     job_title: data.jobTitle,
     bio: data.bio,
     avatar_url: avatarUrl,
@@ -108,9 +110,15 @@ export async function saveLocations(
 
   await supabase.from('location').delete().eq('profile_id', user.id);
 
+  const profileId = user.id;
+  function toRow(location: Omit<LocationData, 'isPrimary'>, isPrimary: boolean) {
+    const { isPublic, ...rest } = location;
+    return { profile_id: profileId, ...rest, is_primary: isPrimary, is_public: isPublic };
+  }
+
   const rows = [
-    { profile_id: user.id, ...primary, is_primary: true },
-    ...(secondary ? [{ profile_id: user.id, ...secondary, is_primary: false }] : []),
+    toRow(primary, true),
+    ...(secondary ? [toRow(secondary, false)] : []),
   ];
   const { error } = await supabase.from('location').insert(rows);
   if (error) return { success: false, message: error.message };

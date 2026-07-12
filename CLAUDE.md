@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-FLF GearWatch — an inventory tracker for filmmaking gear. Core model: each user tracks gear items with a status (available / checked out / missing / maintenance) and can define multiple storage locations (addresses) that gear is assigned to. Planned direction: a P2P filmmaking social network — users choose which parts of their inventory/locations are publicly visible to others, leading to friend-to-friend borrowing and eventually a rental marketplace. Design data access with that visibility split in mind (RLS currently makes profiles and equipment world-readable, locations owner-only).
+FLF GearWatch — an inventory tracker for filmmaking gear. Core model: each user tracks gear items with a status (available / checked out / missing / maintenance) and can define multiple storage locations (addresses) that gear is assigned to. Planned direction: a P2P filmmaking social network — users choose which parts of their inventory/locations are publicly visible to others, leading to friend-to-friend borrowing and eventually a rental marketplace. The visibility model is enforced by RLS (hardened 2026-07-12): all reads require a signed-in user; `location` and `equipment` rows are owner-only unless the owner sets `is_public = true`. Keep new tables/policies on this private-by-default, opt-in pattern.
 
 ## Commands
 
@@ -62,8 +62,8 @@ Live tables are **singular**: `profile`, `location`, `equipment` (not `profiles`
 Quirks to know:
 - Onboarding completion is tracked **twice**: `user_metadata.onboarding_completed` (what the middleware reads) and `profile.onboarding_complete` (DB column, set by `completeOnboarding()`). Keep them in sync.
 - A signup trigger (`on_auth_user_created` → `handle_new_user()`) auto-creates the `profile` row from `first_name`/`last_name` in the signup metadata.
-- `equipment.status` is free text (no enum); intended values: available, checked out, missing, maintenance. `equipment` also has `location_id` and `assignee_id` FKs the UI doesn't use yet.
-- `location` has both `is_default` and `is_primary` booleans (historical duplication; onboarding writes `is_primary`), and `location.name` carries a stray literal default `'not null'`.
+- `equipment.status` is text constrained by a check to: `available`, `checked-out`, `maintenance`, `missing` (matches `Status` in `src/components/inventory/types.ts`). `equipment` also has `location_id` and `assignee_id` FKs the UI doesn't use yet.
+- `location` has both `is_default` and `is_primary` booleans (historical duplication; onboarding writes `is_primary`).
 
 
 ## Delegation (orchestrator → worker)
