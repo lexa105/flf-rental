@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Icons } from "./icons";
 import { Avatar, Pill, Thumb } from "./ui";
-import { userById, categoryById, TEAM, CATEGORIES, LOCATIONS, STATUS_LABEL } from "./data";
+import { userById, categoryById, TEAM, CATEGORIES, STATUS_LABEL } from "./data";
 import type { Item, ActivityEntry, TeamMember, PendingAction, StatusConfirmPayload } from "./types";
 
 /* ── Item Drawer ─────────────────────────────────────────────────────── */
@@ -11,7 +11,7 @@ export function ItemDrawer({
   item: Item | null;
   onClose: () => void;
   history: ActivityEntry[];
-  onAction: (action: "checkout" | "checkin" | "maintenance", item: Item) => void;
+  onAction: (action: "checkout" | "checkin" | "maintenance" | "missing" | "delete", item: Item) => void;
 }) {
   const open = !!item;
   const [cached, setCached] = useState<Item | null>(item);
@@ -45,7 +45,7 @@ export function ItemDrawer({
         {/* Head */}
         <div className="flex items-center justify-between px-[18px] py-3.5 border-b border-border">
           <div className="flex items-center gap-2.5">
-            <span className="font-mono text-[12px] text-muted">{it.id}</span>
+            <span className="font-mono text-[12px] text-muted">{it.code}</span>
             <Pill status={it.status} />
           </div>
           <button onClick={onClose} aria-label="Close" className="w-8 h-8 grid place-items-center rounded-md border border-transparent bg-transparent text-ink-2 hover:bg-surface-2 hover:text-ink cursor-pointer">
@@ -105,6 +105,28 @@ export function ItemDrawer({
                 <Icons.check size={14} /> Mark available
               </button>
             )}
+            {it.status !== "missing" && (
+              <button
+                onClick={() => onAction("missing", it)}
+                className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-border-strong bg-surface text-status-red cursor-pointer hover:bg-red-soft active:translate-y-px transition-all"
+              >
+                <Icons.warn size={14} /> Flag missing
+              </button>
+            )}
+            {it.status === "missing" && (
+              <button
+                onClick={() => onAction("checkin", it)}
+                className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-border-strong bg-surface text-ink cursor-pointer hover:bg-surface-2 active:translate-y-px transition-all"
+              >
+                <Icons.check size={14} /> Mark available
+              </button>
+            )}
+            <button
+              onClick={() => onAction("delete", it)}
+              className="ml-auto inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-transparent bg-transparent text-status-red cursor-pointer hover:bg-red-soft active:translate-y-px transition-all"
+            >
+              <Icons.trash size={14} /> Delete
+            </button>
           </div>
 
           {/* Key-value details */}
@@ -135,7 +157,7 @@ export function ItemDrawer({
               <div className="text-muted text-[13px] py-1.5">No recorded activity yet.</div>
             )}
             {itemHistory.map((h) => {
-              const u = userById(h.user);
+              const userName = h.userName ?? userById(h.user)?.name;
               return (
                 <div key={h.id} className="grid gap-2.5 py-[9px] border-b border-dashed border-border last:border-b-0 items-start" style={{ gridTemplateColumns: "18px 1fr auto" }}>
                   <span className={`w-2 h-2 rounded-full mt-1.5 ${
@@ -146,7 +168,7 @@ export function ItemDrawer({
                   }`} />
                   <div className="text-[13px]">
                     <div>
-                      <strong className="font-semibold">{u?.name}</strong>{" "}
+                      <strong className="font-semibold">{userName}</strong>{" "}
                       <span className="text-muted">
                         {h.type === "checkout" ? "checked out" :
                          h.type === "checkin" ? "checked in" :
@@ -169,13 +191,14 @@ export function ItemDrawer({
 
 /* ── Add Item Modal ───────────────────────────────────────────────────── */
 export function AddItemModal({
-  open, onClose, onSubmit,
+  open, onClose, onSubmit, locationNames,
 }: {
   open: boolean;
   onClose: () => void;
   onSubmit: (form: { name: string; category: string; location: string; serial: string; note: string }) => void;
+  locationNames: string[];
 }) {
-  const [form, setForm] = useState({ name: "", category: "camera", location: LOCATIONS[0], serial: "", note: "" });
+  const [form, setForm] = useState({ name: "", category: "camera", location: locationNames[0] ?? "", serial: "", note: "" });
   const set = (k: string) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) =>
     setForm((f) => ({ ...f, [k]: e.target.value }));
 
@@ -189,7 +212,7 @@ export function AddItemModal({
     e.preventDefault();
     if (!form.name.trim()) return;
     onSubmit(form);
-    setForm({ name: "", category: "camera", location: LOCATIONS[0], serial: "", note: "" });
+    setForm({ name: "", category: "camera", location: locationNames[0] ?? "", serial: "", note: "" });
   };
 
   const inputCls = "bg-paper border border-border-strong rounded-md px-[11px] py-[9px] text-[13.5px] outline-none transition-colors duration-[120ms] focus:border-accent w-full";
@@ -235,7 +258,7 @@ export function AddItemModal({
             <div className="flex flex-col gap-1.5">
               <label className={labelCls}>Location</label>
               <select value={form.location} onChange={set("location")} className={inputCls}>
-                {LOCATIONS.map((l) => <option key={l} value={l}>{l}</option>)}
+                {locationNames.map((l) => <option key={l} value={l}>{l}</option>)}
               </select>
             </div>
           </div>
@@ -299,6 +322,7 @@ export function StatusConfirmModal({
 
   const TITLES: Record<string, string> = {
     checkout: "Check out item", checkin: "Check in item", maintenance: "Send to maintenance",
+    missing: "Flag as missing", delete: "Delete item",
   };
 
   const inputCls = "bg-paper border border-border-strong rounded-md px-[11px] py-[9px] text-[13.5px] outline-none transition-colors duration-[120ms] focus:border-accent w-full";
@@ -326,7 +350,7 @@ export function StatusConfirmModal({
             <Thumb item={p.item} size={40} />
             <div>
               <div className="font-medium text-ink tracking-[-0.005em]">{p.item.name}</div>
-              <div className="font-mono text-[11px] text-muted">{p.item.id} · {p.item.location}</div>
+              <div className="font-mono text-[11px] text-muted">{p.item.code} · {p.item.location}</div>
             </div>
           </div>
 
@@ -359,18 +383,38 @@ export function StatusConfirmModal({
               <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Sensor cleaning" className={inputCls} />
             </div>
           )}
+          {p.action === "missing" && (
+            <div className="flex flex-col gap-1.5">
+              <label className={labelCls}>Reason/details</label>
+              <input value={note} onChange={(e) => setNote(e.target.value)} placeholder="Not returned from May 02 shoot" className={inputCls} />
+            </div>
+          )}
+          {p.action === "delete" && (
+            <p className="text-[13.5px] text-ink-2 my-1">
+              This permanently deletes <strong className="font-semibold">{p.item.name}</strong> from your inventory. This can&apos;t be undone.
+            </p>
+          )}
         </div>
 
         <div className="px-5 py-3.5 border-t border-border flex gap-2 justify-end bg-surface-2 rounded-b-xl">
           <button onClick={onClose} className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-transparent bg-transparent text-ink-2 cursor-pointer hover:bg-surface-2 hover:text-ink">
             Cancel
           </button>
-          <button
-            onClick={() => onConfirm({ assignee, due, note })}
-            className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-ink bg-ink text-paper cursor-pointer hover:bg-ink-2"
-          >
-            <Icons.check size={14} /> Confirm
-          </button>
+          {p.action === "delete" ? (
+            <button
+              onClick={() => onConfirm({ assignee, due, note })}
+              className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-status-red bg-status-red text-white cursor-pointer hover:brightness-95"
+            >
+              <Icons.trash size={14} /> Delete item
+            </button>
+          ) : (
+            <button
+              onClick={() => onConfirm({ assignee, due, note })}
+              className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-ink bg-ink text-paper cursor-pointer hover:bg-ink-2"
+            >
+              <Icons.check size={14} /> Confirm
+            </button>
+          )}
         </div>
       </div>
     </div>
@@ -495,7 +539,7 @@ export function ProfileDrawer({
                   <Thumb item={it} size={36} />
                   <div className="flex-1 min-w-0">
                     <div className="font-medium text-[13.5px] text-ink">{it.name}</div>
-                    <div className="font-mono text-[11px] text-muted mt-[1px]">{it.id} · {it.location}</div>
+                    <div className="font-mono text-[11px] text-muted mt-[1px]">{it.code} · {it.location}</div>
                   </div>
                   {it.since && (
                     <span className="text-[11px] font-mono text-muted bg-surface border border-border px-2 py-[3px] rounded-full flex-shrink-0">

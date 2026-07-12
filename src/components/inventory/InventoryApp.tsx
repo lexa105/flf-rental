@@ -7,17 +7,18 @@ import { Header } from "./Header";
 import { InventoryView, ActivityView, TeamView } from "./views";
 import { ItemDrawer, AddItemModal, StatusConfirmModal, ProfileDrawer } from "./overlays";
 import { Icons } from "./icons";
-import { ITEMS, ACTIVITY, TEAM, userById } from "./data";
+import { TEAM, userById } from "./data";
+import { addEquipment, updateEquipmentStatus, deleteEquipment } from "@/app/inventory/actions";
 import type {
   Item, ActivityEntry, TeamMember, ViewTab, PendingAction, StatusConfirmPayload,
 } from "./types";
 
-function PageHead({ view }: { view: ViewTab }) {
+function PageHead({ view, ownerName }: { view: ViewTab; ownerName: string }) {
   if (view === "inventory") return (
     <div className="flex items-end justify-between mb-[22px] gap-6">
       <div>
         <h1 className="font-serif text-[32px] font-medium tracking-[-0.015em] leading-[1.05] m-0">
-          @Tung&apos;s Inventory
+          @{ownerName}&apos;s Inventory
         </h1>
         <div className="text-[13px] text-muted mt-1.5">
           Everything in the cage, on the road, and out for service.
@@ -58,9 +59,19 @@ function PageHead({ view }: { view: ViewTab }) {
   return null;
 }
 
-export default function InventoryApp() {
-  const [items, setItems]           = useState<Item[]>(ITEMS);
-  const [activity, setActivity]     = useState<ActivityEntry[]>(ACTIVITY);
+export default function InventoryApp({
+  initialItems,
+  locationNames,
+  ownerName,
+  initialActivity,
+}: {
+  initialItems: Item[];
+  locationNames: string[];
+  ownerName: string;
+  initialActivity: ActivityEntry[];
+}) {
+  const [items, setItems]           = useState<Item[]>(initialItems);
+  const [activity, setActivity]     = useState<ActivityEntry[]>(initialActivity);
   const [view, setView]             = useState<ViewTab>("inventory");
   const [query, setQuery]           = useState("");
   const [status, setStatus]         = useState("all");
@@ -84,7 +95,7 @@ export default function InventoryApp() {
         const u = i.assignee ? userById(i.assignee) : undefined;
         return (
           i.name.toLowerCase().includes(q) ||
-          i.id.toLowerCase().includes(q) ||
+          i.code.toLowerCase().includes(q) ||
           (i.location || "").toLowerCase().includes(q) ||
           (u && u.name.toLowerCase().includes(q))
         );
@@ -99,7 +110,7 @@ export default function InventoryApp() {
       const order = activity.map((a) => a.item);
       r.sort((a, b) => order.indexOf(a.id) - order.indexOf(b.id));
     } else {
-      r.sort((a, b) => a.id.localeCompare(b.id));
+      r.sort((a, b) => a.code.localeCompare(b.code));
     }
     return r;
   }, [items, status, category, query, sort, activity]);
@@ -112,45 +123,92 @@ export default function InventoryApp() {
   const closeDrawer = () => { setDrawerItem(null); setSelectedId(null); };
 
   // Status actions
-  const requestAction = (action: "checkout" | "checkin" | "maintenance", item: Item) =>
+  const requestAction = (action: "checkout" | "checkin" | "maintenance" | "missing" | "delete", item: Item) =>
     setPending({ action, item });
 
-  const confirmAction = ({ assignee, due, note }: StatusConfirmPayload) => {
+  const confirmAction = async ({ assignee, due, note }: StatusConfirmPayload) => {
     if (!pending) return;
     const { action, item } = pending;
+
+    if (action === "delete") {
+      const result = await deleteEquipment(item.id);
+      if (!result.success) {
+        toast.error(result.message ?? "Something went wrong.");
+        return;
+      }
+      setItems((prev) => prev.filter((it) => it.id !== item.id));
+      setActivity((prev) => [{
+        id: "a" + Date.now(),
+        ts: "Just now",
+        type: "deleted",
+        user: "owner",
+        userName: ownerName,
+        item: "",
+        itemCode: item.code,
+        itemName: item.name,
+      }, ...prev]);
+      setPending(null);
+      setDrawerItem((d) => (d && d.id === item.id ? null : d));
+      if (selectedId === item.id) setSelectedId(null);
+      toast.success(`Deleted · ${item.name}`);
+      return;
+    }
+
+    const result = await updateEquipmentStatus(item.id, action, note);
+    if (!result.success) {
+      toast.error(result.message ?? "Something went wrong.");
+      return;
+    }
+
     setItems((prev) =>
       prev.map((it) => {
         if (it.id !== item.id) return it;
         if (action === "checkout")    return { ...it, status: "checked-out", assignee, since: due ? `until ${due}` : "today", note: note || it.note };
         if (action === "checkin")     return { ...it, status: "available",   assignee: undefined, since: undefined };
         if (action === "maintenance") return { ...it, status: "maintenance", assignee: undefined, since: undefined, note: note || it.note };
+        if (action === "missing")     return { ...it, status: "missing",     assignee: undefined, since: undefined, note: note || it.note };
         return it;
       })
     );
-    const verbs: Record<string, string> = { checkout: "Checked out", checkin: "Checked in", maintenance: "Sent for maintenance" };
-    const userName = userById(assignee)?.name;
+    const verbs: Record<string, string> = { checkout: "Checked out", checkin: "Checked in", maintenance: "Sent for maintenance", missing: "Flagged missing" };
+    const assigneeName = userById(assignee)?.name;
     setActivity((prev) => [{
       id: "a" + Date.now(),
       ts: "Just now",
       type: action,
-      user: assignee || "u5",
+      user: "owner",
+      userName: ownerName,
       item: item.id,
-      note: action === "checkout" && userName ? `Out until ${due}` : note || undefined,
+      itemCode: item.code,
+      itemName: item.name,
+      note: action === "checkout" && assigneeName ? `Out until ${due}` : note || undefined,
     }, ...prev]);
     setPending(null);
     setDrawerItem((d) =>
       d && d.id === item.id
-        ? { ...d, status: action === "checkout" ? "checked-out" : action === "checkin" ? "available" : "maintenance" }
+        ? { ...d, status: action === "checkout" ? "checked-out" : action === "checkin" ? "available" : action === "maintenance" ? "maintenance" : "missing" }
         : d
     );
     toast.success(`${verbs[action]} · ${item.name}`);
   };
 
   // Add item
-  const addItem = (form: { name: string; category: string; location: string; serial: string; note: string }) => {
-    const nextNum = String(items.length + 1).padStart(3, "0");
+  const addItem = async (form: { name: string; category: string; location: string; serial: string; note: string }) => {
+    const result = await addEquipment({
+      name: form.name,
+      category: form.category,
+      locationName: form.location,
+      serial: form.serial,
+      note: form.note,
+    });
+    if (!result.success || !result.item) {
+      toast.error(result.message ?? "Something went wrong.");
+      return;
+    }
+
     const newItem: Item = {
-      id:       `FLF-${nextNum}`,
+      id:       result.item.id,
+      code:     form.serial || result.item.id.slice(0, 8).toUpperCase(),
       name:     form.name,
       category: form.category as Item["category"],
       status:   "available",
@@ -160,12 +218,15 @@ export default function InventoryApp() {
     };
     setItems((prev) => [newItem, ...prev]);
     setActivity((prev) => [{
-      id:   "a" + Date.now(),
-      ts:   "Just now",
-      type: "added",
-      user: "u5",
-      item: newItem.id,
-      note: `Added to inventory · ${form.location}`,
+      id:       "a" + Date.now(),
+      ts:       "Just now",
+      type:     "added",
+      user:     "owner",
+      userName: ownerName,
+      item:     newItem.id,
+      itemCode: newItem.code,
+      itemName: newItem.name,
+      note:     `Added to inventory · ${form.location}`,
     }, ...prev]);
     setShowAdd(false);
     toast.success(`Added · ${newItem.name}`);
@@ -181,7 +242,7 @@ export default function InventoryApp() {
       />
 
       <main className="px-7 py-7 pb-20 max-w-[1480px] w-full mx-auto flex-1 max-[720px]:px-4 max-[720px]:py-4">
-        <PageHead view={view} />
+        <PageHead view={view} ownerName={ownerName} />
 
         {view === "inventory" && (
           <InventoryView
@@ -204,7 +265,7 @@ export default function InventoryApp() {
 
       <ItemDrawer item={drawerItem} onClose={closeDrawer} history={activity} onAction={requestAction} />
       <ProfileDrawer user={profileUser} onClose={() => setProfileUser(null)} items={items} activity={activity} />
-      <AddItemModal open={showAdd} onClose={() => setShowAdd(false)} onSubmit={addItem} />
+      <AddItemModal open={showAdd} onClose={() => setShowAdd(false)} onSubmit={addItem} locationNames={locationNames} />
       <StatusConfirmModal pending={pending} onClose={() => setPending(null)} onConfirm={confirmAction} />
     </div>
   );

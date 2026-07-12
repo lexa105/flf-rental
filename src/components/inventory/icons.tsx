@@ -51,6 +51,8 @@ export const Icons = {
   image:    (p: IconProps) => <Icon {...p} d={["M4 5h16v14H4z", "M4 16l5-5 4 4 3-3 4 4"]} />,
   warn:     (p: IconProps) => <Icon {...p} d={["M12 9v4", "M12 17h.01", "M10.3 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.7 3.86a2 2 0 0 0-3.39 0z"]} />,
   history:  (p: IconProps) => <Icon {...p} d={["M3 12a9 9 0 1 0 3-6.7", "M3 4v5h5", "M12 8v5l3 2"]} />,
+  trash:    (p: IconProps) => <Icon {...p} d={["M4 7h16", "M9 7V4h6v3", "M6 7l1 13h10l1-13", "M10 11v6M14 11v6"]} />,
+  logout:   (p: IconProps) => <Icon {...p} d={["M9 4H5v16h4", "M14 8l4 4-4 4", "M18 12H9"]} />,
 };
 
 export { Icon };

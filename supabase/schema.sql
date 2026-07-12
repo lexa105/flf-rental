@@ -39,16 +39,18 @@ create table public.equipment (
   id uuid default gen_random_uuid() primary key,
   created_at timestamptz default now(),
   name text,
-  status text,
+  status text default 'available',
   owner_id uuid not null default auth.uid() references auth.users(id),
   image_url text,
   location_id uuid references public.location(id),
   assignee_id uuid references public.profile(id),
   quantity int default 1, -- constrained > 0 by equipment_quantity_check
   condition text,
-  category text,
+  category text, -- canonical singular ids: camera/lens/audio/lighting/grip/storage/accessory/other
   notes text,
-  is_public boolean not null default false
+  is_public boolean not null default false,
+  serial text,
+  checked_out_at timestamptz
 );
 
 alter table public.equipment add constraint equipment_status_check
@@ -56,16 +58,31 @@ alter table public.equipment add constraint equipment_status_check
 alter table public.equipment add constraint equipment_quantity_check
   check ( quantity is null or quantity > 0 );
 
+-- 4. Activity table: per-item activity log (immutable, owner-only)
+create table public.activity (
+  id uuid primary key default gen_random_uuid(),
+  created_at timestamptz not null default now(),
+  owner_id uuid not null default auth.uid() references auth.users(id) on delete cascade,
+  equipment_id uuid references public.equipment(id) on delete set null,
+  item_name text not null,
+  item_code text,
+  type text not null check (type in ('checkout','checkin','maintenance','missing','added','deleted')),
+  note text
+);
+
 -- Indexes on FK columns
 create index location_profile_id_idx   on public.location  (profile_id);
 create index equipment_owner_id_idx    on public.equipment (owner_id);
 create index equipment_location_id_idx on public.equipment (location_id);
 create index equipment_assignee_id_idx on public.equipment (assignee_id);
+create index activity_owner_created_idx on public.activity (owner_id, created_at desc);
+create index activity_equipment_idx     on public.activity (equipment_id);
 
 -- Row Level Security
 alter table public.profile enable row level security;
 alter table public.location enable row level security;
 alter table public.equipment enable row level security;
+alter table public.activity enable row level security;
 
 -- Visibility model (P2P groundwork): everything is private by default and
 -- reads require a signed-in user; owners opt in per row via is_public.
@@ -119,6 +136,13 @@ create policy "Users can update own equipment."
 create policy "Users can delete own equipment."
   on equipment for delete
   using ( auth.uid() = owner_id );
+
+-- Activity policies (immutable log: no update/delete policies)
+create policy "activity_select_own" on activity
+  for select using ( auth.uid() = owner_id );
+
+create policy "activity_insert_own" on activity
+  for insert with check ( auth.uid() = owner_id );
 
 -- Storage: avatars bucket for onboarding Step 1 profile photo upload.
 -- Public bucket = object URLs are world-readable, but there is deliberately

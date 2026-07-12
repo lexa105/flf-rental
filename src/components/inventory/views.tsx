@@ -102,7 +102,7 @@ export function InventoryView({
 }: {
   items: Item[]; allItems: Item[]; selectedId: string | null;
   onSelect: (id: string) => void;
-  onQuickAction: (action: "checkout" | "checkin" | "maintenance", item: Item) => void;
+  onQuickAction: (action: "checkout" | "checkin" | "maintenance" | "missing" | "delete", item: Item) => void;
   status: string; setStatus: (s: string) => void;
   category: string; setCategory: (c: string) => void;
   sort: string; setSort: (s: string) => void;
@@ -158,7 +158,7 @@ export function InventoryView({
                   <td className="px-3.5 py-3 align-middle">
                     <div className="font-medium text-ink tracking-[-0.005em]">{it.name}</div>
                     <div className="font-mono text-[11px] text-muted mt-0.5">
-                      {it.id}{it.note ? ` · ${it.note}` : ""}
+                      {it.code}{it.note ? ` · ${it.note}` : ""}
                     </div>
                   </td>
                   <td className="px-3.5 py-3 align-middle">
@@ -232,6 +232,7 @@ const ICON_CLASS: Record<string, string> = {
   maintenance: "text-status-blue bg-blue-soft",
   missing:     "text-status-red bg-red-soft",
   added:       "text-ink-2 bg-surface-2 border border-border",
+  deleted:     "text-status-red bg-red-soft",
 };
 
 const ACTION_VERB: Record<string, string> = {
@@ -240,6 +241,7 @@ const ACTION_VERB: Record<string, string> = {
   maintenance: "sent to maintenance",
   missing:     "flagged as missing",
   added:       "added",
+  deleted:     "deleted",
 };
 
 function activityIcon(type: string) {
@@ -247,6 +249,7 @@ function activityIcon(type: string) {
   if (type === "checkin")     return <Icons.arrowIn size={14} />;
   if (type === "maintenance") return <Icons.wrench size={14} />;
   if (type === "missing")     return <Icons.warn size={14} />;
+  if (type === "deleted")     return <Icons.trash size={14} />;
   return <Icons.plus size={14} />;
 }
 
@@ -254,7 +257,7 @@ export function ActivityView({ activity }: { activity: ActivityEntry[] }) {
   return (
     <div className="bg-surface border border-border rounded-[10px] py-1">
       {activity.map((a) => {
-        const u = userById(a.user);
+        const userName = a.userName ?? userById(a.user)?.name;
         return (
           <div
             key={a.id}
@@ -267,9 +270,10 @@ export function ActivityView({ activity }: { activity: ActivityEntry[] }) {
             </span>
             <div>
               <div className="text-[13.5px]">
-                <strong className="font-semibold text-ink">{u?.name}</strong>{" "}
+                <strong className="font-semibold text-ink">{userName}</strong>{" "}
                 <span className="text-muted">{ACTION_VERB[a.type]}</span>{" "}
-                <span className="font-mono text-[11.5px] text-muted">{a.item}</span>
+                {a.itemName && <span className="text-ink">{a.itemName}</span>}{" "}
+                <span className="font-mono text-[11.5px] text-muted">{a.itemCode ?? a.item}</span>
               </div>
               {a.note && <div className="text-[12.5px] text-muted mt-0.5">{a.note}</div>}
             </div>
@@ -321,7 +325,7 @@ export function TeamView({
               {checked.slice(0, 4).map((it) => (
                 <div key={it.id} className="text-[12.5px] flex justify-between items-center py-1">
                   <span>{it.name}</span>
-                  <span className="font-mono text-[11px] text-muted">{it.id}</span>
+                  <span className="font-mono text-[11px] text-muted">{it.code}</span>
                 </div>
               ))}
               {checked.length > 4 && (

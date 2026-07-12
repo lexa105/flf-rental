@@ -7,7 +7,7 @@ import { toast } from 'sonner';
 // ── Types ──────────────────────────────────────────────────────────────────────
 
 type LocationType = 'studio' | 'home-studio' | 'remote' | 'office' | 'other';
-type GearCategory = 'cameras' | 'lenses' | 'audio' | 'lighting' | 'grip' | 'storage' | 'accessories' | 'other';
+type GearCategory = 'camera' | 'lens' | 'audio' | 'lighting' | 'grip' | 'storage' | 'accessory' | 'other';
 type GearCondition = 'excellent' | 'good' | 'fair' | 'needs-repair';
 
 interface Profile {
@@ -61,13 +61,13 @@ const LOCATION_TYPES: { id: LocationType; label: string; desc: string }[] = [
 ];
 
 const GEAR_CATEGORIES: { id: GearCategory; label: string }[] = [
-  { id: 'cameras',     label: 'Cameras'     },
-  { id: 'lenses',      label: 'Lenses'      },
+  { id: 'camera',      label: 'Cameras'     },
+  { id: 'lens',        label: 'Lenses'      },
   { id: 'audio',       label: 'Audio'       },
   { id: 'lighting',    label: 'Lighting'    },
   { id: 'grip',        label: 'Grip'        },
   { id: 'storage',     label: 'Storage'     },
-  { id: 'accessories', label: 'Accessories' },
+  { id: 'accessory',   label: 'Accessories' },
   { id: 'other',       label: 'Other'       },
 ];
 
@@ -410,7 +410,7 @@ function StepGear({ items, onAdd, onRemove }: {
   onRemove: (id: string) => void;
 }) {
   const [name,      setName]      = useState('');
-  const [category,  setCategory]  = useState<GearCategory>('cameras');
+  const [category,  setCategory]  = useState<GearCategory>('camera');
   const [quantity,  setQuantity]  = useState(1);
   const [condition, setCondition] = useState<GearCondition>('good');
   const [notes,     setNotes]     = useState('');

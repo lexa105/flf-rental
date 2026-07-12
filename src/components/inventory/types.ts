@@ -1,6 +1,6 @@
 export type Status = "available" | "checked-out" | "maintenance" | "missing";
-export type Category = "camera" | "lens" | "audio" | "lighting" | "grip" | "storage" | "accessory";
-export type ActionType = "checkout" | "checkin" | "maintenance" | "missing" | "added";
+export type Category = "camera" | "lens" | "audio" | "lighting" | "grip" | "storage" | "accessory" | "other";
+export type ActionType = "checkout" | "checkin" | "maintenance" | "missing" | "added" | "deleted";
 export type ViewTab = "inventory" | "activity" | "team";
 
 export interface TeamMember {
@@ -20,6 +20,7 @@ export interface TeamMember {
 
 export interface Item {
   id: string;
+  code: string;
   name: string;
   category: Category;
   status: Status;
@@ -35,7 +36,10 @@ export interface ActivityEntry {
   ts: string;
   type: ActionType;
   user: string;
+  userName?: string;
   item: string;
+  itemCode?: string;
+  itemName?: string;
   note?: string;
 }
 
@@ -45,7 +49,7 @@ export interface CategoryDef {
 }
 
 export interface PendingAction {
-  action: "checkout" | "checkin" | "maintenance";
+  action: "checkout" | "checkin" | "maintenance" | "missing" | "delete";
   item: Item;
 }
 

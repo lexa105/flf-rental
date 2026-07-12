@@ -1,4 +1,5 @@
 import { Icons } from "./icons";
+import { signout } from "@/lib/auth/actions";
 import type { ViewTab } from "./types";
 
 const TABS: { id: ViewTab; label: string }[] = [
@@ -42,7 +43,7 @@ export function Header({
           <button
             key={t.id}
             onClick={() => setView(t.id)}
-            className={`bg-transparent border-0 px-3 py-[7px] rounded-md text-[13.5px] font-medium tracking-[-0.005em] transition-colors duration-[120ms] cursor-pointer ${
+            className={`border-0 px-3 py-[7px] rounded-md text-[13.5px] font-medium tracking-[-0.005em] transition-colors duration-[120ms] cursor-pointer ${
               view === t.id
                 ? "bg-ink text-paper"
                 : "text-ink-2 hover:bg-surface-2 hover:text-ink"
@@ -78,6 +79,15 @@ export function Header({
           className="w-8 h-8 grid place-items-center rounded-md border border-transparent bg-transparent text-ink-2 hover:bg-surface-2 hover:text-ink transition-colors cursor-pointer"
         >
           {theme === "dark" ? <Icons.sun size={16} /> : <Icons.moon size={16} />}
+        </button>
+
+        {/* Sign out */}
+        <button
+          onClick={() => signout()}
+          title="Sign out"
+          className="w-8 h-8 grid place-items-center rounded-md border border-transparent bg-transparent text-ink-2 hover:bg-surface-2 hover:text-ink transition-colors cursor-pointer"
+        >
+          <Icons.logout size={16} />
         </button>
 
         {/* Add item */}
