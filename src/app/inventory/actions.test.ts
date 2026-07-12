@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { addEquipment, updateEquipmentStatus, deleteEquipment } from "./actions";
+import { addEquipment, updateEquipmentStatus, deleteEquipment, clearDeletedItemActivity } from "./actions";
 
 interface MockUser {
   id: string;
@@ -25,6 +25,9 @@ const {
   mockLocationEqName,
   mockLocationMaybeSingle,
   mockActivityInsert,
+  mockActivityDelete,
+  mockActivityDeleteEq,
+  mockActivityDeleteIs,
 } = vi.hoisted(() => ({
   mockGetUser: vi.fn(),
   mockFrom: vi.fn(),
@@ -45,6 +48,9 @@ const {
   mockLocationEqName: vi.fn(),
   mockLocationMaybeSingle: vi.fn(),
   mockActivityInsert: vi.fn(),
+  mockActivityDelete: vi.fn(),
+  mockActivityDeleteEq: vi.fn(),
+  mockActivityDeleteIs: vi.fn(),
 }));
 
 vi.mock("@/lib/supabase/server", () => ({
@@ -105,11 +111,16 @@ beforeEach(() => {
   // activity.insert(...)
   mockActivityInsert.mockResolvedValue({ error: null });
 
+  // activity.delete({ count: 'exact' }).eq('owner_id', ...).is('equipment_id', null)
+  mockActivityDelete.mockReturnValue({ eq: mockActivityDeleteEq });
+  mockActivityDeleteEq.mockReturnValue({ is: mockActivityDeleteIs });
+  mockActivityDeleteIs.mockResolvedValue({ error: null, count: 0 });
+
   mockFrom.mockImplementation((table: string) => {
     if (table === "equipment")
       return { insert: mockInsert, update: mockUpdate, delete: mockDelete, select: mockEquipmentSelect };
     if (table === "location") return { select: mockLocationSelect };
-    if (table === "activity") return { insert: mockActivityInsert };
+    if (table === "activity") return { insert: mockActivityInsert, delete: mockActivityDelete };
     throw new Error(`unexpected table: ${table}`);
   });
 });
@@ -373,5 +384,43 @@ describe("deleteEquipment", () => {
     mockActivityInsert.mockResolvedValue({ error: { message: "activity boom" } });
     const result = await deleteEquipment("eq-1");
     expect(result).toEqual({ success: true });
+  });
+});
+
+describe("clearDeletedItemActivity", () => {
+  it("returns not authenticated when there is no user", async () => {
+    mockUnauthenticated();
+    const result = await clearDeletedItemActivity();
+    expect(result).toEqual({ success: false, message: "Not authenticated." });
+    expect(mockActivityDelete).not.toHaveBeenCalled();
+  });
+
+  it("deletes only orphaned activity rows for the signed-in owner", async () => {
+    mockAuthenticated();
+    mockActivityDeleteIs.mockResolvedValue({ error: null, count: 3 });
+
+    const result = await clearDeletedItemActivity();
+
+    expect(mockFrom).toHaveBeenCalledWith("activity");
+    expect(mockActivityDelete).toHaveBeenCalledWith({ count: "exact" });
+    expect(mockActivityDeleteEq).toHaveBeenCalledWith("owner_id", "user-123");
+    expect(mockActivityDeleteIs).toHaveBeenCalledWith("equipment_id", null);
+    expect(result).toEqual({ success: true, cleared: 3 });
+  });
+
+  it("returns the supabase error message when the delete fails", async () => {
+    mockAuthenticated();
+    mockActivityDeleteIs.mockResolvedValue({ error: { message: "boom" }, count: null });
+
+    const result = await clearDeletedItemActivity();
+    expect(result).toEqual({ success: false, message: "boom" });
+  });
+
+  it("falls back to 0 when count is null", async () => {
+    mockAuthenticated();
+    mockActivityDeleteIs.mockResolvedValue({ error: null, count: null });
+
+    const result = await clearDeletedItemActivity();
+    expect(result).toEqual({ success: true, cleared: 0 });
   });
 });

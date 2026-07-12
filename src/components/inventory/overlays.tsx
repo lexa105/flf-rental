@@ -425,6 +425,58 @@ export function StatusConfirmModal({
   );
 }
 
+/* ── Clear Activity Modal ─────────────────────────────────────────────── */
+export function ClearActivityModal({
+  open, onClose, onConfirm,
+}: {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+}) {
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => { if (e.key === "Escape" && open) onClose(); };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, onClose]);
+
+  return (
+    <div
+      className={`fixed inset-0 bg-[rgba(20,16,12,0.32)] backdrop-blur-[3px] z-60 grid place-items-center transition-opacity duration-[160ms] ${open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
+      onClick={onClose}
+    >
+      <div
+        className={`bg-surface border border-border rounded-xl shadow-[0_1px_0_rgba(31,27,22,0.06),0_20px_60px_-20px_rgba(31,27,22,0.25)] w-[460px] max-w-[94vw] flex flex-col transition-[transform,opacity] duration-[160ms] ${open ? "translate-y-0 scale-100" : "translate-y-2.5 scale-[0.98]"}`}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="px-5 py-4 border-b border-border flex items-center justify-between">
+          <h3 className="font-serif text-[20px] font-medium tracking-[-0.01em] m-0">Clear activity</h3>
+          <button onClick={onClose} className="w-8 h-8 grid place-items-center rounded-md border border-transparent bg-transparent text-ink-2 hover:bg-surface-2 hover:text-ink cursor-pointer">
+            <Icons.close size={16} />
+          </button>
+        </div>
+
+        <div className="px-5 py-[18px]">
+          <p className="text-[13.5px] text-ink-2 my-1">
+            This removes activity entries of deleted items. Entries for items still in your inventory are kept.
+          </p>
+        </div>
+
+        <div className="px-5 py-3.5 border-t border-border flex gap-2 justify-end bg-surface-2 rounded-b-xl">
+          <button onClick={onClose} className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-transparent bg-transparent text-ink-2 cursor-pointer hover:bg-surface-2 hover:text-ink">
+            Cancel
+          </button>
+          <button
+            onClick={onConfirm}
+            className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-status-red bg-status-red text-white cursor-pointer hover:brightness-95"
+          >
+            <Icons.trash size={14} /> Clear
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── Profile Drawer ───────────────────────────────────────────────────── */
 export function ProfileDrawer({
   user, onClose, items, activity,

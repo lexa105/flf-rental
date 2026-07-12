@@ -191,3 +191,28 @@ export async function deleteEquipment(id: string): Promise<{ success: boolean; m
 
   return { success: true };
 }
+
+// ── clearDeletedItemActivity ─────────────────────────────────────────────────
+
+/**
+ * Deletes activity log rows for items that have since been deleted
+ * (`equipment_id is null`). Rows still tied to live equipment are untouched
+ * — RLS also enforces this via the `activity_delete_orphaned` policy.
+ */
+export async function clearDeletedItemActivity(): Promise<{ success: boolean; message?: string; cleared?: number }> {
+  const supabase = await createClient();
+  const {
+    data: { user },
+    error: authError,
+  } = await supabase.auth.getUser();
+  if (authError || !user) return { success: false, message: "Not authenticated." };
+
+  const { error, count } = await supabase
+    .from("activity")
+    .delete({ count: "exact" })
+    .eq("owner_id", user.id)
+    .is("equipment_id", null);
+  if (error) return { success: false, message: error.message };
+
+  return { success: true, cleared: count ?? 0 };
+}

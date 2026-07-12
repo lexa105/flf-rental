@@ -5,15 +5,22 @@ import { toast } from "sonner";
 import { useTheme } from "@/components/ThemeProvider";
 import { Header } from "./Header";
 import { InventoryView, ActivityView, TeamView } from "./views";
-import { ItemDrawer, AddItemModal, StatusConfirmModal, ProfileDrawer } from "./overlays";
+import { ItemDrawer, AddItemModal, StatusConfirmModal, ClearActivityModal, ProfileDrawer } from "./overlays";
 import { Icons } from "./icons";
 import { TEAM, userById } from "./data";
-import { addEquipment, updateEquipmentStatus, deleteEquipment } from "@/app/inventory/actions";
+import { addEquipment, updateEquipmentStatus, deleteEquipment, clearDeletedItemActivity } from "@/app/inventory/actions";
 import type {
   Item, ActivityEntry, TeamMember, ViewTab, PendingAction, StatusConfirmPayload,
 } from "./types";
 
-function PageHead({ view, ownerName }: { view: ViewTab; ownerName: string }) {
+function PageHead({
+  view, ownerName, hasClearableActivity, onClearActivity,
+}: {
+  view: ViewTab;
+  ownerName: string;
+  hasClearableActivity: boolean;
+  onClearActivity: () => void;
+}) {
   if (view === "inventory") return (
     <div className="flex items-end justify-between mb-[22px] gap-6">
       <div>
@@ -42,6 +49,16 @@ function PageHead({ view, ownerName }: { view: ViewTab; ownerName: string }) {
           Every check-in, check-out, and status change, newest first.
         </div>
       </div>
+      {hasClearableActivity && (
+        <div className="flex gap-2">
+          <button
+            onClick={onClearActivity}
+            className="inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-transparent bg-transparent text-ink-2 cursor-pointer hover:bg-surface-2 hover:text-ink"
+          >
+            <Icons.trash size={14} /> Clear deleted-item activity
+          </button>
+        </div>
+      )}
     </div>
   );
 
@@ -82,7 +99,13 @@ export default function InventoryApp({
   const [showAdd, setShowAdd]       = useState(false);
   const [pending, setPending]       = useState<PendingAction | null>(null);
   const [profileUser, setProfileUser] = useState<TeamMember | null>(null);
+  const [showClearActivity, setShowClearActivity] = useState(false);
   const { theme, toggleTheme } = useTheme();
+
+  const clearableActivity = useMemo(
+    () => activity.filter((a) => a.item === "" || !items.some((i) => i.id === a.item)),
+    [activity, items],
+  );
 
   // Filtering + sorting
   const filtered = useMemo(() => {
@@ -232,6 +255,20 @@ export default function InventoryApp({
     toast.success(`Added · ${newItem.name}`);
   };
 
+  // Clear deleted-item activity
+  const confirmClearActivity = async () => {
+    const localCount = clearableActivity.length;
+    const result = await clearDeletedItemActivity();
+    if (!result.success) {
+      toast.error(result.message ?? "Something went wrong.");
+      return;
+    }
+    const clearableIds = new Set(clearableActivity.map((a) => a.id));
+    setActivity((prev) => prev.filter((a) => !clearableIds.has(a.id)));
+    setShowClearActivity(false);
+    toast.success(`Cleared ${result.cleared ?? localCount} entries`);
+  };
+
   return (
     <div className="min-h-screen flex flex-col bg-paper text-ink antialiased">
       <Header
@@ -242,7 +279,11 @@ export default function InventoryApp({
       />
 
       <main className="px-7 py-7 pb-20 max-w-[1480px] w-full mx-auto flex-1 max-[720px]:px-4 max-[720px]:py-4">
-        <PageHead view={view} ownerName={ownerName} />
+        <PageHead
+          view={view} ownerName={ownerName}
+          hasClearableActivity={clearableActivity.length > 0}
+          onClearActivity={() => setShowClearActivity(true)}
+        />
 
         {view === "inventory" && (
           <InventoryView
@@ -267,6 +308,11 @@ export default function InventoryApp({
       <ProfileDrawer user={profileUser} onClose={() => setProfileUser(null)} items={items} activity={activity} />
       <AddItemModal open={showAdd} onClose={() => setShowAdd(false)} onSubmit={addItem} locationNames={locationNames} />
       <StatusConfirmModal pending={pending} onClose={() => setPending(null)} onConfirm={confirmAction} />
+      <ClearActivityModal
+        open={showClearActivity}
+        onClose={() => setShowClearActivity(false)}
+        onConfirm={confirmClearActivity}
+      />
     </div>
   );
 }

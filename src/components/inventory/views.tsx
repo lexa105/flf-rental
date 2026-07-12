@@ -17,7 +17,7 @@ function StatRow({ items }: { items: Item[] }) {
         { label: "Inventory",   value: total,                foot: "items tracked",     dot: null },
         { label: "Available",   value: available,            foot: "Ready to check out", dot: "bg-status-green" },
         { label: "In the field", value: checkedOut,          foot: "Checked out",        dot: "bg-status-amber" },
-        { label: "Attention",   value: maintenance + missing, foot: `${maintenance} maintenance${missing > 0 ? ` · ${missing} missing` : ""}`, dot: "bg-status-blue" },
+        { label: "Attention",   value: maintenance + missing, foot: `${maintenance} maintenance${missing > 0 ? ` · ${missing}  missing` : ""}`, dot: "bg-status-blue" },
       ].map((s) => (
         <div key={s.label} className="bg-surface px-5 py-4 flex flex-col gap-1.5">
           <span className="text-[11px] uppercase tracking-[0.08em] text-muted font-medium">{s.label}</span>

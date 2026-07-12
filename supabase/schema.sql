@@ -137,12 +137,16 @@ create policy "Users can delete own equipment."
   on equipment for delete
   using ( auth.uid() = owner_id );
 
--- Activity policies (immutable log: no update/delete policies)
+-- Activity policies (immutable log for rows tied to live equipment; owners
+-- may clear entries whose equipment has been deleted)
 create policy "activity_select_own" on activity
   for select using ( auth.uid() = owner_id );
 
 create policy "activity_insert_own" on activity
   for insert with check ( auth.uid() = owner_id );
+
+create policy "activity_delete_orphaned" on activity
+  for delete using ( auth.uid() = owner_id and equipment_id is null );
 
 -- Storage: avatars bucket for onboarding Step 1 profile photo upload.
 -- Public bucket = object URLs are world-readable, but there is deliberately
