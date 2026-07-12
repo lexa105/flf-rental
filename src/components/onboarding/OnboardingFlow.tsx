@@ -781,7 +781,9 @@ export default function OnboardingFlow() {
     <div className="grid lg:grid-cols-[minmax(0,1fr)_minmax(0,1.25fr)] min-h-screen font-sans selection:bg-accent/20">
 
       {/* ── Left: Brand + Step Rail ───────────────────────────────────────── */}
-      <aside className="relative bg-ink text-paper px-10 py-9 hidden lg:flex flex-col overflow-hidden">
+      {/* Pinned dark in both themes — theme tokens invert in dark mode, which made the
+          hardcoded cream text below blend into a cream bg-ink background. */}
+      <aside className="relative bg-[#1f1b16] text-[#f1ece1] px-10 py-9 hidden lg:flex flex-col overflow-hidden">
         {/* Film grain */}
         <div className="absolute inset-0 opacity-50 pointer-events-none" style={{
           backgroundImage: `url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 0.95  0 0 0 0 0.92  0 0 0 0 0.85  0 0 0 0.06 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>")`
@@ -792,7 +794,7 @@ export default function OnboardingFlow() {
 
         {/* Brand mark */}
         <div className="relative z-10 flex items-center gap-2.5 font-serif text-[19px] tracking-tight">
-          <span className="w-[30px] h-[30px] bg-paper text-ink rounded-md grid place-items-center font-mono text-[11px] font-semibold">FLF</span>
+          <span className="w-[30px] h-[30px] bg-[#f1ece1] text-[#1f1b16] rounded-md grid place-items-center font-mono text-[11px] font-semibold">FLF</span>
           <span>Rental<em className="italic text-accent font-normal">&nbsp;system</em></span>
         </div>
 
@@ -820,8 +822,8 @@ export default function OnboardingFlow() {
                 {/* Pip */}
                 <span
                   className={`w-6 h-6 rounded-full grid place-items-center text-[11px] font-mono font-medium border transition flex-shrink-0 ${
-                    isActive ? 'bg-accent border-accent text-paper' :
-                    isDone   ? 'bg-paper border-paper text-ink'     : ''
+                    isActive ? 'bg-accent border-accent text-[#fbf8f2]' :
+                    isDone   ? 'bg-[#f1ece1] border-[#f1ece1] text-[#1f1b16]' : ''
                   }`}
                   style={!isActive && !isDone ? {
                     backgroundColor: 'rgba(255,255,255,0.08)',
