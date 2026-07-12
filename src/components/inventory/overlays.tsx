@@ -121,12 +121,6 @@ export function ItemDrawer({
                 <Icons.check size={14} /> Mark available
               </button>
             )}
-            <button
-              onClick={() => onAction("delete", it)}
-              className="ml-auto inline-flex items-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-transparent bg-transparent text-status-red cursor-pointer hover:bg-red-soft active:translate-y-px transition-all"
-            >
-              <Icons.trash size={14} /> Delete
-            </button>
           </div>
 
           {/* Key-value details */}
@@ -182,6 +176,16 @@ export function ItemDrawer({
                 </div>
               );
             })}
+          </div>
+
+          {/* Delete */}
+          <div className="mt-6 pt-4 border-t border-border">
+            <button
+              onClick={() => onAction("delete", it)}
+              className="w-full inline-flex items-center justify-center gap-[7px] px-[13px] py-[7px] rounded-md text-[13px] font-medium border border-transparent bg-transparent text-status-red cursor-pointer hover:bg-red-soft active:translate-y-px transition-all"
+            >
+              <Icons.trash size={14} /> Delete item
+            </button>
           </div>
         </div>
       </aside>
